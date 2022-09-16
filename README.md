@@ -46,5 +46,8 @@ https://reactjs.org/docs/hooks-intro.html
 * 4:00: Research other restaurant api options.
 
 * 4:30: Sketch more app UI ideas.
+        Consider aesthetics and branding.
+        Color pallette and font research.
+        https://drive.google.com/drive/u/0/folders/1HbbrEm5jMQ_hqv6xNt3sWV4F7oj4QDZf
 
 
