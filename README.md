@@ -1,9 +1,10 @@
 ### Research & Planning Log
 #### Friday, 09/16
-* 7:50: start organizing project README.md and capstone-proposal. 
+
+* 7:50: Start organizing project README.md and capstone-proposal. 
         review epicenter instructions.
 * 8:15: Start research how/ why/ when to use webpack with react.
-* 9:15: research cont.
+* 9:15: Research cont.
 
 https://www.apexon.com/blog/webpack-and-react-no-need-to-fear/
 https://www.arrowhitech.com/webpack-the-advantages-and-how-to-set-it-up-for-react/
@@ -21,4 +22,13 @@ https://blog.logrocket.com/how-use-typescript-react-tutorial-examples/
 https://www.typescriptlang.org/docs/handbook/jsx.html
 https://reactjs.org/docs/static-type-checking.html
 
-* 11:30: cont. research.
+* 11:30: Cont. research.
+
+Look ahead at firebase and apis hw.
+Research places api
+
+https://developers.google.com/maps/documentation/places/web-service/search
+https://stackoverflow.com/questions/16308357/google-api-for-restaurants-places
+
+
+
