@@ -45,3 +45,6 @@ https://reactjs.org/docs/hooks-intro.html
 
 * 4:00: Research other restaurant api options.
 
+* 4:30: Sketch more app UI ideas.
+
+
