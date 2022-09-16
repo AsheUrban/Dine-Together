@@ -32,4 +32,12 @@ https://stackoverflow.com/questions/16308357/google-api-for-restaurants-places
 
 * 12:30: Begin initial project set up.
 
+* 1:15: Research Cont.
+
+https://reactjs.org/docs/thinking-in-react.html
+https://reactjs.org/docs/thinking-in-react.html#step-4-identify-where-your-state-should-live
+https://reactjs.org/docs/hooks-rules.html
+https://reactjs.org/docs/hooks-intro.html
+
+* 2:15: Sketch out app UI ideas.
 
