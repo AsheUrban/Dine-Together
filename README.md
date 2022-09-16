@@ -41,3 +41,7 @@ https://reactjs.org/docs/hooks-intro.html
 
 * 2:15: Sketch out app UI ideas.
 
+* 3:00: Research social media platform best practices. Cont. research and planning.
+
+* 4:00: Research other restaurant api options.
+
