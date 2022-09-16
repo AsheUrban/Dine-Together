@@ -30,5 +30,6 @@ Research places api
 https://developers.google.com/maps/documentation/places/web-service/search
 https://stackoverflow.com/questions/16308357/google-api-for-restaurants-places
 
+* 12:30: Begin initial project set up.
 
 
