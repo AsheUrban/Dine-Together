@@ -53,3 +53,4 @@ https://reactjs.org/docs/hooks-intro.html
 #### Friday, 9/23
 
 * 11:30: Organizing to-dos!
+* 12:20: Start initial coding - componenet set up.
