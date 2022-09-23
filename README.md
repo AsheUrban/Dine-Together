@@ -50,3 +50,6 @@ https://reactjs.org/docs/hooks-intro.html
 
 * 3:30: Wrap up capstone proposal.
 
+#### Friday, 9/23
+
+* 11:30: Organizing to-dos!
