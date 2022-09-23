@@ -6,7 +6,7 @@ function PostList(props){
 
   return (
     <React.Fragment>
-      <hr/>
+      <br/ >
       {props.postList.map((post) =>
         <Post 
           whenPostClicked={props.onPostSelection}
