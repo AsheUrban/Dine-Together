@@ -5,7 +5,7 @@ import EditPostForm from './EditPostForm';
 import PostDetail from './PostDetail';
 import { useState, useEffect } from 'react';
 import { collection, addDoc, doc, updateDoc, onSnapshot, deleteDoc, query, orderBy } from 'firebase/firestore';
-import { db, auth } from './../firebase.js'
+import { db, auth } from '../firebase.js';
 import { formatDistanceToNow } from 'date-fns';
 import styled from 'styled-components';
 
