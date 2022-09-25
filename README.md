@@ -60,3 +60,7 @@ See commits for remaining time.
 #### Sunday, 9/25
 
 * 10:00: Research & Planning, using API with react
+
+* 10:30-12:30: API HW
+
+* 12:30: Start working on adding API to app.
