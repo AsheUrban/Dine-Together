@@ -66,3 +66,10 @@ See commits for remaining time.
 https://developers.google.com/maps/documentation/places/web-service/overview
 
 * 1:00: Create API key for google places.
+  
+  will try to use 'dine_in' boolean to filter for restaurants that would be applicable and 'locality'.
+
+  would like to start by simply returning a list of restaurants with the following fields:
+         name
+         formatted address or address component
+         dine_in
