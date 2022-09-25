@@ -74,4 +74,18 @@ https://developers.google.com/maps/documentation/places/web-service/overview
          formatted address or address component
          dine_in
 
-* 2:00:  looking for endpoint documentation...
+* 2:00:  looking for endpoint documentation and how to use it...
+
+https://maps.googleapis.com/maps/api/place/details/output?parameters
+https://www.youtube.com/watch?v=5iE4kqbEKoY
+https://www.telerik.com/blogs/integrating-google-places-autocomplete-api-react-app
+https://www.youtube.com/watch?v=WZcxJGmLbSo
+
+Quick Overview:
+ * .env created and key added
+ * actions and reducers folders created
+ * RestaurantList file added - idea is to first pull in API and return a list of restaurants based on location.
+ * API key created
+ * Lots of research on how to use API
+
+* 3:00: end -
