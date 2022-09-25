@@ -54,3 +54,9 @@ https://reactjs.org/docs/hooks-intro.html
 
 * 11:30: Organizing to-dos!
 * 12:20: Start initial coding - componenet set up.
+
+See commits for remaining time.
+
+#### Sunday, 9/25
+
+* 10:00: Research & Planning, using API with react
