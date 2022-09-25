@@ -73,3 +73,5 @@ https://developers.google.com/maps/documentation/places/web-service/overview
          name
          formatted address or address component
          dine_in
+
+* 2:00:  looking for endpoint documentation...
