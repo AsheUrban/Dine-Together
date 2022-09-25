@@ -59,8 +59,10 @@ See commits for remaining time.
 
 #### Sunday, 9/25
 
-* 10:00: Research & Planning, using API with react
-
-* 10:30-12:30: API HW
-
+* 10:00: Research & Planning, using API with react.
+* 10:30-12:30: API HW (hours not counted).
 * 12:30: Start working on adding API to app.
+
+https://developers.google.com/maps/documentation/places/web-service/overview
+
+* 1:00: Create API key for google places.
