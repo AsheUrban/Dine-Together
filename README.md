@@ -89,3 +89,7 @@ Quick Overview:
  * Lots of research on how to use API
 
 * 3:00: end -
+
+#### Friday, 9/30
+
+* 11:30: Initial commit - was at the dr. this morning and not feeling great.
