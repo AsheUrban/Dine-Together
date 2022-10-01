@@ -12,7 +12,7 @@ function Posts() {
   const [state, dispatch] = useReducer(postsReducer, initialState);
 
 useEffect(() => {
-  fetch(`https://maps.googleapis.com/maps/api/place/details/output?name?api-key=${process.env.REACT_APP_GOOGLEPLACES_API_KEY}`)
+  fetch(`https://maps.googleapis.com/maps/api/place/details/autocomplete?name?key=${process.env.REACT_APP_GOOGLEPLACES_API_KEY}`)
     .then(response => {
         if(!response.ok) {
           throw new Error(`${response.status}: ${response.statusText}`);

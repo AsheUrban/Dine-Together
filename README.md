@@ -93,3 +93,7 @@ Quick Overview:
 #### Friday, 9/30
 
 * 11:30: Initial commit - was at the dr. this morning and not feeling great.
+
+#### Saturday, 10/1
+
+* 2:00 - 4:00 API testing in postman and reading through documentation I wish I could make this thing work!!!
