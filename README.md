@@ -99,3 +99,7 @@ Quick Overview:
 * 2:00 - 4:00: API testing in postman and reading through documentation I wish I could make this thing work!!!
 * 4:00 - 5:00: Styling
 * 5:00 - 6:00: build out powerpoint color guide
+
+#### Sunday, 10/2
+g
+* 3:00: WIP API connection
