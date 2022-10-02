@@ -12,7 +12,15 @@ function Posts() {
   const [state, dispatch] = useReducer(postsReducer, initialState);
 
 useEffect(() => {
-  fetch(`https://maps.googleapis.com/maps/api/place/details/autocomplete?name?key=${process.env.REACT_APP_GOOGLEPLACES_API_KEY}`)
+  
+  fetch(`https://maps.googleapis.com/maps/api/place/details/json?key=${process.env.REACT_APP_GOOGLEPLACES_API_KEY}&fields=name&place_id=ChIJN1t_tDeuEmsRUsoyG83frY4`
+    { method: 'GET',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
     .then(response => {
         if(!response.ok) {
           throw new Error(`${response.status}: ${response.statusText}`);
