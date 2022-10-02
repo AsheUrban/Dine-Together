@@ -13,23 +13,27 @@ function Posts() {
 
 useEffect(() => {
   
-  fetch(`https://maps.googleapis.com/maps/api/place/details/json?key=${process.env.REACT_APP_GOOGLEPLACES_API_KEY}&fields=name&place_id=ChIJN1t_tDeuEmsRUsoyG83frY4`
-    { method: 'GET',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
+  fetch(`https://maps.googleapis.com/maps/api/place/details/json?key=${process.env.REACT_APP_GOOGLEPLACES_API_KEY}&fields=name&place_id=ChIJN1t_tDeuEmsRUsoyG83frY4`,
+    // { 
+    //   mode: 'cors',
+    //   credentials: 'include',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Access-Control-Allow-Origin': 'maps.googleapis.com'
+    //   },
+    // }
   )
     .then(response => {
         if(!response.ok) {
+          console.log(response);
           throw new Error(`${response.status}: ${response.statusText}`);
         } else {
-          return response.json()
+          console.log(response);
+          return response.json();
         }
       })
     .then((jsonifiedResponse) => {
-      const action = getPostsSuccess(jsonifiedResponse.results)
+      const action = getPostsSuccess(jsonifiedResponse.result)
       dispatch(action);
     })
     .catch((error) => {
