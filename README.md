@@ -1,3 +1,45 @@
+# CAPSTONE PROJECT: Dine-Together
+
+#### A simple react based web application using google places api.
+
+#### By Ashe Urban
+
+## Technologies Used
+
+* _JavaScript_
+* _React_
+* _Places API_
+* _CSS_
+* _JSX_
+* _Markdown_
+
+## Description
+
+_My minimum viable product for this project will be a react based app with a robust UI that allows users to login, update a profile, and create a wishlist of places they want to eat by connecting with the OpenTable API or the google places API._
+
+## Goals
+
+* _Making organizing dinners out with other people easy_
+* _Local restauant exposure_
+
+## Setup/Installation Requirements
+
+* _TBD_
+
+## Known Bugs
+
+* _TBD_
+
+## License
+
+* MIT
+
+## Contact Information
+
+_Please contact me with any questions or contribuitions, ashe@goldentongue.com_
+
+Copyright(c) July 2022 Ashe Urban
+
 ### Research & Planning Log
 #### Friday, 09/16
 
