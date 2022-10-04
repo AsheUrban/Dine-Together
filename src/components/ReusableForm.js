@@ -1,23 +1,85 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+const DineTogetherPosts = styled.div`
+background-color: #f5b700;
+width: 300px;
+margin: auto;
+padding: 45px;
+border: 2px solid #fffbc8;
+text-align: center;
+border-radius: 10px;
+`;
+
+const DineTogetherPost = styled.div`
+background-color: #F8D86E;
+width: 1280px;
+margin: auto;
+border: 2px solid #FFFBC8;
+padding-top: 150px;
+padding-bottom: 150px;
+border-radius: 10px;
+`;
+
+const Input = styled.input`
+border-radius: 5px;
+border: 1px solid black;
+margin: auto;
+margin-bottom: 10px;
+
+`;
+
+const TextArea = styled.textarea`
+border-radius: 5px;
+border: 1px solid black;
+margin: auto;
+
+`;
+
+const H3 = styled.h3`
+font-size: 22px;
+color: #FFFBC8;
+`;
+
+const Button = styled.button`
+background-color: #f5b700; /* Cornflower Blue */
+border: 2px solid #FFFBC8;
+margin: 10px;
+color: #FFFBC8;
+padding: 15px 32px;
+text-align: center;
+text-decoration: none;
+display: inline;
+font-size: 16px;
+border-radius: 10px;
+cursor: pointer;
+`;
 
 function ReusableForm(props) {
   return (
     <React.Fragment>
-      <form onSubmit={props.formSubmissionHandler}>
-        <input
-          type='text'
-          name='names'
-          placeholder='Pair Names' />
-        <input
-          type='text'
-          name='location'
-          placeholder='Location' />
-        <textarea
-          name='issue'
-          placeholder='Describe your issue.' />
-        <button type='submit'>{props.buttonText}</button>
-      </form>
+      <DineTogetherPost>
+        <DineTogetherPosts>
+        <form onSubmit={props.formSubmissionHandler}>
+          <Input
+            type='text'
+            name='names'
+            placeholder='Pair Names' />
+            <br />
+          <Input
+            type='text'
+            name='location'
+            placeholder='Location' />
+            <br />
+          <TextArea
+            name='issue'
+            placeholder='Describe your issue.' />
+            <br />
+          <button type='submit'>{props.buttonText}</button>
+        </form>
+        </DineTogetherPosts>
+      </DineTogetherPost>
     </React.Fragment>
   );
 }
