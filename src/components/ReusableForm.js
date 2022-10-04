@@ -41,7 +41,7 @@ color: #FFFBC8;
 `;
 
 const Button = styled.button`
-background-color: #B16825; 
+background-color: #B16825;
 border: 2px solid #FFFBC8;
 margin: 10px;
 color: #FFFBC8;
@@ -53,6 +53,8 @@ font-size: 16px;
 border-radius: 10px;
 cursor: pointer;
 `;
+
+
 
 function ReusableForm(props) {
   return (

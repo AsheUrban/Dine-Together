@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const HelpQueueHeader = styled.div`
+const DineTogetherHeader = styled.div`
   text-align: center;
   width: 1230px;
   color: #FFFBC8;
@@ -24,14 +24,14 @@ const Center = styled.div`
 function Header(){
   return (
     <React.Fragment>
-        <HelpQueueHeader>
+        <DineTogetherHeader>
           <H1>
           DINE TOGETHER
           </H1>
           <Center>
             <Link to="/"> Home </Link> &emsp;|&emsp; <Link to="/sign-in"> Sign In </Link>
         </Center>
-        </HelpQueueHeader>
+        </DineTogetherHeader>
        
     </React.Fragment>
   );
