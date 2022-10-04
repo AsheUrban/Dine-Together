@@ -9,7 +9,7 @@ const HelpQueueHeader = styled.div`
   padding: 25px;
   margin: auto;
   margin-top: 3px;
-  background-color: #6495ED;
+  background-color: #B16825;
   border-radius: 10px;
 `;
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const DineTogetherPosts = styled.div`
-background-color: #f5b700;
+background-color: #FFFFFF;
 width: 300px;
 margin: auto;
 padding: 45px;
@@ -13,7 +13,7 @@ border-radius: 10px;
 `;
 
 const DineTogetherPost = styled.div`
-background-color: #F8D86E;
+background-color: #E7DDEE;
 width: 1280px;
 margin: auto;
 border: 2px solid #FFFBC8;
@@ -65,16 +65,16 @@ function ReusableForm(props) {
           <Input
             type='text'
             name='names'
-            placeholder='Pair Names' />
+            placeholder='Restaurant Name' />
             <br />
           <Input
             type='text'
             name='location'
-            placeholder='Location' />
+            placeholder='Restaurant Location' />
             <br />
           <TextArea
             name='issue'
-            placeholder='Describe your issue.' />
+            placeholder='Date of reservation and brief description.' />
             <br />
           <button type='submit'>{props.buttonText}</button>
         </form>
