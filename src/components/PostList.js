@@ -23,7 +23,6 @@ padding-bottom: 150px;
 border-radius: 10px;
 `;
 
-
 function PostList(props){
 
   return (
