@@ -6,31 +6,32 @@ function PostDetail(props){
   const { post, onClickingDelete, onClickingEdit } = props; 
 
   const DineTogetherPosts = styled.div`
-    background-color: #f5b700;
-    width: 300px;
-    margin: auto;
-    padding: 45px;
-    border: 2px solid #fffbc8;
-    text-align: center;
-    border-radius: 10px;
+  background-color: #E7DDEE;
+  width: 300px;
+  margin: auto;
+  padding: 45px;
+  border: 2px solid #fffbc8;
+  text-align: center;
+  border-radius: 10px;
+  `;
+  
+  const DineTogetherPost = styled.div`
+  background-color: ;
+  width: 1280px;
+  margin: auto;
+  border: 2px solid #FFFBC8;
+  padding-top: 150px;
+  padding-bottom: 150px;
+  border-radius: 10px;
   `;
 
   const H3 = styled.h3`
-    font-size: 22px;
-    color: #FFFBC8;
-  `
-  const DineTogetherPost = styled.div`
-    background-color: #F8D86E;
-    width: 1280px;
-    margin: auto;
-    border: 2px solid #FFFBC8;
-    padding-top: 150px;
-    padding-bottom: 150px;
-    border-radius: 10px;
-  `;
+  font-size: 22px;
+  color: #FFFBC8;
+`;
 
   const Button = styled.button`
-    background-color: #f5b700; /* Cornflower Blue */
+    background-color: #B16825;
     border: 2px solid #FFFBC8;
     margin: 10px;
     color: #FFFBC8;

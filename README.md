@@ -154,3 +154,5 @@ See AltApproach branch for full commit history.
 #### Tuesday, 10/4
 
 * 9:00: Move back to main branch to work on implementing styles. See commit history.
+* 12:00-1:30: Lunch
+* 2:30: Cont. apply styling

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const DineTogetherPosts = styled.div`
-background-color: #FFFFFF;
+background-color: #E7DDEE;
 width: 300px;
 margin: auto;
 padding: 45px;
@@ -13,7 +13,7 @@ border-radius: 10px;
 `;
 
 const DineTogetherPost = styled.div`
-background-color: #E7DDEE;
+background-color: ; // IMG Here
 width: 1280px;
 margin: auto;
 border: 2px solid #FFFBC8;
@@ -27,14 +27,12 @@ border-radius: 5px;
 border: 1px solid black;
 margin: auto;
 margin-bottom: 10px;
-
 `;
 
 const TextArea = styled.textarea`
 border-radius: 5px;
 border: 1px solid black;
 margin: auto;
-
 `;
 
 const H3 = styled.h3`
@@ -43,7 +41,7 @@ color: #FFFBC8;
 `;
 
 const Button = styled.button`
-background-color: #f5b700; /* Cornflower Blue */
+background-color: #B16825; 
 border: 2px solid #FFFBC8;
 margin: 10px;
 color: #FFFBC8;
@@ -76,7 +74,7 @@ function ReusableForm(props) {
             name='issue'
             placeholder='Date of reservation and brief description.' />
             <br />
-          <button type='submit'>{props.buttonText}</button>
+          <Button type='submit'>{props.buttonText}</Button>
         </form>
         </DineTogetherPosts>
       </DineTogetherPost>
