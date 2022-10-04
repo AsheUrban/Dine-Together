@@ -150,3 +150,7 @@ Quick Overview:
 * 4:00 - 5:00: Discovered google maps API isn't pointed at end users; identified React module "Google Places Autocomplete" for better-supported location API. TODO: RestaurantList.js useEffect() URL needs to be updated/method of calling API needs to use react module instead (as defined in AutoComplete.js, see tintef.github.io/react-google-places-autocomplete)
 
 See AltApproach branch for full commit history.
+
+#### Tuesday, 10/4
+
+* 9:00: Move back to main branch to work on implementing styles. See commit history.
