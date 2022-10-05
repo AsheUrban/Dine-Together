@@ -43,7 +43,7 @@ Copyright(c) July 2022 Ashe Urban
 ### Research & Planning Log
 See AltApproach branch for full commit history.
 
-#### Friday, 09/16
+#### Friday, 09/16 
 
 * 7:50: Start organizing project README.md and capstone-proposal. 
         review epicenter instructions.
@@ -159,4 +159,6 @@ See AltApproach branch for full commit history.
 * 5:00: End for day
 
 #### Wednesday, 10/5
+
+Sick and some styling
 

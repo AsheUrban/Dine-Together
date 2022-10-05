@@ -3,6 +3,7 @@ import Post from './Post';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+
 const DineTogetherPosts = styled.div`
 background-color: #E7DDEE;
 width: 300px;
@@ -13,8 +14,7 @@ text-align: center;
 border-radius: 10px;
 `;
 
-const DineTogetherPost = styled.div`
-background-color: ; // IMG Here
+const PostContainer = styled.div`
 width: 1280px;
 margin: auto;
 border: 2px solid #FFFBC8;
@@ -27,7 +27,7 @@ function PostList(props){
 
   return (
     <React.Fragment>
-      <DineTogetherPost>
+      <PostContainer>
         <DineTogetherPosts>
           <br/ >
           {props.postList.map((post) =>
@@ -41,7 +41,7 @@ function PostList(props){
               key={post.id}/>
           )}
         </DineTogetherPosts>
-      </DineTogetherPost>
+      </PostContainer>
     </React.Fragment>
   );
 }
