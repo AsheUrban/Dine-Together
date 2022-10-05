@@ -157,3 +157,6 @@ See AltApproach branch for full commit history.
 * 12:00-1:30: Lunch
 * 2:30: Cont. apply styling
 * 5:00: End for day
+
+#### Wednesday, 10/5
+
