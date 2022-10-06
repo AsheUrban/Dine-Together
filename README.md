@@ -160,5 +160,8 @@ See AltApproach branch for full commit history.
 
 #### Wednesday, 10/5
 
-Sick and some styling
+10:00 - noon Sick and some styling
+Logged last commit at 3:30 in stead of noon.
+
+#### Thursday 10/6
 
