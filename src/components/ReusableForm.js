@@ -12,16 +12,6 @@ text-align: center;
 border-radius: 10px;
 `;
 
-const DineTogetherPost = styled.div`
-background-color: ; // IMG Here
-width: 1280px;
-margin: auto;
-border: 2px solid #FFFBC8;
-padding-top: 150px;
-padding-bottom: 150px;
-border-radius: 10px;
-`;
-
 const Input = styled.input`
 border-radius: 5px;
 border: 1px solid black;
@@ -59,7 +49,6 @@ cursor: pointer;
 function ReusableForm(props) {
   return (
     <React.Fragment>
-      <DineTogetherPost>
         <DineTogetherPosts>
         <form onSubmit={props.formSubmissionHandler}>
           <Input
@@ -79,7 +68,6 @@ function ReusableForm(props) {
           <Button type='submit'>{props.buttonText}</Button>
         </form>
         </DineTogetherPosts>
-      </DineTogetherPost>
     </React.Fragment>
   );
 }

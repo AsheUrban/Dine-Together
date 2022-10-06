@@ -9,21 +9,22 @@ function PostDetail(props){
   background-color: #E7DDEE;
   width: 300px;
   margin: auto;
+  margin-top: 50px;
   padding: 45px;
   border: 2px solid #fffbc8;
   text-align: center;
   border-radius: 10px;
   `;
   
-  const DineTogetherPost = styled.div`
-  background-color: ;
-  width: 1280px;
-  margin: auto;
-  border: 2px solid #FFFBC8;
-  padding-top: 150px;
-  padding-bottom: 150px;
-  border-radius: 10px;
-  `;
+  // const PostContainer = styled.div`
+  // background-color: ;
+  // width: 1280px;
+  // margin: auto;
+  // border: 2px solid #FFFBC8;
+  // padding-top: 150px;
+  // padding-bottom: 150px;
+  // border-radius: 10px;
+  // `;
 
   const H3 = styled.h3`
   font-size: 22px;
@@ -46,16 +47,13 @@ function PostDetail(props){
 
   return (
     <React.Fragment>
-      <DineTogetherPost>
         <DineTogetherPosts>
-        <h2>Post Detail</h2>
+        <h2>Restaurant Details</h2>
         <H3>{post.location} - {post.names}</H3>
         <p><em>{post.issue}</em></p>
         <Button onClick={onClickingEdit}>Update Post</Button>
         <Button onClick={()=> onClickingDelete(post.id)}>Close Post</Button>
-        
         </DineTogetherPosts>
-      </DineTogetherPost>
     </React.Fragment>
   );
 }

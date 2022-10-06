@@ -38,8 +38,6 @@ function PostControl() {
     color: #FFFBC8;
     padding: 25px;
     margin: auto;
-
-
   `;
 
   useEffect(() => {

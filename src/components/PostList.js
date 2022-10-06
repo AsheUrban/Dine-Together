@@ -20,7 +20,6 @@ function PostList(props){
 
   return (
     <React.Fragment>
-      {/* <PostContainer> */}
         <DineTogetherPosts>
           <br/ >
           {props.postList.map((post) =>
@@ -34,7 +33,6 @@ function PostList(props){
               key={post.id}/>
           )}
         </DineTogetherPosts>
-      {/* </PostContainer> */}
     </React.Fragment>
   );
 }

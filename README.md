@@ -22,13 +22,17 @@ _My minimum viable product for this project will be a react based app with a rob
 * _Making organizing dinners out with other people easy_
 * _Local restauant exposure_
 
+## Challenges
+
+
+
 ## Setup/Installation Requirements
 
 * _TBD_
 
 ## Known Bugs
 
-* _TBD_
+* _No exception handling for submitting empty form._
 
 ## License
 
