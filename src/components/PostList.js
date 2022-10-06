@@ -8,20 +8,13 @@ const DineTogetherPosts = styled.div`
 background-color: #E7DDEE;
 width: 300px;
 margin: auto;
+margin-top: 50px;
 padding: 45px;
 border: 2px solid #fffbc8;
 text-align: center;
 border-radius: 10px;
 `;
 
-// const PostContainer = styled.div`
-// width: 1280px;
-// margin: auto;
-// border: 2px solid #FFFBC8;
-// padding-top: 150px;
-// padding-bottom: 150px;
-// border-radius: 10px;
-// `;
 
 function PostList(props){
 

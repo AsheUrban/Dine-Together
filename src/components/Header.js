@@ -4,13 +4,11 @@ import styled from 'styled-components';
 
 const DineTogetherHeader = styled.div`
   text-align: center;
-  width: 1230px;
+  width: 100vw;
   color: #FFFBC8;
   padding: 25px;
   margin: auto;
-  margin-top: 3px;
   background-color: #B16825;
-  border-radius: 10px;
 `;
 
 const H1 = styled.h1`
