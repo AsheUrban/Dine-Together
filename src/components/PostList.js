@@ -14,20 +14,20 @@ text-align: center;
 border-radius: 10px;
 `;
 
-const PostContainer = styled.div`
-width: 1280px;
-margin: auto;
-border: 2px solid #FFFBC8;
-padding-top: 150px;
-padding-bottom: 150px;
-border-radius: 10px;
-`;
+// const PostContainer = styled.div`
+// width: 1280px;
+// margin: auto;
+// border: 2px solid #FFFBC8;
+// padding-top: 150px;
+// padding-bottom: 150px;
+// border-radius: 10px;
+// `;
 
 function PostList(props){
 
   return (
     <React.Fragment>
-      <PostContainer>
+      {/* <PostContainer> */}
         <DineTogetherPosts>
           <br/ >
           {props.postList.map((post) =>
@@ -41,7 +41,7 @@ function PostList(props){
               key={post.id}/>
           )}
         </DineTogetherPosts>
-      </PostContainer>
+      {/* </PostContainer> */}
     </React.Fragment>
   );
 }

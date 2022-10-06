@@ -26,7 +26,7 @@ function Header(){
     <React.Fragment>
         <DineTogetherHeader>
           <H1>
-          DINE TOGETHER
+          DINE (OUT) TOGETHER
           </H1>
           <Center>
             <Link to="/"> Home </Link> &emsp;|&emsp; <Link to="/sign-in"> Sign In </Link>

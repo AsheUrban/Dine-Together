@@ -160,8 +160,10 @@ See AltApproach branch for full commit history.
 
 #### Wednesday, 10/5
 
-10:00 - noon Sick and some styling
-Logged last commit at 3:30 in stead of noon.
+* 10:00 - noon: Styling
+Logged last commit at 3:30 in stead of noon. Was not feeling well and wasn't able to accomplish anything past lunch.
 
 #### Thursday 10/6
+
+* 9:00: Finally success with background image showing up... though, poorly placed.
 
