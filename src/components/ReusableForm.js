@@ -6,6 +6,7 @@ const DineTogetherPosts = styled.div`
 background-color: #E7DDEE;
 width: 300px;
 margin: auto;
+margin-top: 50px;
 padding: 45px;
 border: 2px solid #fffbc8;
 text-align: center;
@@ -25,13 +26,8 @@ border: 1px solid black;
 margin: auto;
 `;
 
-const H3 = styled.h3`
-font-size: 22px;
-color: #FFFBC8;
-`;
-
 const Button = styled.button`
-background-color: #B16825;
+background-color: #700629;
 border: 2px solid #FFFBC8;
 margin: 10px;
 color: #FFFBC8;
@@ -43,8 +39,6 @@ font-size: 16px;
 border-radius: 10px;
 cursor: pointer;
 `;
-
-
 
 function ReusableForm(props) {
   return (

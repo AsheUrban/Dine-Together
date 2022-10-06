@@ -15,7 +15,6 @@ text-align: center;
 border-radius: 10px;
 `;
 
-
 function PostList(props){
 
   return (

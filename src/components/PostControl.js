@@ -18,7 +18,7 @@ function PostControl() {
   const [error, setError] = useState(null);
 
   const Button = styled.button`
-    background-color: #B16825; /* Cornflower Blue */
+    background-color: #700629;
     border: 1px solid #FFFBC8;
     color: #FFFBC8;
     padding: 15px 32px;

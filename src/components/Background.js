@@ -14,14 +14,12 @@ background-repeat: no-repeat;
 justify-content: space-between;
 align-items: center;
 display: flex;
-
 `;
 
 function Background(){
   return (
     <React.Fragment>
         <BackgroundStyles>
-
         </BackgroundStyles>
     </React.Fragment>
   );
