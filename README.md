@@ -24,8 +24,11 @@ _My minimum viable product for this project will be a react based app with a rob
 
 ## Challenges
 
-_
-
+* _Google places API doesn't have an endpoint for use in the browser._
+* _Google API documentation is difficult to understand and navigate._
+* _Could not address access-control-allow-orgin header required error. See AltApproach branch._
+* _CORs extention would allow me to "access" the API but then blocked firebase -- Google wants CORs enabled!_
+* _By time I discovered the React Google Places API, I was out of time for this project._
 
 ## Setup/Installation Requirements
 
