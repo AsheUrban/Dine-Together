@@ -41,13 +41,48 @@ _My minimum viable product for this project will be a react based app with a rob
 
 _Because of the challenges faced during the building of this project, an MVP was not reached._
 
-## Setup/Installation Requirements
-
-* _TBD_
-
 ## Known Bugs
 
 * _No exception handling for submitting empty form._
+
+## Setup/Installation Requirements
+
+* _clone or download repository to your local_
+* _cd into Dine-Together and run npm install_
+* _npm run build_
+* _npm run start_
+
+For AltApproach Branch you will need your own Google API key: 
+* _git checkout AltApproach._
+* _Add .env to .gitignore and commit._
+* _Create an .env file and store your key securely._
+
+### Available Scripts
+
+In the project directory, you can run:
+
+### `npm start`
+
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
+
+### `npm test`
+
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+### `npm run build`
+
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ## License
 
@@ -59,7 +94,7 @@ _Please contact me with any questions or contribuitions, ashe@goldentongue.com_
 
 Copyright(c) July 2022 Ashe Urban
 
-### Research & Planning Log
+## Research & Planning Log
 
 _See AltApproach branch for full commit history._
 
@@ -191,3 +226,6 @@ Logged last commit at 3:30 in stead of noon. Was not feeling well and wasn't abl
 10:30-noon capstone presentations!
 * 12: 30: WIP styles.
 
+#### Friday 10/7
+
+Finalize README.md and documentation!
