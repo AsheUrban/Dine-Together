@@ -25,7 +25,11 @@ _My minimum viable product for this project will be a react based app with a rob
 
 ## Diagrams
 
-![plot](./img/capstone.png)
+* ![plot](src/img/capstone.png) - _Mock up of branding and colors._
+* ![plot](src/img/capstonecolorpalette.png) - _Color palette HEX._
+* ![plot](src/img/capstoneflow1.jpg) - _Diagram_
+* ![plot](src/img/capstoneflow2.jpg) - _Additional notes_
+
 
 ## Challenges
 
