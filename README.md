@@ -25,8 +25,8 @@ _My minimum viable product for this project will be a react based app with a rob
 
 ## Diagrams
 
-* ![plot](src/img/capstone.png) - _Mock up of branding and colors._
-* ![plot](src/img/capstonecolorpalette.png) - _Color palette HEX._
+* ![plot](src/img/capstone.png) - _Mock up of branding and colors_
+* ![plot](src/img/capstonecolorpalette.png) - _Color palette HEX_
 * ![plot](src/img/capstoneflow1.jpg) - _Diagram_
 * ![plot](src/img/capstoneflow2.jpg) - _Additional notes_
 
@@ -39,6 +39,8 @@ _My minimum viable product for this project will be a react based app with a rob
 * _CORs extention would allow me to "access" the API but then blocked firebase -- Google wants CORs enabled!_
 * _By time I discovered the React Google Places API, I was out of time for this project._
 
+_https://create-react-app.dev/_
+
 _Because of the challenges faced during the building of this project, an MVP was not reached._
 
 ## Known Bugs
@@ -47,15 +49,15 @@ _Because of the challenges faced during the building of this project, an MVP was
 
 ## Setup/Installation Requirements
 
-* _clone or download repository to your local_
+* _Clone or download repository to your local_
 * _cd into Dine-Together and run npm install_
 * _npm run build_
 * _npm run start_
 
 For AltApproach Branch you will need your own Google API key: 
-* _git checkout AltApproach._
-* _Add .env to .gitignore and commit._
-* _Create an .env file and store your key securely._
+* _git checkout AltApproach_
+* _Add .env to .gitignore and commit_
+* _Create an .env file and store your key securely_
 
 ### Available Scripts
 
