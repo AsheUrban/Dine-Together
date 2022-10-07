@@ -8,7 +8,8 @@
 
 * _JavaScript_
 * _React_
-* _Places API_
+* _Places API (AltApproach Branch only)_
+* _Firebase_
 * _CSS_
 * _JSX_
 * _Markdown_
@@ -22,6 +23,10 @@ _My minimum viable product for this project will be a react based app with a rob
 * _Making organizing dinners out with other people easy_
 * _Local restauant exposure_
 
+## Diagrams
+
+![plot](./img/capstone.png)
+
 ## Challenges
 
 * _Google places API doesn't have an endpoint for use in the browser._
@@ -29,6 +34,8 @@ _My minimum viable product for this project will be a react based app with a rob
 * _Could not address access-control-allow-orgin header required error. See AltApproach branch._
 * _CORs extention would allow me to "access" the API but then blocked firebase -- Google wants CORs enabled!_
 * _By time I discovered the React Google Places API, I was out of time for this project._
+
+_Because of the challenges faced during the building of this project, an MVP was not reached._
 
 ## Setup/Installation Requirements
 
@@ -40,7 +47,7 @@ _My minimum viable product for this project will be a react based app with a rob
 
 ## License
 
-* MIT
+* _MIT_
 
 ## Contact Information
 
@@ -49,7 +56,8 @@ _Please contact me with any questions or contribuitions, ashe@goldentongue.com_
 Copyright(c) July 2022 Ashe Urban
 
 ### Research & Planning Log
-See AltApproach branch for full commit history.
+
+_See AltApproach branch for full commit history._
 
 #### Friday, 09/16 
 
