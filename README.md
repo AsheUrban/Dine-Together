@@ -94,7 +94,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 _Please contact me with any questions or contribuitions, ashe@goldentongue.com_
 
-Copyright(c) July 2022 Ashe Urban
+Copyright(c) October 2022 Ashe Urban
 
 ## Research & Planning Log
 
