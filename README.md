@@ -17,13 +17,14 @@
 
 _My minimum viable product for this project will be a react based app with a robust UI that allows users to login, update a profile, and create a wishlist of places they want to eat by connecting with the OpenTable API or the google places API._
 
-## Goals
+## Goals/ Problems Solved
 
 * _Making organizing dinners out with other people easy_
 * _Local restauant exposure_
 
 ## Challenges
 
+_
 
 
 ## Setup/Installation Requirements
@@ -170,4 +171,8 @@ Logged last commit at 3:30 in stead of noon. Was not feeling well and wasn't abl
 #### Thursday 10/6
 
 * 9:00: Finally success with background image showing up... though, poorly placed.
+* 10:00: Background component styled and implemented!
+* 10:30: WIP styles.
+10:30-noon capstone presentations!
+* 12: 30: WIP styles.
 
