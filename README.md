@@ -6,7 +6,7 @@
 ---
 
 ## **Project Overview**
-**Capstone Project** — React-based web application using **Firebase** (Auth + Firestore). An alternate branch explores the **Google Places API** approach.
+**Capstone Project** — React-based web application using **Firebase** (Auth + Firestore). An alternate branch begins to explore the **Google Places API** approach and remains a WIP.
 
 Dine-Together is a prototype React app designed with a single goal in mind: to make planning dinners with friends simple.  No more back-and-forth, easily see which restuarants all parties are interested in going to, make a reservation in app, everyone get's notified. Done. While this goal was ambitious and not reached by this project, it contintues to be an idea I have yet to see executed well and hope to return to one day!
 
