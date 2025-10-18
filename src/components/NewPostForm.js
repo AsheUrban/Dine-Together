@@ -19,7 +19,7 @@ function NewPostForm(props){
     <React.Fragment>
       <ReusableForm 
         formSubmissionHandler={handleNewPostFormSubmission}
-        buttonText='Add Post' />
+        buttonText='Add Restaurant' />
     </React.Fragment>
   );
 }

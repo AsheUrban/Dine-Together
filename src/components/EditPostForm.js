@@ -19,7 +19,7 @@ function EditPostForm (props) {
     <React.Fragment>
       <ReusableForm 
         formSubmissionHandler={handleEditPostFormSubmission} 
-        buttonText='Update Post' />
+        buttonText='Update Restaurant' />
     </React.Fragment>
   );
 }

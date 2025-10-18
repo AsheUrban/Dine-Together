@@ -9,14 +9,17 @@ const DineTogetherHeader = styled.div`
   padding: 25px;
   margin: auto;
   background-color: #B16825;
+  box-sizing: border-box;
 `;
 
 const H1 = styled.h1`
   font-size: 59px;
+  margin: 0;
 `
 const Center = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 0;
 `;
 
 function Header(){

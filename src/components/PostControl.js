@@ -39,6 +39,23 @@ function PostControl() {
     padding: 25px;
     margin: auto;
   `;
+  
+  const DineTogetherPosts = styled.div`
+    background-color: #E7DDEE;
+    width: 300px;
+    margin: auto;
+    margin-top: 50px;
+    padding: 45px;
+    border: 2px solid #fffbc8;
+    text-align: center;
+    border-radius: 10px;
+    `;
+
+  const H1 = styled.h1`
+    font-size: 30px;
+    color: #700629;
+    margin: 0;
+    `;
 
   useEffect(() => {
     function updatePostElapsedWaitTime() {
@@ -131,7 +148,9 @@ function PostControl() {
   if (auth.currentUser == null) {
     return (
       <React.Fragment>
-        <h1>You must be signed in to access the queue.</h1>
+        <DineTogetherPosts>
+           <H1>You must be signed in to access the queue.</H1>
+        </DineTogetherPosts>
       </React.Fragment>
     )
   } else if (auth.currentUser != null) {
@@ -160,7 +179,7 @@ function PostControl() {
       currentlyVisibleState = <PostList 
       onPostSelection={handleChangingSelectedPost} 
       postList={mainPostList} />;
-      buttonText = 'Add Post'; 
+      buttonText = 'Add Restaurant'; 
     }
     return (
       <>

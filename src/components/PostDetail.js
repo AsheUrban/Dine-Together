@@ -53,8 +53,8 @@ const Button = styled.button`
         <H1>{post.names}</H1>
         <H3>{post.location}</H3>
         <p><em>{post.issue}</em></p>
-        <Button onClick={onClickingEdit}>Update Post</Button>
-        <Button onClick={()=> onClickingDelete(post.id)}>Close Post</Button>
+        <Button onClick={onClickingEdit}>Update Restaurant</Button>
+        <Button onClick={()=> onClickingDelete(post.id)}>Delete Restaurant</Button>
         </DineTogetherPosts>
     </React.Fragment>
   );
