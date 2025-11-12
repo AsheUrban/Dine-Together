@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { auth } from './../firebase.js';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const DineTogetherPosts = styled.div`
@@ -47,6 +48,7 @@ cursor: pointer;
 `;
 
 function SignIn(){  
+  const navigate = useNavigate();
   const [signUpSuccess, setSignUpSuccess] = useState(null);
   const [signInSuccess, setSignInSuccess] = useState(null);
   const [signOutSuccess, setSignOutSuccess] = useState(null);
@@ -71,11 +73,13 @@ function SignIn(){
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setSignInSuccess(`You've successfully signed in as ${userCredential.user.email}!`)
+        setTimeout(() => navigate('/'), 1000);
       })
       .catch((error) => {
         setSignInSuccess(`There was an error signing in: ${error.message}!`)
-      }); 
-  }
+      });
+    }
+   
 
   function doSignOut() {
     signOut(auth)
