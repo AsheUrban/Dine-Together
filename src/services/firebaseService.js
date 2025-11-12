@@ -49,5 +49,10 @@ export const deletePost = async (id) => {
     return await deleteDoc(doc(db, 'posts', id));
 };
 
-
+export const updatePostElapsedWaitTimes = (posts) => {
+    return posts.map(post => {
+        const newFormattedWaitTime = formatDistanceToNow(post.timeOpen);
+        return {...post, formattedWaitTime: newFormattedWaitTime};
+    });
+};
          

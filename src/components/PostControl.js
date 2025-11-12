@@ -4,10 +4,10 @@ import PostList from './PostList';
 import EditPostForm from './EditPostForm';
 import PostDetail from './PostDetail';
 import { useState, useEffect } from 'react';
-import { collection, addDoc, doc, updateDoc, onSnapshot, deleteDoc, query, orderBy } from 'firebase/firestore';
-import { db, auth } from '../firebase.js';
-import { formatDistanceToNow } from 'date-fns';
+import { auth } from '../firebase.js';
 import styled from 'styled-components';
+import { subscribeToPosts, addNewPost, updatePost, deletePost, updatePostElapsedWaitTimes } from '../services/firebaseService.js';
+
 
 function PostControl() {
 
@@ -58,16 +58,13 @@ function PostControl() {
     `;
 
   useEffect(() => {
-    function updatePostElapsedWaitTime() {
-      const newMainPostList = mainPostList.map(post => {
-        const newFormattedWaitTime = formatDistanceToNow(post.timeOpen);
-        return {...post, formattedWaitTime: newFormattedWaitTime};
-      });
-      setMainPostList(newMainPostList);
+    function updateElapsedWaitTime() {
+      const updatedPosts = updatePostElapsedWaitTimes(mainPostList);
+      setMainPostList(updatedPosts);
     }
 
     const waitTimeUpdateTimer = setInterval(() =>
-      updatePostElapsedWaitTime(), 
+      updateElapsedWaitTime(), 
       60000
     );
 
@@ -77,36 +74,13 @@ function PostControl() {
   }, [mainPostList])
 
   useEffect(() => { 
-    const queryByTimestamp = query(
-      collection(db, "posts"), 
-      orderBy('timeOpen')
+    const unSubscribe = subscribeToPosts(
+      (posts) => setMainPostList(posts),
+      (errorMessage) => setError(errorMessage)
     );
-    const unSubscribe = onSnapshot(
-      queryByTimestamp, 
-      (querySnapshot) => {
-        const posts = [];
-        querySnapshot.forEach((doc) => {
-          const timeOpen = doc.get('timeOpen', {serverTimestamps: "estimate"}).toDate();
-          const jsDate = new Date(timeOpen);
-          posts.push({
-            names: doc.data().names, 
-            location: doc.data().location, 
-            issue: doc.data().issue, 
-            timeOpen: jsDate,
-            formattedWaitTime: formatDistanceToNow(jsDate),
-            id: doc.id
-          });
-        });
-        setMainPostList(posts);
-      },
-      (error) => {
-        setError(error.message);
-      }
-    );
-
     return () => unSubscribe();
   }, []);
-
+  
   const handleClick = () => {
     if (selectedPost != null) {
       setFormVisibleOnPage(false);
@@ -118,7 +92,7 @@ function PostControl() {
   }
 
   const handleDeletingPost = async (id) => {
-    await deleteDoc(doc(db, 'posts', id));
+    await deletePost(id);
     setSelectedPost(null);
   }
 
@@ -127,19 +101,16 @@ function PostControl() {
   }
 
   const handleEditingPostInList = async (postToEdit) => {
-    const postRef = doc(db, 'posts', postToEdit.id);
-    await updateDoc(postRef, postToEdit);
+    await updatePost(postToEdit);
     setEditing(false);
     setSelectedPost(null);
   }
 
   const handleAddingNewPostToList = async (newPostData) => {
-    const collectionRef = collection(db, 'posts');
-    await addDoc(collectionRef, newPostData);
+    await addNewPost(newPostData);
     setFormVisibleOnPage(false);
   }
 
-  
   const handleChangingSelectedPost = (id) => {
     const selection = mainPostList.filter(post => post.id === id)[0];
     setSelectedPost(selection);
