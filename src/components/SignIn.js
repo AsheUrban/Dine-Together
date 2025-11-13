@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { auth } from './../firebase.js';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -20,12 +20,6 @@ border-radius: 5px;
 border: 1px solid black;
 margin: auto;
 margin-bottom: 10px;
-`;
-
-const TextArea = styled.textarea`
-border-radius: 5px;
-border: 1px solid black;
-margin: auto;
 `;
 
 const H2 = styled.h2`
@@ -51,7 +45,6 @@ function SignIn(){
   const navigate = useNavigate();
   const [signUpSuccess, setSignUpSuccess] = useState(null);
   const [signInSuccess, setSignInSuccess] = useState(null);
-  const [signOutSuccess, setSignOutSuccess] = useState(null);
 
   function doSignUp(event) {
     event.preventDefault();
@@ -79,56 +72,43 @@ function SignIn(){
         setSignInSuccess(`There was an error signing in: ${error.message}!`)
       });
     }
-   
 
-  function doSignOut() {
-    signOut(auth)
-      .then(function() {
-        setSignOutSuccess('You have successfully signed out');
-      }).catch(function(error) {
-        setSignOutSuccess('There was an Error signing out: ${error.message}!')
-      });
+    return (
+      <React.Fragment>
+        <DineTogetherPosts>
+          <H2>Sign up</H2>
+          {signUpSuccess}
+          <form onSubmit={doSignUp}>
+            <Input
+              type='text'
+              name='email'
+              placeholder='email' />
+              <br />
+            <Input
+              type='password'
+              name='password'
+              placeholder='Password' />
+              <br />
+            <Button type='submit'>Sign up</Button>
+          </form>
+          <H2>Sign In</H2>
+          {signInSuccess}
+          <form onSubmit={doSignIn}>
+            <Input
+              type='text'
+              name='signinEmail'
+              placeholder='email' />
+              <br />
+            <Input
+              type='password'
+              name='signinPassword'
+              placeholder='Password' />
+              <br />
+            <Button type='submit'>Sign in</Button>
+          </form>
+        </DineTogetherPosts>
+      </React.Fragment>
+    );
   }
-  
-  return (
-    <React.Fragment>
-      <DineTogetherPosts>
-        <H2>Sign up</H2>
-        {signUpSuccess}
-        <form onSubmit={doSignUp}>
-          <Input
-            type='text'
-            name='email'
-            placeholder='email' />
-            <br />
-          <Input
-            type='password'
-            name='password'
-            placeholder='Password' />
-            <br />
-          <Button type='submit'>Sign up</Button>
-        </form>
-        <H2>Sign In</H2>
-        {signInSuccess}
-        <form onSubmit={doSignIn}>
-          <Input
-            type='text'
-            name='signinEmail'
-            placeholder='email' />
-            <br />
-          <Input
-            type='password'
-            name='signinPassword'
-            placeholder='Password' />
-            <br />
-          <Button type='submit'>Sign in</Button>
-        </form>
-        {signOutSuccess}
-        <br />
-        <Button onClick={doSignOut}>Sign out</Button>
-      </DineTogetherPosts>
-    </React.Fragment>
-  );
-}
 
-export default SignIn
+  export default SignIn

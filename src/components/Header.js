@@ -1,5 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { signOut } from "firebase/auth";
+import { auth } from '../firebase.js';
 import styled from 'styled-components';
 
 const DineTogetherHeader = styled.div`
@@ -22,7 +24,37 @@ const Center = styled.div`
   margin-top: 0;
 `;
 
-function Header(){
+const NavLink = styled(Link)`
+  color: #FFFBC8;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const SignOutButton = styled.button`
+  background: none;
+  border: none;
+  color: #FFFBC8;
+  cursor: pointer;
+  font-size: 16px;
+  &:hover {
+    text-decoration: underline;
+  }
+`;  
+
+function Header({ user }) {
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      navigate('/sign-in');
+    } catch (error) {
+      console.error('Error signing out: ', error);
+    }
+  };
+
   return (
     <React.Fragment>
         <DineTogetherHeader>
@@ -30,9 +62,17 @@ function Header(){
           DINE TOGETHER
           </H1>
           <Center>
-            <Link to="/"> Home </Link> &emsp;|&emsp; <Link to="/sign-in"> Sign In </Link>
-        </Center>
-        </DineTogetherHeader>
+            <NavLink to="/"> Home </NavLink> &emsp;|&emsp;
+            {user ? (
+              <>
+              <span>{user.email}</span> &emsp;|&emsp;
+              <SignOutButton onClick={handleSignOut}>Sign Out</SignOutButton>
+              </>
+            ) : (
+              <NavLink to="/sign-in"> Sign In </NavLink>
+            )}
+            </Center>
+            </DineTogetherHeader>
        
     </React.Fragment>
   );
