@@ -65,7 +65,7 @@ function Header({ user }) {
             <NavLink to="/"> Home </NavLink> &emsp;|&emsp;
             {user ? (
               <>
-              <span>{user.email}</span> &emsp;|&emsp;
+              <NavLink to={`/profile/${user.uid}`}>{user.displayName}</NavLink>&emsp;|&emsp;
               <SignOutButton onClick={handleSignOut}>Sign Out</SignOutButton>
               </>
             ) : (

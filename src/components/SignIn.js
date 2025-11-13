@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { auth } from './../firebase.js';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
+import { doc, setDoc } from "firebase/firestore";
+import { db } from './../firebase.js';
 import styled from 'styled-components';
 
 const DineTogetherPosts = styled.div`
@@ -48,11 +50,23 @@ function SignIn(){
 
   function doSignUp(event) {
     event.preventDefault();
+    const username = event.target.username.value;
     const email = event.target.email.value;
     const password = event.target.password.value;
+
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        setSignUpSuccess(`You've successfully signed up, ${userCredential.user.email}!`)
+      .then(async (userCredential) => {
+        await updateProfile(userCredential.user, {
+          displayName: username
+      });
+      
+      await setDoc(doc(db, 'users', userCredential.user.uid), {
+        username: username,
+        email: email,
+        createdAt: new Date()
+      });
+
+        setSignUpSuccess(`You've successfully signed up, ${username}!`)
       })
       .catch((error) => {
         setSignUpSuccess(`There was an error signing up: ${error.message}!`)
@@ -65,7 +79,7 @@ function SignIn(){
     const password = event.target.signinPassword.value;
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        setSignInSuccess(`You've successfully signed in as ${userCredential.user.email}!`)
+        setSignInSuccess(`You've successfully signed in as ${userCredential.user.displayName}!`)
         setTimeout(() => navigate('/'), 1000);
       })
       .catch((error) => {
@@ -81,8 +95,15 @@ function SignIn(){
           <form onSubmit={doSignUp}>
             <Input
               type='text'
+              name='username'
+              placeholder='Username'
+              required />
+              <br />
+            <Input
+              type='text'
               name='email'
-              placeholder='email' />
+              placeholder='email'
+              required />
               <br />
             <Input
               type='password'
