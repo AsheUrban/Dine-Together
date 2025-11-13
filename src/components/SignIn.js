@@ -1,77 +1,12 @@
 import React, { useState } from 'react';
 import { auth } from './../firebase.js';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
-import { doc, setDoc } from "firebase/firestore";
-import { db } from './../firebase.js';
-import styled from 'styled-components';
-
-const DineTogetherPosts = styled.div`
-background-color: #E7DDEE;
-width: 300px;
-margin: auto;
-margin-top: 50px;
-padding: 45px;
-border: 2px solid #fffbc8;
-text-align: center;
-border-radius: 10px;
-`;
-
-const Input = styled.input`
-border-radius: 5px;
-border: 1px solid black;
-margin: auto;
-margin-bottom: 10px;
-`;
-
-const H2 = styled.h2`
-font-size: 22px;
-color: #700629;
-`;
-
-const Button = styled.button`
-background-color: #700629;
-border: 2px solid #FFFBC8;
-margin: 10px;
-color: #FFFBC8;
-padding: 15px 32px;
-text-align: center;
-text-decoration: none;
-display: inline;
-font-size: 16px;
-border-radius: 10px;
-cursor: pointer;
-`;
+import { DineTogetherPosts, Input, H2, Button, SignUpLink } from '../styles/formStyles.js';
 
 function SignIn(){  
   const navigate = useNavigate();
-  const [signUpSuccess, setSignUpSuccess] = useState(null);
   const [signInSuccess, setSignInSuccess] = useState(null);
-
-  function doSignUp(event) {
-    event.preventDefault();
-    const username = event.target.username.value;
-    const email = event.target.email.value;
-    const password = event.target.password.value;
-
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
-        await updateProfile(userCredential.user, {
-          displayName: username
-      });
-      
-      await setDoc(doc(db, 'users', userCredential.user.uid), {
-        username: username,
-        email: email,
-        createdAt: new Date()
-      });
-
-        setSignUpSuccess(`You've successfully signed up, ${username}!`)
-      })
-      .catch((error) => {
-        setSignUpSuccess(`There was an error signing up: ${error.message}!`)
-      });
-  }
 
   function doSignIn(event) {
     event.preventDefault();
@@ -90,28 +25,6 @@ function SignIn(){
     return (
       <React.Fragment>
         <DineTogetherPosts>
-          <H2>Sign up</H2>
-          {signUpSuccess}
-          <form onSubmit={doSignUp}>
-            <Input
-              type='text'
-              name='username'
-              placeholder='Username'
-              required />
-              <br />
-            <Input
-              type='text'
-              name='email'
-              placeholder='email'
-              required />
-              <br />
-            <Input
-              type='password'
-              name='password'
-              placeholder='Password' />
-              <br />
-            <Button type='submit'>Sign up</Button>
-          </form>
           <H2>Sign In</H2>
           {signInSuccess}
           <form onSubmit={doSignIn}>
@@ -127,6 +40,7 @@ function SignIn(){
               <br />
             <Button type='submit'>Sign in</Button>
           </form>
+          <p>Don't have an account? <SignUpLink to ="/sign-up">Sign up</SignUpLink></p>
         </DineTogetherPosts>
       </React.Fragment>
     );

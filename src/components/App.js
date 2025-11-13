@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import SignIn from './SignIn';
+import SignUp from './SignUp';
 import PostControl from './PostControl';
 import ProtectedRoute from './ProtectedRoute';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -30,6 +31,7 @@ function App(){
       <Header user={user} />
       <Background />
       <Routes>
+        <Route path='/sign-up' element={<SignUp />} />
         <Route path='/sign-in' element={<SignIn />} />
         <Route path='/' element={<ProtectedRoute element={<PostControl />} />} />
         <Route path='/profile/:userId' element={<ProtectedRoute element={<Profile />} />} />

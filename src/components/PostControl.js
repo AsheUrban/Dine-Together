@@ -5,9 +5,8 @@ import EditPostForm from './EditPostForm';
 import PostDetail from './PostDetail';
 import { useState, useEffect } from 'react';
 import { auth } from '../firebase.js';
-import styled from 'styled-components';
+import { DineTogetherPosts, H1, Button, Center } from '../styles/formStyles.js';
 import { subscribeToPosts, addNewPost, updatePost, deletePost, updatePostElapsedWaitTimes } from '../services/firebaseService.js';
-
 
 function PostControl() {
 
@@ -16,46 +15,6 @@ function PostControl() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [editing, setEditing] = useState(false);
   const [error, setError] = useState(null);
-
-  const Button = styled.button`
-    background-color: #700629;
-    border: 1px solid #FFFBC8;
-    color: #FFFBC8;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: flex;
-    font-size: 16px;
-    border-radius: 10px;
-    cursor: pointer;
-  `;
-
-  const Center = styled.div`
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    width: 1230px;
-    color: #FFFBC8;
-    padding: 25px;
-    margin: auto;
-  `;
-  
-  const DineTogetherPosts = styled.div`
-    background-color: #E7DDEE;
-    width: 300px;
-    margin: auto;
-    margin-top: 50px;
-    padding: 45px;
-    border: 2px solid #fffbc8;
-    text-align: center;
-    border-radius: 10px;
-    `;
-
-  const H1 = styled.h1`
-    font-size: 30px;
-    color: #700629;
-    margin: 0;
-    `;
 
   useEffect(() => {
     function updateElapsedWaitTime() {
