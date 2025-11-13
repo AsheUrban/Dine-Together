@@ -6,20 +6,20 @@
 ---
 
 ## **Project Overview**
-**Capstone Project** — React-based web application using **Firebase** (Auth + Firestore). An alternate branch begins to explore the **Google Places API** approach and remains a WIP.
+**Capstone Project** — React-based web application using **Firebase** (Auth + Firestore) with a modern, scalable service-layer architecture.
 
-Dine-Together is a prototype React app designed with a single goal in mind: to make planning dinners with friends simple.  No more back-and-forth, easily see which restuarants all parties are interested in going to, make a reservation in app, everyone get's notified. Done. While this goal was ambitious and not reached by this project, it contintues to be an idea I have yet to see executed well and hope to return to one day!
+Dine-Together is a prototype React app designed with a single goal in mind: to make planning dinners with friends simple. No more back-and-forth, easily see which restaurants all parties are interested in going to, make a reservation in app, everyone gets notified. Done. While this goal was ambitious and not reached by this project, it continues to be an idea I have yet to see executed well and hope to return to one day!
 
-The main branch focuses on auth-gated UI and a real-time post/queue experience backed by Firebase.
+The main branch features auth-gated UI, username profiles, protected routes, and a real-time post/queue experience backed by Firebase. The codebase has been refactored with a clean service-layer architecture to support future API integrations (Google Places API).
 
 ---
 
 ## **Technologies Used**
 
-| Core | Frontend | APIs / BaaS | Tooling |
+| Core | Frontend | APIs / BaaS | Architecture |
 |------|----------|-------------|---------|
-| JavaScript, JSX | React | **Firebase** (Auth, Firestore) | npm, Webpack, Babel |
-| CSS | Styled Components | **Google Places API** *(AltApproach branch)* | Markdown |
+| JavaScript, JSX | React 18 | **Firebase** (Auth, Firestore) | Service Layer Pattern |
+| CSS | Styled Components | **Google Places API** *(In Progress)* | Centralized Styling |
 
 ---
 
@@ -27,9 +27,15 @@ The main branch focuses on auth-gated UI and a real-time post/queue experience b
 The MVP goal was a React application with:
 - User authentication and profile management
 - A wishlist/queue of places to eat
-- Browser-based API integration (OpenTable or Google Places)
+- Browser-based API integration (Google Places)
 
-Due to browser/API limitations, the Places integration moved to an alternate branch. The **main** branch demonstrates modern React structure with Firebase authentication and a real-time UI pattern.
+**Current Status:** The codebase has been significantly refactored with a clean service-layer architecture. The **main** branch now features:
+- Protected routes with centralized authentication
+- Username-based user profiles with Firestore integration
+- Separate sign-up and sign-in pages
+- Reusable styled components in a centralized styles directory
+- Firebase service layer for database operations
+- Ready for Google Places API integration
 
 ---
 
@@ -51,18 +57,17 @@ Due to browser/API limitations, the Places integration moved to an alternate bra
 
 ---
 
-## **Challenges Encountered**
-- Google places API doesn't have an endpoint for use in the browser.
-- Google API documentation is difficult to understand and navigate.
-- Could not address access-control-allow-orgin header required error. See AltApproach branch.
-- CORs extention would allow me to "access" the API but then blocked firebase -- Google wants CORs enabled!
-- By time I discovered the React Google Places API, I was out of time for this project.
+## **Challenges Encountered & Solutions**
+- **CORS Limitations:** Google Places API has browser-based CORS restrictions. Solution: Using `@react-google-maps/api` library which handles this properly.
+- **Architecture Scalability:** Original monolithic component structure made it difficult to add new features cleanly. Solution: Refactored to service-layer architecture with reusable styled components.
+- **Code Duplication:** Styled components were repeated across multiple files. Solution: Centralized all styles in `src/styles/formStyles.js`.
+- **Authentication Flow:** Sign up and sign in were on the same page causing UX confusion. Solution: Separated into distinct routes with proper navigation.
 
 ---
 
 ## **Known Bugs**
 - No exception handling for submitting empty form fields.
-- Google Places integration is **not** wired on the main branch (see AltApproach).
+- Google Places integration is **in progress** (ready for development).
 
 ---
 
@@ -108,21 +113,41 @@ Due to browser/API limitations, the Places integration moved to an alternate bra
 
 ---
 
-## **AltApproach Branch (Google Places API)**
-This branch attempts integration with the **Google Places API**.
+## **Project Structure**
 
-```bash
-git checkout AltApproach
+```
+src/
+├── components/
+│   ├── App.js                 (Main app with routing & auth state)
+│   ├── PostControl.js         (Container for post management)
+│   ├── SignIn.js              (Sign in page)
+│   ├── SignUp.js              (Sign up page)
+│   ├── Header.js              (Navigation header with user info)
+│   ├── Profile.js             (User profile page)
+│   ├── ProtectedRoute.js      (Auth-gated route wrapper)
+│   ├── PostList.js            (Display all posts)
+│   ├── NewPostForm.js         (Create new post)
+│   └── EditPostForm.js        (Edit existing post)
+├── services/
+│   ├── firebaseService.js     (Firebase CRUD operations)
+│   └── placesService.js       (Google Places API - ready for implementation)
+├── styles/
+│   └── formStyles.js          (Centralized styled components)
+└── firebase.js                (Firebase configuration)
 ```
 
-1. Obtain a **Google API Key**.  
-2. Create `.env.local` and add your key:  
+---
 
-   ```bash
-   REACT_APP_GOOGLE_PLACES_API_KEY=YOUR_KEY
-   ```
-3. Restart the development server after adding environment variables.
-4. Keep `.env.local` out of source control.
+## **Next Steps**
+
+The codebase is ready for Google Places API integration:
+
+1. Install `@react-google-maps/api` package
+2. Implement `placesService.js` with restaurant search functionality
+3. Create `restaurantDataService.js` as an abstraction layer
+4. Integrate search into `NewPostForm.js`
+5. Add restaurant autocomplete and details
+
 ---
 
 ## **License**
