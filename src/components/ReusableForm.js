@@ -47,16 +47,16 @@ function ReusableForm(props) {
         <form onSubmit={props.formSubmissionHandler}>
           <Input
             type='text'
-            name='names'
+            name='restaurantName'
             placeholder='Restaurant Name' />
             <br />
           <Input
             type='text'
-            name='location'
+            name='restaurantAddress'
             placeholder='Restaurant Location' />
             <br />
           <TextArea
-            name='issue'
+            name='reservationNotes'
             placeholder='Date of reservation and brief description.' />
             <br />
           <Button type='submit'>{props.buttonText}</Button>

@@ -20,17 +20,10 @@ function PostDetail(props){
   font-size: 30px;
   color: #700629;
   `
-
-  const H2 = styled.h2`
-  font-size: 26px;
-  color: #700629;
-  `
-
   const H3 = styled.h3`
   font-size: 22px;
   color: #FFFBC8;
 `;
-
 const Button = styled.button`
   background-color: #700629;
   border: 2px solid #FFFBC8;
@@ -50,9 +43,9 @@ const Button = styled.button`
         <DineTogetherPosts>
         <H1>Restaurant Details</H1>
         <hr />
-        <H1>{post.names}</H1>
-        <H3>{post.location}</H3>
-        <p><em>{post.issue}</em></p>
+        <H1>{post.restaurantName}</H1>
+        <H3>{post.restaurantAddress}</H3>
+        <p><em>{post.reservationNotes}</em></p>
         <Button onClick={onClickingEdit}>Update Restaurant</Button>
         <Button onClick={()=> onClickingDelete(post.id)}>Delete Restaurant</Button>
         </DineTogetherPosts>

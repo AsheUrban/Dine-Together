@@ -34,6 +34,7 @@ function PostControl() {
 
   useEffect(() => { 
     const unSubscribe = subscribeToPosts(
+      auth.currentUser.uid,
       (posts) => setMainPostList(posts),
       (errorMessage) => setError(errorMessage)
     );
@@ -93,7 +94,8 @@ function PostControl() {
     } else if (editing) {      
       currentlyVisibleState = <EditPostForm 
       post = {selectedPost} 
-      onEditPost = {handleEditingPostInList} />
+      onEditPost = {handleEditingPostInList}
+      userId={auth.currentUser.uid} />
       buttonText = 'Return to Post List';
     } else if (selectedPost != null) {
       currentlyVisibleState = <PostDetail 
@@ -103,7 +105,8 @@ function PostControl() {
       buttonText = 'Return to Post List';
     } else if (formVisibleOnPage) {
       currentlyVisibleState = <NewPostForm 
-      onNewPostCreation={handleAddingNewPostToList}/>;
+      onNewPostCreation={handleAddingNewPostToList}
+      userId={auth.currentUser.uid} />
       buttonText = 'Return to Post List'; 
     } else {
       currentlyVisibleState = <PostList 

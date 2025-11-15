@@ -1,10 +1,11 @@
-import { collection, addDoc, doc, updateDoc, deleteDoc, query, orderBy, onSnapshot } from 'firebase/firestore';
+import { collection, addDoc, doc, updateDoc, deleteDoc, query, orderBy, where, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase.js';
 import { formatDistanceToNow } from 'date-fns';
 
-export const subscribeToPosts = (onPostUpdate, onError) => {
+export const subscribeToPosts = (userId, onPostUpdate, onError) => {
     const queryByTimestamp = query(
         collection(db, "posts"),
+        where('userId', '==', userId),
         orderBy('timeOpen')
     );
 
@@ -16,9 +17,10 @@ export const subscribeToPosts = (onPostUpdate, onError) => {
                 const timeOpen = doc.get('timeOpen', {serverTimestamps: "estimate"}).toDate();
                 const jsDate = new Date(timeOpen);
                 posts.push({
-                    names: doc.data().names,
-                    location: doc.data().location,
-                    issue: doc.data().issue,
+                    restaurantName: doc.data().restaurantName,
+                    restaurantAddress: doc.data().restaurantAddress,
+                    reservationNotes: doc.data().reservationNotes,
+                    userId: doc.data().userId,
                     timeOpen: jsDate,
                     formattedWaitTime: formatDistanceToNow(jsDate),
                     id: doc.id

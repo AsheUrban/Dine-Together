@@ -23,9 +23,9 @@ function Post(props){
       <H1>Restaurant List</H1>
       <hr />
       <div onClick = {() => props.whenPostClicked(props.id)}>
-        <H2>{props.names}</H2>
-        <H3>{props.location}</H3>
-        <p><em>{props.issue}</em></p>
+        <H2>{props.restaurantName}</H2>
+        <H3>{props.restaurantAddress}</H3>
+        <p><em>{props.reservationNotes}</em></p>
         <p><em>{props.formattedWaitTime}</em></p>
       </div>
     </React.Fragment>
@@ -33,9 +33,9 @@ function Post(props){
 }
 
 Post.propTypes = {
-  names: PropTypes.string,
-  location: PropTypes.string,
-  issue: PropTypes.string,
+  restaurantName: PropTypes.string,
+  restaurantAddress: PropTypes.string,
+  reservationNotes: PropTypes.string,
   formattedWaitTime: PropTypes.string,
   id: PropTypes.string,
   whenPostClicked: PropTypes.func

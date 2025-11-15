@@ -5,16 +5,28 @@ import { useNavigate } from 'react-router-dom';
 import { doc, setDoc } from "firebase/firestore";
 import { db } from './../firebase.js';
 import { DineTogetherPosts, Input, H2, Button, SignUpLink } from '../styles/formStyles.js';
+import { validateSignUp } from '../utils/validators';
 
   function SignUp(){  
     const navigate = useNavigate();
     const [signUpSuccess, setSignUpSuccess] = useState(null);
+    const [errors, setErrors] = useState({});
   
     function doSignUp(event) {
       event.preventDefault();
       const username = event.target.username.value;
       const email = event.target.email.value;
       const password = event.target.password.value;
+      const passwordConfirm = event.target.passwordConfirm.value;
+
+      const validationErrors = validateSignUp(username, email, password, passwordConfirm);
+
+      if(validationErrors) {
+        setErrors(validationErrors);
+        return;
+      }
+
+      setErrors({});
   
       createUserWithEmailAndPassword(auth, email, password)
         .then(async (userCredential) => {
@@ -47,18 +59,27 @@ import { DineTogetherPosts, Input, H2, Button, SignUpLink } from '../styles/form
                   name='username'
                   placeholder='Username'
                   required />
-                  <br />
+                {errors.username && <p style={{color: 'red', fontSize: '12px'}}>{errors.username}</p>}
+                <br />
                 <Input
                   type='text'
                   name='email'
                   placeholder='email'
                   required />
-                  <br />
+                {errors.email && <p style={{color: 'red', fontSize: '12px'}}>{errors.email}</p>}
+                <br />
                 <Input
                   type='password'
                   name='password'
                   placeholder='Password' />
-                  <br />
+                {errors.password && <p style={{color: 'red', fontSize: '12px'}}>{errors.password}</p>}
+                <br />
+                <Input
+                  type='password'
+                  name='passwordConfirm'
+                  placeholder='Confirm Password' />
+                {errors.passwordConfirm && <p style={{color: 'red', fontSize: '12px'}}>{errors.passwordConfirm}</p>}
+                <br />
                 <Button type='submit'>Sign up</Button>
               </form>
               <p>Already have an account? <SignUpLink to ="/sign-in">Sign in</SignUpLink></p>

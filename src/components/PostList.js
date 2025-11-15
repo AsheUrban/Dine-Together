@@ -28,12 +28,12 @@ function PostList(props){
         <DineTogetherPosts>
           <br/ >
           {props.postList.map((post) =>
-            <Post 
+            <Post
               whenPostClicked={props.onPostSelection}
-              names={post.names}
-              location={post.location}
+              restaurantName={post.restaurantName}
+              restaurantAddress={post.restaurantAddress}
               formattedWaitTime={post.formattedWaitTime}
-              issue={post.issue}
+              reservationNotes={post.reservationNotes}
               id={post.id}
               key={post.id}/>
           )}

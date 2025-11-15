@@ -3,15 +3,27 @@ import { auth } from './../firebase.js';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { DineTogetherPosts, Input, H2, Button, SignUpLink } from '../styles/formStyles.js';
+import { validateSignIn } from '../utils/validators';
 
 function SignIn(){  
   const navigate = useNavigate();
   const [signInSuccess, setSignInSuccess] = useState(null);
+  const [errors, setErrors] = useState({});
 
   function doSignIn(event) {
     event.preventDefault();
-    const email = event.target.signinEmail.value;
-    const password = event.target.signinPassword.value;
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+
+    const validationErrors = validateSignIn(email, password);
+
+    if(validationErrors) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setErrors({});
+
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setSignInSuccess(`You've successfully signed in as ${userCredential.user.displayName}!`)
@@ -30,14 +42,16 @@ function SignIn(){
           <form onSubmit={doSignIn}>
             <Input
               type='text'
-              name='signinEmail'
+              name='email'
               placeholder='email' />
-              <br />
+            {errors.email && <p style={{color: 'red', fontSize: '12px'}}>{errors.email}</p>}
+            <br />
             <Input
               type='password'
-              name='signinPassword'
+              name='password'
               placeholder='Password' />
-              <br />
+            {errors.password && <p style={{color: 'red', fontSize: '12px'}}>{errors.password}</p>}
+            <br />
             <Button type='submit'>Sign in</Button>
           </form>
           <p>Don't have an account? <SignUpLink to ="/sign-up">Sign up</SignUpLink></p>
