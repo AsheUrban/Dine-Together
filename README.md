@@ -66,8 +66,10 @@ The MVP goal was a React application with:
 ---
 
 ## **Known Bugs**
-- No exception handling for submitting empty form fields.
 - Google Places integration is **in progress** (ready for development).
+
+**Recently Fixed:**
+- ✅ Form validation and error handling — Sign up, sign in, and post creation now validate input with user-friendly error messages.
 
 ---
 
