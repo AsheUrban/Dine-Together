@@ -19,9 +19,13 @@ import { Link } from 'react-router-dom';
     margin-bottom: 10px;
   `;
 
-  export const H2 = styled.h2`
-    font-size: 22px;
-    color: #700629;
+  export const TextArea = styled.textarea`
+    border-radius: 5px;
+    border: 1px solid black;
+    margin: auto;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
   `;
 
   export const Button = styled.button`
@@ -36,6 +40,17 @@ import { Link } from 'react-router-dom';
     font-size: 16px;
     border-radius: 10px;
     cursor: pointer;
+  `;
+
+  export const H1 = styled.h1`
+    font-size: 30px;
+    color: #700629;
+    margin: 0;
+  `;  
+
+  export const H2 = styled.h2`
+    font-size: 22px;
+    color: #700629;
   `;
 
   export const SignUpLink = styled(Link)`
@@ -56,8 +71,3 @@ import { Link } from 'react-router-dom';
     margin: auto;
   `;
 
-  export const H1 = styled.h1`
-    font-size: 30px;
-    color: #700629;
-    margin: 0;
-`;

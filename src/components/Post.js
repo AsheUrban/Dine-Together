@@ -1,30 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import { PostName, PostAddress } from '../styles';
 
 function Post(props){
-
-  const H1 = styled.h1`
-  font-size: 30px;
-  color: #700629;
-  `
-  const H2 = styled.h2`
-  font-size: 26px;
-  color: #700629;
-  `
-  const H3 = styled.h3`
-  font-size: 22px;
-  color: #FFFBC8;
-`;
-
   return (
     
     <React.Fragment>
-      <H1>Restaurant List</H1>
-      <hr />
       <div onClick = {() => props.whenPostClicked(props.id)}>
-        <H2>{props.restaurantName}</H2>
-        <H3>{props.restaurantAddress}</H3>
+        <PostName>{props.restaurantName}</PostName>
+        <PostAddress>{props.restaurantAddress}</PostAddress>
         <p><em>{props.reservationNotes}</em></p>
         <p><em>{props.formattedWaitTime}</em></p>
       </div>

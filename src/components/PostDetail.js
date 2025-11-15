@@ -1,54 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import { PostContainer, PostListTitle, PostAddress, PostActionButton } from '../styles';
 
 function PostDetail(props){
   const { post, onClickingDelete, onClickingEdit } = props; 
 
-  const DineTogetherPosts = styled.div`
-  background-color: #E7DDEE;
-  width: 300px;
-  margin: auto;
-  margin-top: 50px;
-  padding: 45px;
-  border: 2px solid #fffbc8;
-  text-align: center;
-  border-radius: 10px;
-  `;
   
-  const H1 = styled.h1`
-  font-size: 30px;
-  color: #700629;
-  `
-  const H3 = styled.h3`
-  font-size: 22px;
-  color: #FFFBC8;
-`;
-const Button = styled.button`
-  background-color: #700629;
-  border: 2px solid #FFFBC8;
-  margin: 10px;
-  color: #FFFBC8;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline;
-  font-size: 16px;
-  border-radius: 10px;
-  cursor: pointer;
-`;
 
   return (
     <React.Fragment>
-        <DineTogetherPosts>
-        <H1>Restaurant Details</H1>
+        <PostContainer>
+        <PostListTitle>Restaurant Details</PostListTitle>
         <hr />
-        <H1>{post.restaurantName}</H1>
-        <H3>{post.restaurantAddress}</H3>
+        <PostListTitle>{post.restaurantName}</PostListTitle>
+        <PostAddress>{post.restaurantAddress}</PostAddress>
         <p><em>{post.reservationNotes}</em></p>
-        <Button onClick={onClickingEdit}>Update Restaurant</Button>
-        <Button onClick={()=> onClickingDelete(post.id)}>Delete Restaurant</Button>
-        </DineTogetherPosts>
+        <PostActionButton onClick={onClickingEdit}>Update Restaurant</PostActionButton>
+        <PostActionButton onClick={()=> onClickingDelete(post.id)}>Delete Restaurant</PostActionButton>
+        </PostContainer>
     </React.Fragment>
   );
 }

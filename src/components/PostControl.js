@@ -5,7 +5,7 @@ import EditPostForm from './EditPostForm';
 import PostDetail from './PostDetail';
 import { useState, useEffect } from 'react';
 import { auth } from '../firebase.js';
-import { DineTogetherPosts, H1, Button, Center } from '../styles/formStyles.js';
+import { DineTogetherPosts, H1, Button, Center } from '../styles';
 import { subscribeToPosts, addNewPost, updatePost, deletePost, updatePostElapsedWaitTimes } from '../services/firebaseService.js';
 
 function PostControl() {

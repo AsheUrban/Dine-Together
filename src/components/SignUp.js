@@ -4,7 +4,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { doc, setDoc } from "firebase/firestore";
 import { db } from './../firebase.js';
-import { DineTogetherPosts, Input, H2, Button, SignUpLink } from '../styles/formStyles.js';
+import { DineTogetherPosts, Input, H2, Button, SignUpLink } from '../styles';
 import { validateSignUp } from '../utils/validators';
 
   function SignUp(){  

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { auth } from './../firebase.js';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
-import { DineTogetherPosts, Input, H2, Button, SignUpLink } from '../styles/formStyles.js';
+import { DineTogetherPosts, Input, H2, Button, SignUpLink } from '../styles';
 import { validateSignIn } from '../utils/validators';
 
 function SignIn(){  
