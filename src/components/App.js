@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
-import PostControl from './PostControl';
+import Feed from './Feed';
+import Explore from './Explore';
 import ProtectedRoute from './ProtectedRoute';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { auth } from '../firebase.js';
@@ -29,12 +30,12 @@ function App(){
   return (
     <Router>
       <Header user={user} />
-      <Background />
       <Routes>
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/sign-in' element={<SignIn />} />
-        <Route path='/' element={<ProtectedRoute element={<PostControl />} />} />
+        <Route path='/' element={<ProtectedRoute element={<Feed />} />} />
         <Route path='/profile/:userId' element={<ProtectedRoute element={<Profile />} />} />
+        <Route path='/search' element={<ProtectedRoute element ={<Explore />} />} />
       </Routes>
       <Footer />
     </Router>

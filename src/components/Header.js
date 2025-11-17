@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from "firebase/auth";
 import { auth } from '../firebase.js';
-import { DineTogetherHeader, H1, HeaderNav, NavLink, SignOutButton } from '../styles';
+import { DineTogetherHeader, HeaderLogo, H1, HeaderNav, NavLink, HeaderProfile, SignOutButton } from '../styles';
 
 function Header({ user }) {
     const navigate = useNavigate();
@@ -19,18 +19,25 @@ function Header({ user }) {
     return (
         <React.Fragment>
             <DineTogetherHeader>
-                <H1>DINE TOGETHER</H1>
+                <HeaderLogo>
+                    <H1>DINE TOGETHER</H1>
+                </HeaderLogo>
+                    
                 <HeaderNav>
-                    <NavLink to="/"> Home </NavLink> &emsp;|&emsp;
-                    {user ? (
+                    <NavLink to="/"> Feed </NavLink> 
+                    <NavLink to="/search">Search Restaurants</NavLink>
+                </HeaderNav>
+
+                <HeaderProfile>
+                  {user ? (
                         <>
-                            <NavLink to={`/profile/${user.uid}`}>{user.displayName}</NavLink>&emsp;|&emsp;
+                            <NavLink to={`/profile/${user.uid}`}>{user.displayName}</NavLink>
                             <SignOutButton onClick={handleSignOut}>Sign Out</SignOutButton>
                         </>
                     ) : (
                         <NavLink to="/sign-in"> Sign In </NavLink>
                     )}
-                </HeaderNav>
+               </HeaderProfile>
             </DineTogetherHeader>
         </React.Fragment>
     );

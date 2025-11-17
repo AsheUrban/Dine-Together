@@ -19,7 +19,9 @@ export {
 
 export {
     DineTogetherHeader,
+    HeaderLogo,
     HeaderNav,
+    HeaderProfile,
     NavLink,
     SignOutButton,
     BackgroundStyles
