@@ -5,27 +5,25 @@ import platedfood from '../img/platedfood.jpg';
 export const DineTogetherHeader = styled.div`
     text-align: center;
     width: 100vw;
-    color: #FFFBC8;
+    color: #F5F1E8;
     padding: 25px;
     margin: auto;
-    background-color: #B16825;
+    background-color: #8B4513;
     box-sizing: border-box;
-`;
-
-export const HeaderTitle = styled.h1`
-    font-size: 59px;
-    margin: 0;
 `;
 
 export const HeaderNav = styled.div`
     display: flex;
     justify-content: center;
     margin-top: 0;
+    font-family: 'Lato', sans-serif;
 `;
 
 export const NavLink = styled(Link)`
-    color: #FFFBC8;
+    color: #F5F1E8;
     text-decoration: none;
+    font-family: 'Lato', sans-serif;
+
     &:hover {
         text-decoration: underline;
     }
@@ -34,9 +32,11 @@ export const NavLink = styled(Link)`
 export const SignOutButton = styled.button`
     background: none;
     border: none;
-    color: #FFFBC8;
+    color: #F5F1E8;
     cursor: pointer;
     font-size: 16px;
+    font-family: 'Lato', sans-serif;
+
     &:hover {
         text-decoration: underline;
     }

@@ -3,25 +3,22 @@ export {
     Input,
     TextArea,
     Button,
+    H1,
     H2,
+    H3,
+    H4,
     SignUpLink,
-    Center,
-    H1
+    Center
 } from './formStyles';
 
 export {
     PostContainer,
-    PostListTitle,
-    PostName,
-    PostAddress,
-    PostDetail,
     PostItem,
     PostActionButton
 } from './postStyles';
 
 export {
     DineTogetherHeader,
-    HeaderTitle,
     HeaderNav,
     NavLink,
     SignOutButton,
