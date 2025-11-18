@@ -7,6 +7,7 @@ export {
     H2,
     H3,
     H4,
+    H5,                    // ← ADDED: New header for accent details
     SignUpLink,
     Center
 } from './formStyles';

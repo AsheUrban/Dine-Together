@@ -9,7 +9,7 @@ function Post(props){
             <PostItem onClick = {() => props.whenPostClicked(props.id)}>
                 <H3>{props.restaurantName}</H3>
                 <H4>{props.restaurantAddress}</H4>
-                <p><em>{props.reservationNotes}</em></p>
+                <p><em>{props.notes}</em></p>
                 <p><em>{props.formattedWaitTime}</em></p>
             </PostItem>
         </React.Fragment>
@@ -19,8 +19,7 @@ function Post(props){
 Post.propTypes = {
     restaurantName: PropTypes.string,
     restaurantAddress: PropTypes.string,
-    reservationNotes: PropTypes.string,
-    formattedWaitTime: PropTypes.string,
+    notes: PropTypes.string,
     id: PropTypes.string,
     whenPostClicked: PropTypes.func
 }

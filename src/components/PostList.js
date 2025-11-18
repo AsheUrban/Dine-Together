@@ -13,8 +13,7 @@ function PostList(props){
                             whenPostClicked={props.onPostSelection}
                             restaurantName={post.restaurantName}
                             restaurantAddress={post.restaurantAddress}
-                            formattedWaitTime={post.formattedWaitTime}
-                            reservationNotes={post.reservationNotes}
+                            notes={post.notes}
                             id={post.id}
                             key={post.id}/>
                     )

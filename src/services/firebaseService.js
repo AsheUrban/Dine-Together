@@ -19,7 +19,7 @@ export const subscribeToPosts = (userId, onPostUpdate, onError) => {
                 posts.push({
                     restaurantName: doc.data().restaurantName,
                     restaurantAddress: doc.data().restaurantAddress,
-                    reservationNotes: doc.data().reservationNotes,
+                    notes: doc.data().notes,
                     userId: doc.data().userId,
                     timeOpen: jsDate,
                     formattedWaitTime: formatDistanceToNow(jsDate),
@@ -57,7 +57,7 @@ export const subscribeToAllPosts = (onPostUpdate, onError) => {
                 posts.push({
                     restaurantName: doc.data().restaurantName,
                     restaurantAddress: doc.data().restaurantAddress,
-                    reservationNotes: doc.data().reservationNotes,
+                    notes: doc.data().notes,
                     userId: doc.data().userId,
                     timeOpen: jsDate,
                     formattedWaitTime: formatDistanceToNow(jsDate),
