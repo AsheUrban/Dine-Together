@@ -83,6 +83,7 @@ export const ProfilePageContainer = styled.div`
 `;
 
 export const ProfileInfoSection = styled.div`
+    margin-top: 20px;
     flex: 0 0 300px;
     background-color: #D98560;
     padding: 40px;
@@ -91,6 +92,30 @@ export const ProfileInfoSection = styled.div`
 `;
 
 export const ProfileRestaurantSection = styled.div`
+    margin-top: 20px;
     flex: 1;
     min-width: 0;
 `;
+
+  export const ProfileRestaurantGrid = styled.div`
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      width: 100%;
+
+      @media (max-width: 1024px) {
+          grid-template-columns: repeat(2, 1fr);
+      }
+
+      @media (max-width: 640px) {
+          grid-template-columns: 1fr;
+      }
+  `;
+
+  export const CardWrapper = styled.div`
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      height: fit-content;
+      width: 100%;
+  `; 

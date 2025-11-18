@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { PostContainer, H2, H4, PostActionButton } from '../styles';
+import { PostContainer, H2Centered, H4, PostActionButton } from '../styles';
 
 function PostDetail(props){
     const { post, onClickingDelete, onClickingEdit } = props;
@@ -8,9 +8,7 @@ function PostDetail(props){
     return (
         <React.Fragment>
             <PostContainer>
-                <H2>Restaurant Details</H2>
-                <hr />
-                <H2>{post.restaurantName}</H2>
+                <H2Centered>{post.restaurantName}</H2Centered>
                 <H4>{post.restaurantAddress}</H4>
                 <p><em>{post.reservationNotes}</em></p>
                 <PostActionButton onClick={onClickingEdit}>Update Restaurant</PostActionButton>

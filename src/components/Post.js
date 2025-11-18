@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { formatDistanceToNow } from 'date-fns';
-import { H3Centered, H4, PostItem, FeedCardContent, FeedCardImage, FeedCardDetails, FeedCardPostedDate } from '../styles';
+import { H3Centered, H4, PostItem, FeedCardContent, FeedCardImage, FeedCardDetails, FeedCardPostedDate, CardWrapper } from '../styles';
 
 function Post(props){
     return (
-        <React.Fragment>
+        <CardWrapper>
             <PostItem onClick = {() => props.whenPostClicked(props.id)}>
                 <H3Centered>{props.restaurantName}</H3Centered>
                 <H4>{props.restaurantAddress}</H4>
@@ -18,7 +18,7 @@ function Post(props){
                 </FeedCardContent>
             </PostItem>
             <FeedCardPostedDate>{formatDistanceToNow(props.timeOpen, { addSuffix: true })}</FeedCardPostedDate>
-        </React.Fragment>
+        </CardWrapper>
     );
 }
 

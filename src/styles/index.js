@@ -35,5 +35,7 @@ export {
     FeedContainer,
     ProfilePageContainer,
     ProfileInfoSection,
-    ProfileRestaurantSection
+    ProfileRestaurantSection,
+    ProfileRestaurantGrid,
+    CardWrapper
 } from './layoutStyles';
