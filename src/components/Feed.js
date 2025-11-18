@@ -5,7 +5,7 @@ import EditPostForm from './EditPostForm';
 import PostDetail from './PostDetail';
 import { useState, useEffect } from 'react';
 import { auth } from '../firebase.js';
-import { DineTogetherPosts, H1, Button, Center } from '../styles';
+import { FormContainer, H1, Button, Center } from '../styles';
 import { subscribeToAllPosts, addNewPost, updatePost, deletePost, updatePostElapsedWaitTimes } from '../services/firebaseService.js';
 
 function Feed () {
@@ -23,7 +23,7 @@ function Feed () {
     }
 
     const waitTimeUpdateTimer = setInterval(() =>
-      updateElapsedWaitTime(), 
+      updateElapsedWaitTime(),
       60000
     );
 
@@ -32,14 +32,14 @@ function Feed () {
     }
   }, [mainPostList])
 
-  useEffect(() => { 
+  useEffect(() => {
     const unSubscribe = subscribeToAllPosts(
       (posts) => setMainPostList(posts),
       (errorMessage) => setError(errorMessage)
     );
     return () => unSubscribe();
   }, []);
-  
+
   const handleClick = () => {
     if (selectedPost != null) {
       setFormVisibleOnPage(false);
@@ -78,46 +78,46 @@ function Feed () {
   if (auth.currentUser == null) {
     return (
       <React.Fragment>
-        <DineTogetherPosts>
+        <FormContainer>
            <H1>You must be signed in to access the feed.</H1>
-        </DineTogetherPosts>
+        </FormContainer>
       </React.Fragment>
     )
   } else if (auth.currentUser != null) {
 
     let currentlyVisibleState = null;
-    let buttonText = null; 
+    let buttonText = null;
 
     if (error) {
       currentlyVisibleState = <p>There was an error: {error}</p>
-    } else if (editing) {      
-      currentlyVisibleState = <EditPostForm 
-      post = {selectedPost} 
+    } else if (editing) {
+      currentlyVisibleState = <EditPostForm
+      post = {selectedPost}
       onEditPost = {handleEditingPostInList}
       userId={auth.currentUser.uid} />
       buttonText = 'Return to Post List';
     } else if (selectedPost != null) {
-      currentlyVisibleState = <PostDetail 
-      post={selectedPost} 
+      currentlyVisibleState = <PostDetail
+      post={selectedPost}
       onClickingDelete={handleDeletingPost}
       onClickingEdit = {handleEditClick} />
       buttonText = 'Return to Post List';
     } else if (formVisibleOnPage) {
-      currentlyVisibleState = <NewPostForm 
+      currentlyVisibleState = <NewPostForm
       onNewPostCreation={handleAddingNewPostToList}
       userId={auth.currentUser.uid} />
-      buttonText = 'Return to Post List'; 
+      buttonText = 'Return to Post List';
     } else {
-      currentlyVisibleState = <PostList 
-      onPostSelection={handleChangingSelectedPost} 
+      currentlyVisibleState = <PostList
+      onPostSelection={handleChangingSelectedPost}
       postList={mainPostList} />;
-      buttonText = 'Add Restaurant'; 
+      buttonText = 'Add Restaurant';
     }
     return (
       <>
         {currentlyVisibleState}
         <Center>
-          {error ? null : <Button className='App' onClick={handleClick}>{buttonText}</Button>} 
+          {error ? null : <Button className='App' onClick={handleClick}>{buttonText}</Button>}
         </Center>
       </>
     );

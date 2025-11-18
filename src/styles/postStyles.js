@@ -23,19 +23,22 @@ export const PostItem = styled.div`
     margin-top: 20px;
     cursor: pointer;
     transition: opacity 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 
     &:hover {
         opacity: 0.8;
     }
 `;
 
-export const FeedCardContent = styled.div`
+export const PostContent = styled.div`
     display: flex;
     gap: 15px;
     align-items: flex-start;
 `;
 
-export const FeedCardImage = styled.div`
+export const PostImage = styled.div`
     width: 100px;
     height: 100px;
     min-width: 100px;
@@ -44,14 +47,14 @@ export const FeedCardImage = styled.div`
     flex-shrink: 0;
 `;
 
-export const FeedCardDetails = styled.div`
+export const PostDetails = styled.div`
     display: flex;
     flex-direction: column;
     gap: 8px;
     flex: 1;
 `;
 
-export const FeedCardPostedDate = styled.p`
+export const PostedDate = styled.p`
     font-size: 14px;
     color: #8B4513;
     margin-top: 0px;
@@ -60,6 +63,21 @@ export const FeedCardPostedDate = styled.p`
     font-family: 'Lato', sans-serif;
     font-style: italic;
     text-align: left;
+`;
+
+export const PostGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+
+    @media (max-width: 1024px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 640px) {
+        grid-template-columns: 1fr;
+    }
 `;
 
 export const PostActionButton = styled.button`

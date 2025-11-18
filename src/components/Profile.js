@@ -3,18 +3,17 @@ import { auth } from './../firebase.js';
 import {doc, getDoc } from 'firebase/firestore';
 import { db } from './../firebase.js';
 import PostDetail from './PostDetail';
-import { 
-    H2Centered, 
-    ProfilePageContainer,
-    ProfileInfoSection,
-    ProfileRestaurantSection,
-    ProfileRestaurantGrid,
-    CardWrapper,
+import {
+    H2Centered,
+    PageContainer,
+    InfoSection,
+    RestaurantSection,
+    PostGrid,
     PostItem,
-    FeedCardContent,
-    FeedCardImage,
-    FeedCardDetails,
-    FeedCardPostedDate,
+    PostContent,
+    PostImage,
+    PostDetails,
+    PostedDate,
     H3Centered
 } from '../styles';
 import { subscribeToPosts, deletePost } from '../services/firebaseService.js';
@@ -68,7 +67,7 @@ function Profile() {
         const selection = mainPostList.filter(post => post.id === id)[0];
         setSelectedPost(selection);
     }
-    
+
     if(loading) {
         return <div>Loading profile...</div>;
     }
@@ -82,43 +81,40 @@ function Profile() {
           <PostDetail
             post={selectedPost}
             onClickingDelete={handleDeletingPost}
-            onClickingEdit={handleEditClick} 
+            onClickingEdit={handleEditClick}
         />
      );
     }
 
     return (
-        <ProfilePageContainer>
-            <ProfileInfoSection>
+        <PageContainer>
+            <InfoSection>
                 <H2Centered>{username}</H2Centered>
-            </ProfileInfoSection>
-            <ProfileRestaurantSection>
+            </InfoSection>
+            <RestaurantSection>
                 <H2Centered>My Restaurants</H2Centered>
                 {mainPostList.length > 0 ? (
-                  <ProfileRestaurantGrid>
+                  <PostGrid>
                     {mainPostList.map((post) => (
-                      <CardWrapper key={post.id}>
-                        <PostItem onClick={() => handleChangingSelectedPost(post.id)}>
+                      <PostItem key={post.id} onClick={() => handleChangingSelectedPost(post.id)}>
                           <H3Centered>{post.restaurantName}</H3Centered>
-                          <FeedCardContent>
-                            <FeedCardImage />
-                            <FeedCardDetails>
+                          <PostContent>
+                            <PostImage />
+                            <PostDetails>
                               <p>{post.priceLevel ? '$'.repeat(post.priceLevel) : 'Price TBD'}</p>
                               <p>{post.rating ? `⭐ ${post.rating} (${post.userRatingsTotal})` : 'Rating TBD'}</p>
-                            </FeedCardDetails>
-                          </FeedCardContent>
-                        </PostItem>
-                        <FeedCardPostedDate>{formatDistanceToNow(post.timeOpen, {addSuffix: true})}</FeedCardPostedDate>
-                      </CardWrapper>
+                            </PostDetails>
+                          </PostContent>
+                        <PostedDate>{formatDistanceToNow(post.timeOpen, {addSuffix: true})}</PostedDate>
+                      </PostItem>
                     ))}
-                  </ProfileRestaurantGrid>
+                  </PostGrid>
                 ) : (
                   <p>No No restaurants have been added to the queue yet. Add a restaurant now.</p>
                 )}
-            </ProfileRestaurantSection>
-        </ProfilePageContainer>
+            </RestaurantSection>
+        </PageContainer>
     );
 }
-    
+
 export default Profile;
-    

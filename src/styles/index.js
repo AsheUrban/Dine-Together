@@ -1,8 +1,10 @@
 export {
-    DineTogetherPosts,
+    FormContainer,
     Input,
-    TextArea,
-    Button,
+    TextArea
+} from './formStyles';
+
+export {
     H1,
     H2,
     H2Centered,
@@ -10,32 +12,35 @@ export {
     H3Centered,
     H4,
     H5,
-    SignUpLink,
-    Center
-} from './formStyles';
-
-export {
-    PostContainer,
-    PostItem,
-    FeedCardContent,
-    FeedCardImage,
-    FeedCardDetails,
-    FeedCardPostedDate,
-    PostActionButton
-} from './postStyles';
-
-export {
-    DineTogetherHeader,
+    HeaderContainer,
     HeaderLogo,
     HeaderNav,
     HeaderProfile,
     NavLink,
     SignOutButton,
+    Button,
     BackgroundStyles,
-    FeedContainer,
-    ProfilePageContainer,
-    ProfileInfoSection,
-    ProfileRestaurantSection,
-    ProfileRestaurantGrid,
-    CardWrapper
-} from './layoutStyles';
+    SignUpLink,
+    Center
+} from './globalStyles';
+
+export {
+    PageContainer,
+    InfoSection,
+    RestaurantSection
+} from './profileStyles';
+
+export {
+    PostContainer,
+    PostItem,
+    PostContent,
+    PostImage,
+    PostDetails,
+    PostedDate,
+    PostGrid,
+    PostActionButton
+} from './postStyles';
+
+export {
+    FeedContainer
+} from './FeedStyles';

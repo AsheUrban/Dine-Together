@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DineTogetherPosts, H2, Input } from '../styles';
+import { FormContainer, H2, Input } from '../styles';
 
 function Explore() {
     const [searchQuery, setSearchQuery] = useState('');
@@ -9,7 +9,7 @@ function Explore() {
     };
     return (
         <React.Fragment>
-            <DineTogetherPosts>
+            <FormContainer>
                 <H2>Search restaurants</H2>
                 <Input
                     type='text'
@@ -18,7 +18,7 @@ function Explore() {
                     onChange={handleSearchChange}
                 />
                 <p>Coming Soon - Google Places API Integration!</p>
-            </DineTogetherPosts>
+            </FormContainer>
         </React.Fragment>
     );
 }

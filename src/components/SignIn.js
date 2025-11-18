@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { auth } from './../firebase.js';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
-import { DineTogetherPosts, Input, H2, Button, SignUpLink } from '../styles';
+import { FormContainer, Input, H2, Button, SignUpLink } from '../styles';
 import { validateSignIn } from '../utils/validators';
 
-function SignIn(){  
+function SignIn(){
   const navigate = useNavigate();
   const [signInSuccess, setSignInSuccess] = useState(null);
   const [errors, setErrors] = useState({});
@@ -36,7 +36,7 @@ function SignIn(){
 
     return (
       <React.Fragment>
-        <DineTogetherPosts>
+        <FormContainer>
           <H2>Sign In</H2>
           {signInSuccess}
           <form onSubmit={doSignIn}>
@@ -55,7 +55,7 @@ function SignIn(){
             <Button type='submit'>Sign in</Button>
           </form>
           <p>Don't have an account? <SignUpLink to ="/sign-up">Sign up</SignUpLink></p>
-        </DineTogetherPosts>
+        </FormContainer>
       </React.Fragment>
     );
   }
