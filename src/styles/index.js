@@ -32,6 +32,7 @@ export {
 
 export {
     PostContainer,
+    PostWrapper,
     PostItem,
     PostContent,
     PostImage,
@@ -43,4 +44,4 @@ export {
 
 export {
     FeedContainer
-} from './FeedStyles';
+} from './feedStyles';

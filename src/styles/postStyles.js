@@ -12,6 +12,14 @@ export const PostContainer = styled.div`
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
+export const PostWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    height: fit-content;
+    width: 100%;
+`;
+
 export const PostItem = styled.div`
     background-color: #F5F1E8;
     border: 2px solid #D98560;
@@ -23,9 +31,6 @@ export const PostItem = styled.div`
     margin-top: 20px;
     cursor: pointer;
     transition: opacity 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
 
     &:hover {
         opacity: 0.8;

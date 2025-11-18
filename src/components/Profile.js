@@ -9,6 +9,7 @@ import {
     InfoSection,
     RestaurantSection,
     PostGrid,
+    PostWrapper,
     PostItem,
     PostContent,
     PostImage,
@@ -96,7 +97,8 @@ function Profile() {
                 {mainPostList.length > 0 ? (
                   <PostGrid>
                     {mainPostList.map((post) => (
-                      <PostItem key={post.id} onClick={() => handleChangingSelectedPost(post.id)}>
+                      <PostWrapper key={post.id}>
+                        <PostItem onClick={() => handleChangingSelectedPost(post.id)}>
                           <H3Centered>{post.restaurantName}</H3Centered>
                           <PostContent>
                             <PostImage />
@@ -105,8 +107,9 @@ function Profile() {
                               <p>{post.rating ? `⭐ ${post.rating} (${post.userRatingsTotal})` : 'Rating TBD'}</p>
                             </PostDetails>
                           </PostContent>
+                        </PostItem>
                         <PostedDate>{formatDistanceToNow(post.timeOpen, {addSuffix: true})}</PostedDate>
-                      </PostItem>
+                      </PostWrapper>
                     ))}
                   </PostGrid>
                 ) : (
