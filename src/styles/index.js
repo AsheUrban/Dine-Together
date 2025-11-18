@@ -24,5 +24,8 @@ export {
     HeaderProfile,
     NavLink,
     SignOutButton,
-    BackgroundStyles
+    BackgroundStyles,
+    ProfilePageContainer,
+    ProfileInfoSection,
+    ProfileRestaurantSection
 } from './layoutStyles';

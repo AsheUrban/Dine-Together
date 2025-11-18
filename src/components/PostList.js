@@ -1,14 +1,12 @@
 import React from 'react';
 import Post from './Post';
 import PropTypes from 'prop-types';
-import { DineTogetherPosts, H1, H2 } from '../styles';
+import { DineTogetherPosts, H1 } from '../styles';
 
 function PostList(props){
     return (
         <React.Fragment>
             <DineTogetherPosts>
-                <H2>Restaurant List</H2>
-                <hr />
                 {props.postList.length > 0 ? (
                     props.postList.map((post) =>
                         <Post

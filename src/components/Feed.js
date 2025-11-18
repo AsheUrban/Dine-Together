@@ -6,7 +6,7 @@ import PostDetail from './PostDetail';
 import { useState, useEffect } from 'react';
 import { auth } from '../firebase.js';
 import { DineTogetherPosts, H1, Button, Center } from '../styles';
-import { subscribeToPosts, addNewPost, updatePost, deletePost, updatePostElapsedWaitTimes } from '../services/firebaseService.js';
+import { subscribeToAllPosts, addNewPost, updatePost, deletePost, updatePostElapsedWaitTimes } from '../services/firebaseService.js';
 
 function Feed () {
 
@@ -33,8 +33,7 @@ function Feed () {
   }, [mainPostList])
 
   useEffect(() => { 
-    const unSubscribe = subscribeToPosts(
-      auth.currentUser.uid,
+    const unSubscribe = subscribeToAllPosts(
       (posts) => setMainPostList(posts),
       (errorMessage) => setError(errorMessage)
     );
@@ -80,7 +79,7 @@ function Feed () {
     return (
       <React.Fragment>
         <DineTogetherPosts>
-           <H1>You must be signed in to access the queue.</H1>
+           <H1>You must be signed in to access the feed.</H1>
         </DineTogetherPosts>
       </React.Fragment>
     )
@@ -124,6 +123,5 @@ function Feed () {
     );
   }
 }
-
 
 export default Feed;
