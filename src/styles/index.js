@@ -5,9 +5,11 @@ export {
     Button,
     H1,
     H2,
+    H2Centered,
     H3,
+    H3Centered,
     H4,
-    H5,                    // ← ADDED: New header for accent details
+    H5,
     SignUpLink,
     Center
 } from './formStyles';
@@ -15,6 +17,10 @@ export {
 export {
     PostContainer,
     PostItem,
+    FeedCardContent,
+    FeedCardImage,
+    FeedCardDetails,
+    FeedCardPostedDate,
     PostActionButton
 } from './postStyles';
 
@@ -26,6 +32,7 @@ export {
     NavLink,
     SignOutButton,
     BackgroundStyles,
+    FeedContainer,
     ProfilePageContainer,
     ProfileInfoSection,
     ProfileRestaurantSection

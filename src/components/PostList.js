@@ -1,26 +1,29 @@
 import React from 'react';
 import Post from './Post';
 import PropTypes from 'prop-types';
-import { DineTogetherPosts, H1 } from '../styles';
+import { FeedContainer, H1 } from '../styles';
 
 function PostList(props){
     return (
         <React.Fragment>
-            <DineTogetherPosts>
+            <FeedContainer>
                 {props.postList.length > 0 ? (
                     props.postList.map((post) =>
                         <Post
                             whenPostClicked={props.onPostSelection}
                             restaurantName={post.restaurantName}
                             restaurantAddress={post.restaurantAddress}
-                            notes={post.notes}
+                            priceLevel={post.priceLevel}
+                            rating={post.rating}
+                            userRatingsTotal={post.userRatingsTotal}
+                            timeOpen={post.timeOpen}
                             id={post.id}
                             key={post.id}/>
                     )
                 ) : (
                     <H1>No restaurants have been added to the queue yet. Add a restaurant now.</H1>
                 )}
-            </DineTogetherPosts>
+            </FeedContainer>
         </React.Fragment>
     );
 }

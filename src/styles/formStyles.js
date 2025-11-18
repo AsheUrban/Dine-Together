@@ -68,6 +68,14 @@ export const H2 = styled.h2`
     margin: 10px 0;
 `;
 
+export const H2Centered = styled.h2`
+    font-size: 35px;
+    text-align: center;
+    color: #8B4513;
+    font-family: 'Rosaline', serif;
+    margin: 10px 0;
+`;
+
 export const H3 = styled.h3`
     font-size: 35px;
     color: #8B4513;
@@ -75,14 +83,22 @@ export const H3 = styled.h3`
     margin: 10px 0;
 `;
 
+export const H3Centered = styled.h3`
+    font-size: 35px;
+    text-align: center;
+    color: #8B4513;
+    font-family: 'Lato', sans-serif;
+    margin: 10px 0;
+`;
+
 export const H4 = styled.h4`
     font-size: 18px;
-    color: #8B4513;                    // ← CHANGED: burnt peach → saddle brown
+    color: #8B4513;
     font-family: 'Lato', sans-serif;
     margin: 5px 0;
 `;
 
-export const H5 = styled.h5`            // ← ADDED: New H5 for accent details
+export const H5 = styled.h5`
     font-size: 18px;
     color: #D98560;
     font-family: 'Lato', sans-serif;

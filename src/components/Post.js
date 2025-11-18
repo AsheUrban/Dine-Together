@@ -1,17 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { H3, H4, PostItem } from '../styles';
+import { formatDistanceToNow } from 'date-fns';
+import { H3Centered, H4, PostItem, FeedCardContent, FeedCardImage, FeedCardDetails, FeedCardPostedDate } from '../styles';
 
 function Post(props){
     return (
         <React.Fragment>
-            <hr />
             <PostItem onClick = {() => props.whenPostClicked(props.id)}>
-                <H3>{props.restaurantName}</H3>
+                <H3Centered>{props.restaurantName}</H3Centered>
                 <H4>{props.restaurantAddress}</H4>
-                <p><em>{props.notes}</em></p>
-                <p><em>{props.formattedWaitTime}</em></p>
+                <FeedCardContent>
+                    <FeedCardImage />
+                    <FeedCardDetails>
+                        <p>{props.priceLevel ? '$'.repeat(props.priceLevel) : 'Price TBD'}</p>
+                        <p>{props.rating ? `⭐ ${props.rating} (${props.userRatingsTotal})` : 'Rating TBD'}</p>
+                    </FeedCardDetails>
+                </FeedCardContent>
             </PostItem>
+            <FeedCardPostedDate>{formatDistanceToNow(props.timeOpen, { addSuffix: true })}</FeedCardPostedDate>
         </React.Fragment>
     );
 }
@@ -19,7 +25,10 @@ function Post(props){
 Post.propTypes = {
     restaurantName: PropTypes.string,
     restaurantAddress: PropTypes.string,
-    notes: PropTypes.string,
+    priceLevel: PropTypes.number,
+    rating: PropTypes.number,
+    userRatingsTotal: PropTypes.number,
+    timeOpen: PropTypes.object,
     id: PropTypes.string,
     whenPostClicked: PropTypes.func
 }
