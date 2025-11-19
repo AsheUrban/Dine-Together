@@ -1,20 +1,16 @@
 import React from 'react';
-import NewPostForm from './NewPostForm';
 import PostList from './PostList';
-import EditPostForm from './EditPostForm';
 import PostDetail from './PostDetail';
 import { useState, useEffect } from 'react';
 import { auth } from '../firebase.js';
-import { FormContainer, H1, Button, Center } from '../styles';
-import { subscribeToAllPosts, addNewPost, updatePost, deletePost, updatePostElapsedWaitTimes } from '../services/firebaseService.js';
+import { FormContainer, H1 } from '../styles';
+import { subscribeToAllPosts, deletePost, updatePostElapsedWaitTimes } from '../services/firebaseService.js';
+import { usePostSelection } from '../hooks/postSelection.js';
 
 function Feed () {
-
-  const [formVisibleOnPage, setFormVisibleOnPage] = useState(false);
   const [mainPostList, setMainPostList] = useState([]);
-  const [selectedPost, setSelectedPost] = useState(null);
-  const [editing, setEditing] = useState(false);
   const [error, setError] = useState(null);
+  const { selectedPost, handleSelectPost, handleBackToList } = usePostSelection();
 
   useEffect(() => {
     function updateElapsedWaitTime() {
@@ -40,89 +36,46 @@ function Feed () {
     return () => unSubscribe();
   }, []);
 
-  const handleClick = () => {
-    if (selectedPost != null) {
-      setFormVisibleOnPage(false);
-      setSelectedPost(null);
-      setEditing(false);
-    } else {
-      setFormVisibleOnPage(!formVisibleOnPage);
-    }
-  }
-
   const handleDeletingPost = async (id) => {
     await deletePost(id);
-    setSelectedPost(null);
-  }
-
-  const handleEditClick = () => {
-    setEditing(true);
-  }
-
-  const handleEditingPostInList = async (postToEdit) => {
-    await updatePost(postToEdit);
-    setEditing(false);
-    setSelectedPost(null);
-  }
-
-  const handleAddingNewPostToList = async (newPostData) => {
-    await addNewPost(newPostData);
-    setFormVisibleOnPage(false);
+    handleBackToList();
   }
 
   const handleChangingSelectedPost = (id) => {
     const selection = mainPostList.filter(post => post.id === id)[0];
-    setSelectedPost(selection);
+    handleSelectPost(selection);
   }
 
   if (auth.currentUser == null) {
     return (
       <React.Fragment>
         <FormContainer>
-           <H1>You must be signed in to access the feed.</H1>
+          <H1>You must be signed in to access the feed.</H1>
         </FormContainer>
       </React.Fragment>
     )
-  } else if (auth.currentUser != null) {
+  } 
 
-    let currentlyVisibleState = null;
-    let buttonText = null;
-
-    if (error) {
-      currentlyVisibleState = <p>There was an error: {error}</p>
-    } else if (editing) {
-      currentlyVisibleState = <EditPostForm
-      post = {selectedPost}
-      onEditPost = {handleEditingPostInList}
-      userId={auth.currentUser.uid} />
-      buttonText = 'Return to Post List';
-    } else if (selectedPost != null) {
-      currentlyVisibleState = <PostDetail
+  if (error) {
+    return <div>There was an error: {error}</div>
+  } 
+  
+  if (selectedPost) {
+    return (
+      <PostDetail
       post={selectedPost}
       onClickingDelete={handleDeletingPost}
-      onClickingEdit = {handleEditClick} />
-      buttonText = 'Return to Post List';
-    } else if (formVisibleOnPage) {
-      currentlyVisibleState = <NewPostForm
-      onNewPostCreation={handleAddingNewPostToList}
-      userId={auth.currentUser.uid} />
-      buttonText = 'Return to Post List';
-    } else {
-      currentlyVisibleState = <PostList
-      onPostSelection={handleChangingSelectedPost}
-      postList={mainPostList} />;
-      buttonText = 'Add Restaurant';
-    }
-    return (
-      <>
-        {currentlyVisibleState}
-        <Center>
-          {error ? null : <Button className='App' onClick={handleClick}>{buttonText}</Button>}
-        </Center>
-      </>
+      onBack={handleBackToList}
+      />
     );
-  }
-}
+  } 
 
+  return (
+    <PostList 
+      onPostSelection={handleChangingSelectedPost}
+      postList={mainPostList} 
+    />
+  );
+}
 
 export default Feed;
