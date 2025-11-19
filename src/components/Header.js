@@ -26,7 +26,7 @@ function Header({ user }) {
 
                 <HeaderNav>
                     <NavLink to="/"> Feed </NavLink>
-                    <NavLink to="/search">Search Restaurants</NavLink>
+                    <NavLink to="/search">Explore Restaurants</NavLink>
                 </HeaderNav>
 
                 <HeaderProfile>

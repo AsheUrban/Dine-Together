@@ -105,7 +105,7 @@ function Profile() {
                     ))}
                   </PostGrid>
                 ) : (
-                  <p>No No restaurants have been added to the queue yet. Add a restaurant now.</p>
+                  <p>No restaurants have been added yet. Explore restaurants to get started!</p>
                 )}
             </RestaurantSection>
         </PageContainer>
