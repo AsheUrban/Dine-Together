@@ -18,7 +18,7 @@ import {
     PostDetails,
     PostedDate
 } from '../styles';
-import { subscribeToPosts, deletePost } from '../services/firebaseService.js';
+import { subscribeToPosts } from '../services/firebaseService.js';
 import { formatDistanceToNow } from 'date-fns';
 import { usePostSelection } from '../hooks/postSelection';
 
@@ -57,11 +57,6 @@ function Profile() {
         return () => unSubscribe();
     }, []);
 
-    const handleDeletingPost = async (id) => {
-        await deletePost(id);
-        handleBackToList();
-    }
-
     const handleChangingSelectedPost = (id) => {
         const selection = mainPostList.filter(post => post.id === id)[0];
         handleSelectPost(selection);
@@ -79,7 +74,6 @@ function Profile() {
         return (
           <PostDetail
             post={selectedPost}
-            onClickingDelete={handleDeletingPost}
             onBack={handleBackToList}
         />
      );

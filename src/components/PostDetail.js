@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import EditPostForm from './EditPostForm';
+import { auth } from '../firebase.js';
+import { useState } from 'react';
 import { PostContainer, H2Centered, H4, PostActionButton } from '../styles';
-import { updatePost } from '../services/firebaseService';
+import { updatePost, deletePost } from '../services/firebaseService';
 
 function PostDetail(props){
-    const { post, onClickingDelete, onBack } = props;
+    const { post, onBack } = props;
     const [editing, setEditing] = useState(false);
-
+    const isOwner = auth.currentUser.uid === post.userId;
     const handleEditClick = () => {
         setEditing(true);
     }
@@ -18,6 +19,11 @@ function PostDetail(props){
         setEditing(false);
     }
 
+    const handleDelete = async (id) => {
+        await deletePost(id);
+        onBack();
+    }
+
     if(editing) {
         return (
                 <EditPostForm
@@ -25,7 +31,7 @@ function PostDetail(props){
                     onEditPost={handleEditingPost}
                     userId={post.userId}
                     onBack={onBack}
-                    onDelete={onClickingDelete}
+                    onDelete={handleDelete}
                 />
         );
     }
@@ -36,7 +42,7 @@ function PostDetail(props){
                 <H2Centered>{post.restaurantName}</H2Centered>
                 <H4>{post.restaurantAddress}</H4>
                 <p><em>{post.notes}</em></p>
-                <PostActionButton onClick={handleEditClick}>Edit</PostActionButton>
+                {isOwner && <PostActionButton onClick={handleEditClick}>Edit</PostActionButton>}
                 <PostActionButton onClick={onBack}>Back</PostActionButton>
             </PostContainer>
         </React.Fragment>
@@ -45,7 +51,6 @@ function PostDetail(props){
 
 PostDetail.propTypes = {
     post: PropTypes.object,
-    onClickingDelete: PropTypes.func,
     onBack: PropTypes.func
 };
 

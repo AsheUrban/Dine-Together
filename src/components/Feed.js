@@ -4,7 +4,7 @@ import PostDetail from './PostDetail';
 import { useState, useEffect } from 'react';
 import { auth } from '../firebase.js';
 import { FormContainer, H1 } from '../styles';
-import { subscribeToAllPosts, deletePost, updatePostElapsedWaitTimes } from '../services/firebaseService.js';
+import { subscribeToAllPosts, updatePostElapsedWaitTimes } from '../services/firebaseService.js';
 import { usePostSelection } from '../hooks/postSelection.js';
 
 function Feed () {
@@ -36,11 +36,6 @@ function Feed () {
     return () => unSubscribe();
   }, []);
 
-  const handleDeletingPost = async (id) => {
-    await deletePost(id);
-    handleBackToList();
-  }
-
   const handleChangingSelectedPost = (id) => {
     const selection = mainPostList.filter(post => post.id === id)[0];
     handleSelectPost(selection);
@@ -64,7 +59,6 @@ function Feed () {
     return (
       <PostDetail
       post={selectedPost}
-      onClickingDelete={handleDeletingPost}
       onBack={handleBackToList}
       />
     );
