@@ -1,13 +1,15 @@
 import React from 'react';
-import { useState } from 'react';
 import ReusableForm from './ReusableForm';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { validatePost } from '../utils/validators';
+import { useFormSubmit } from '../hooks/formSubmit';
 import { PostActionButton } from '../styles';
 
 function EditPostForm (props) {
   const { post, onBack, onDelete } = props;
-  const [errors, setErrors] = useState({});
+  const { isLoading, error: submitError, handleSubmit } = useFormSubmit(props.onEditPost);
+    const [errors, setErrors] = useState({});
 
   function handleEditPostFormSubmission(event) {
     event.preventDefault();
@@ -24,7 +26,7 @@ function EditPostForm (props) {
 
     setErrors({});
 
-    props.onEditPost({
+    handleSubmit({
       userId: props.userId,
       placeId: placeId,
       restaurantName: event.target.restaurantName.value,
@@ -35,12 +37,14 @@ function EditPostForm (props) {
 
   return (
     <React.Fragment>
+      {submitError && <p style={{color: 'red'}}>{submitError}</p>}
       <ReusableForm 
         onSubmit={handleEditPostFormSubmission} 
-        buttonText='Save' 
+        buttonText={isLoading ? 'Saving...' : 'Save'}
         errors={errors} 
         cancelButton={<PostActionButton onClick={onBack}>Cancel</PostActionButton>}
         deleteButton={<PostActionButton onClick={async ()=> { await onDelete(post.id); }}>Delete</PostActionButton>}
+        disabled={isLoading}
         />
     </React.Fragment>
   );
