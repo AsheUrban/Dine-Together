@@ -2,29 +2,33 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import EditPostForm from './EditPostForm';
 import { auth } from '../firebase.js';
-import { useState } from 'react';
 import { PostContainer, H2Centered, H4, PostActionButton } from '../styles';
 import { updatePost, deletePost } from '../services/firebaseService';
+import { useEditMode } from '../hooks/editMode';
+import { useDeleteConfirmation } from '../hooks/deleteConfirmation';
 
 function PostDetail(props){
     const { post, onBack } = props;
-    const [editing, setEditing] = useState(false);
+    const { isEditing, enterEditMode, exitEditMode } = useEditMode();
+    const { confirmDelete } = useDeleteConfirmation();
     const isOwner = auth.currentUser.uid === post.userId;
-    const handleEditClick = () => {
-        setEditing(true);
-    }
 
     const handleEditingPost = async (postToEdit) => {
         await updatePost(postToEdit);
-        setEditing(false);
+        exitEditMode();
     }
 
     const handleDelete = async (id) => {
-        await deletePost(id);
-        onBack();
+        const confirmed = window.confirm('Are you sure you want to delete this restuarant?');
+        if(confirmed) {
+            await confirmDelete(async () => {
+                await deletePost(id);
+                onBack();
+            });
+        }
     }
 
-    if(editing) {
+    if(isEditing) {
         return (
                 <EditPostForm
                     post={post}
@@ -42,7 +46,7 @@ function PostDetail(props){
                 <H2Centered>{post.restaurantName}</H2Centered>
                 <H4>{post.restaurantAddress}</H4>
                 <p><em>{post.notes}</em></p>
-                {isOwner && <PostActionButton onClick={handleEditClick}>Edit</PostActionButton>}
+                {isOwner && <PostActionButton onClick={enterEditMode}>Edit</PostActionButton>}
                 <PostActionButton onClick={onBack}>Back</PostActionButton>
             </PostContainer>
         </React.Fragment>

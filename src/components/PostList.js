@@ -21,7 +21,7 @@ function PostList(props){
                             key={post.id}/>
                     )
                 ) : (
-                    <H1>No restaurants have been added to the queue yet. Add a restaurant now.</H1>
+                    <H1>No restaurants have been added yet. Explore restaurants to get started!</H1>
                 )}
             </FeedContainer>
         </React.Fragment>

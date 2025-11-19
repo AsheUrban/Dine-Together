@@ -5,6 +5,7 @@ import { db } from './../firebase.js';
 import PostDetail from './PostDetail';
 import Avatar from './Avatar';
 import {
+    H1,
     H2,
     H3Centered,
     PageContainer,
@@ -105,7 +106,7 @@ function Profile() {
                     ))}
                   </PostGrid>
                 ) : (
-                  <p>No restaurants have been added yet. Explore restaurants to get started!</p>
+                  <H1>No restaurants have been added yet. Explore restaurants to get started!</H1>
                 )}
             </RestaurantSection>
         </PageContainer>
