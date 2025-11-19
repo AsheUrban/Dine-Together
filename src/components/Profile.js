@@ -3,8 +3,10 @@ import { auth } from './../firebase.js';
 import {doc, getDoc } from 'firebase/firestore';
 import { db } from './../firebase.js';
 import PostDetail from './PostDetail';
+import Avatar from './Avatar';
 import {
-    H2Centered,
+    H2,
+    H3Centered,
     PageContainer,
     InfoSection,
     RestaurantSection,
@@ -14,8 +16,7 @@ import {
     PostContent,
     PostImage,
     PostDetails,
-    PostedDate,
-    H3Centered
+    PostedDate
 } from '../styles';
 import { subscribeToPosts, deletePost } from '../services/firebaseService.js';
 import { formatDistanceToNow } from 'date-fns';
@@ -87,10 +88,10 @@ function Profile() {
     return (
         <PageContainer>
             <InfoSection>
-                <H2Centered>{username}</H2Centered>
+                <Avatar displayName={username} variant="profile" />
+                <H2>{username}</H2>
             </InfoSection>
             <RestaurantSection>
-                <H2Centered>My Restaurants</H2Centered>
                 {mainPostList.length > 0 ? (
                   <PostGrid>
                     {mainPostList.map((post) => (

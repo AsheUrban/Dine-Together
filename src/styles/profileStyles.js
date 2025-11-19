@@ -9,7 +9,7 @@ export const PageContainer = styled.div`
 `;
 
 export const InfoSection = styled.div`
-    margin-top: 20px;
+    margin-top: 40px;
     flex: 0 0 300px;
     background-color: #D98560;
     padding: 40px;

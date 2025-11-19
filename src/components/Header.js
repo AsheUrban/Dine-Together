@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { signOut } from "firebase/auth";
 import { auth } from '../firebase.js';
 import { HeaderContainer, HeaderLogo, H1, HeaderNav, NavLink, HeaderProfile, SignOutButton } from '../styles';
+import Avatar from './Avatar';
 
 function Header({ user }) {
     const navigate = useNavigate();
@@ -31,7 +32,9 @@ function Header({ user }) {
                 <HeaderProfile>
                   {user ? (
                         <>
-                            <NavLink to={`/profile/${user.uid}`}>{user.displayName}</NavLink>
+                            <NavLink to={`/profile/${user.uid}`}>
+                                <Avatar displayName={user.displayName} variant="header" />
+                                </NavLink>
                             <SignOutButton onClick={handleSignOut}>Sign Out</SignOutButton>
                         </>
                     ) : (

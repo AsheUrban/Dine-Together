@@ -8,7 +8,6 @@ import ProtectedRoute from './ProtectedRoute';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { auth } from '../firebase.js';
 import Profile from './Profile';
-import Background from './Background';
 import Footer from './Footer';
 
 function App(){
