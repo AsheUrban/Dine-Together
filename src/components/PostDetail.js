@@ -1,18 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
+import EditPostForm from './EditPostForm';
 import { PostContainer, H2Centered, H4, PostActionButton } from '../styles';
+import { updatePost } from '../services/firebaseService';
 
 function PostDetail(props){
-    const { post, onClickingDelete, onClickingEdit } = props;
+    const { post, onClickingDelete, onBack } = props;
+    const [editing, setEditing] = useState(false);
+
+    const handleEditClick = () => {
+        setEditing(true);
+    }
+
+    const handleEditingPost = async (postToEdit) => {
+        await updatePost(postToEdit);
+        setEditing(false);
+    }
+
+    if(editing) {
+        return (
+                <EditPostForm
+                    post={post}
+                    onEditPost={handleEditingPost}
+                    userId={post.userId}
+                    onBack={onBack}
+                    onDelete={onClickingDelete}
+                />
+        );
+    }
 
     return (
         <React.Fragment>
             <PostContainer>
                 <H2Centered>{post.restaurantName}</H2Centered>
                 <H4>{post.restaurantAddress}</H4>
-                <p><em>{post.reservationNotes}</em></p>
-                <PostActionButton onClick={onClickingEdit}>Update Restaurant</PostActionButton>
-                <PostActionButton onClick={()=> onClickingDelete(post.id)}>Delete Restaurant</PostActionButton>
+                <p><em>{post.notes}</em></p>
+                <PostActionButton onClick={handleEditClick}>Edit</PostActionButton>
+                <PostActionButton onClick={onBack}>Back</PostActionButton>
             </PostContainer>
         </React.Fragment>
     );
@@ -21,7 +46,7 @@ function PostDetail(props){
 PostDetail.propTypes = {
     post: PropTypes.object,
     onClickingDelete: PropTypes.func,
-    onClickingEdit: PropTypes.func
+    onBack: PropTypes.func
 };
 
 export default PostDetail;

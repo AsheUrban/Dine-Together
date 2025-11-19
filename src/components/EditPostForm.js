@@ -3,9 +3,10 @@ import { useState } from 'react';
 import ReusableForm from './ReusableForm';
 import PropTypes from 'prop-types';
 import { validatePost } from '../utils/validators';
+import { PostActionButton } from '../styles';
 
 function EditPostForm (props) {
-  const { post } = props;
+  const { post, onBack, onDelete } = props;
   const [errors, setErrors] = useState({});
 
   function handleEditPostFormSubmission(event) {
@@ -35,9 +36,12 @@ function EditPostForm (props) {
   return (
     <React.Fragment>
       <ReusableForm 
-        formSubmissionHandler={handleEditPostFormSubmission} 
-        buttonText='Update Restaurant' 
-        errors={errors} />
+        onSubmit={handleEditPostFormSubmission} 
+        buttonText='Save' 
+        errors={errors} 
+        cancelButton={<PostActionButton onClick={onBack}>Cancel</PostActionButton>}
+        deleteButton={<PostActionButton onClick={async ()=> { await onDelete(post.id); }}>Delete</PostActionButton>}
+        />
     </React.Fragment>
   );
 }
@@ -45,7 +49,9 @@ function EditPostForm (props) {
 EditPostForm.propTypes = {
   onEditPost: PropTypes.func,
   post: PropTypes.object,
-  userId: PropTypes.string
+  userId: PropTypes.string,
+  onBack: PropTypes.func,
+  onDelete: PropTypes.func
 };
 
 export default EditPostForm;

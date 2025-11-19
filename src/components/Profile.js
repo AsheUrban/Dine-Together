@@ -17,7 +17,7 @@ import {
     PostedDate,
     H3Centered
 } from '../styles';
-import { subscribeToPosts, deletePost, updatePost } from '../services/firebaseService.js';
+import { subscribeToPosts, deletePost } from '../services/firebaseService.js';
 import { formatDistanceToNow } from 'date-fns';
 import { usePostSelection } from '../hooks/postSelection';
 
@@ -61,11 +61,6 @@ function Profile() {
         handleBackToList();
     }
 
-    const handleEditingPost = async (postToEdit) => {
-        await updatePost(postToEdit);
-        handleBackToList();
-    }
-
     const handleChangingSelectedPost = (id) => {
         const selection = mainPostList.filter(post => post.id === id)[0];
         handleSelectPost(selection);
@@ -84,7 +79,7 @@ function Profile() {
           <PostDetail
             post={selectedPost}
             onClickingDelete={handleDeletingPost}
-            onClickingEdit={handleEditingPost}
+            onBack={handleBackToList}
         />
      );
     }

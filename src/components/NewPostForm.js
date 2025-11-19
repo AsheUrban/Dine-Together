@@ -35,7 +35,7 @@ function NewPostForm(props){
   return (
     <React.Fragment>
       <ReusableForm 
-        formSubmissionHandler={handleNewPostFormSubmission}
+        onSubmit={handleNewPostFormSubmission}
         buttonText='Add Restaurant'
       errors={errors} />
     </React.Fragment>

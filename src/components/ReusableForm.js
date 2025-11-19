@@ -6,12 +6,11 @@ function ReusableForm(props) {
   return (
     <React.Fragment>
         <FormContainer>
-        <form onSubmit={props.formSubmissionHandler}>
+        <form onSubmit={props.onSubmit}>
           <Input
             type='hidden'
             name='placeId'
             value='' />
-
           <Input
             type='text'
             name='restaurantName'
@@ -26,15 +25,19 @@ function ReusableForm(props) {
           <br />
           <Button type='submit'>{props.buttonText}</Button>
         </form>
+        {props.cancelButton}
+        {props.deleteButton}
         </FormContainer>
     </React.Fragment>
   );
 }
 
 ReusableForm.propTypes = {
-  formSubmissionHandler: PropTypes.func,
+  onSubmit: PropTypes.func,
   buttonText: PropTypes.string,
-  errors: PropTypes.object
+  errors: PropTypes.object,
+  cancelButton: PropTypes.node,
+  deleteButton: PropTypes.node
 };
 
 export default ReusableForm;
