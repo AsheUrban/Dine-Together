@@ -11,6 +11,7 @@ export {
     H3,
     H3Centered,
     H4,
+    H4Centered,
     H5,
     HeaderContainer,
     HeaderLogo,

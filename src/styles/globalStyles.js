@@ -46,6 +46,13 @@ export const H4 = styled.h4`
     margin: 5px 0;
 `;
 
+export const H4Centered = styled.h4`
+    font-size: 18px;
+    color: #8B4513;
+    font-family: 'Lato', sans-serif;
+    margin: 5px 0;
+`;
+
 export const H5 = styled.h5`
     font-size: 18px;
     color: #D98560;

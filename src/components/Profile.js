@@ -7,7 +7,7 @@ import Avatar from './Avatar';
 import {
     H1,
     H2,
-    H3Centered,
+    H4Centered,
     PageContainer,
     InfoSection,
     RestaurantSection,
@@ -92,7 +92,7 @@ function Profile() {
                     {mainPostList.map((post) => (
                       <PostWrapper key={post.id}>
                         <PostItem onClick={() => handleChangingSelectedPost(post.id)}>
-                          <H3Centered>{post.restaurantName}</H3Centered>
+                          <H4Centered>{post.restaurantName}</H4Centered>
                           <PostContent>
                             <PostImage />
                             <PostDetails>
