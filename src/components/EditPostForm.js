@@ -42,6 +42,9 @@ function EditPostForm (props) {
         onSubmit={handleEditPostFormSubmission} 
         buttonText={isLoading ? 'Saving...' : 'Save'}
         errors={errors} 
+        restaurantName={post.restaurantName}
+        placeId={post.placeId}
+        notes={post.notes}
         cancelButton={<PostActionButton onClick={onBack}>Cancel</PostActionButton>}
         deleteButton={<PostActionButton onClick={async ()=> { await onDelete(post.id); }}>Delete</PostActionButton>}
         disabled={isLoading}

@@ -10,15 +10,17 @@ function ReusableForm(props) {
           <Input
             type='hidden'
             name='placeId'
-            value='' />
+            defaultValue={props.placeId || ''} />
           <Input
             type='text'
             name='restaurantName'
+            defaultValue={props.restaurantName || ''}
             placeholder='Restaurant Name' />
           {props.errors?.restaurantName && <p style={{color: 'red', fontSize: '12px'}}>{props.errors.restaurantName}</p>}
           <br />
           <TextArea
             name='notes'
+            defaultValue={props.notes || ''}
             placeholder='Personal notes.'
             maxLength='200' />
           {props.errors?.notes && <p style={{color: 'red', fontSize: '12px'}}>{props.errors.notes}</p>}
@@ -37,7 +39,10 @@ ReusableForm.propTypes = {
   buttonText: PropTypes.string,
   errors: PropTypes.object,
   cancelButton: PropTypes.node,
-  deleteButton: PropTypes.node
+  deleteButton: PropTypes.node,
+  restaurantName: PropTypes.string,
+  placeId: PropTypes.string,
+  notes: PropTypes.string
 };
 
 export default ReusableForm;

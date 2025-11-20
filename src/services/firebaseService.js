@@ -89,4 +89,9 @@ export const updatePostElapsedWaitTimes = (posts) => {
         return {...post, formattedWaitTime: newFormattedWaitTime};
     });
 };
+
+export const updateUserBio = async (userId, bioData) => {
+    const userRef = doc(db, 'users', userId);
+    return await updateDoc(userRef, bioData);
+};
          

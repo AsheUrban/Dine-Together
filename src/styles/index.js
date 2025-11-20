@@ -1,7 +1,9 @@
 export {
     FormContainer,
     Input,
-    TextArea
+    TextArea,
+    BioLabel,
+    CharacterCounter
 } from './formStyles';
 
 export {

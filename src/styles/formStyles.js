@@ -31,3 +31,18 @@ export const TextArea = styled.textarea`
     font-family: 'Lato', sans-serif;
     color: #2C2C2C;
 `;
+
+export const BioLabel = styled.label`
+    font-family: 'Rosaline', serif;
+    font-size: 18px;
+    color: #2C2C2C;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    display: block;
+`;
+
+export const CharacterCounter = styled.p`
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+`;
