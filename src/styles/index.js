@@ -51,7 +51,7 @@ export {
 
 export {
     FeedContainer
-} from './feedStyles';
+} from './FeedStyles';
 
 export {
     AvatarContainer
