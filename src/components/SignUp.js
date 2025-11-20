@@ -54,27 +54,35 @@ import { validateSignUp } from '../utils/validators';
             <H2>Sign up</H2>
               {signUpSuccess}
               <form onSubmit={doSignUp}>
+                <label htmlFor='username'>Username</label>
                 <Input
+                  id='username'
                   type='text'
                   name='username'
                   placeholder='Username'
                   required />
                 {errors.username && <p style={{color: 'red', fontSize: '12px'}}>{errors.username}</p>}
                 <br />
+                <label htmlFor='email'>Email</label>
                 <Input
+                  id='email'
                   type='text'
                   name='email'
                   placeholder='email'
                   required />
                 {errors.email && <p style={{color: 'red', fontSize: '12px'}}>{errors.email}</p>}
                 <br />
+                <label htmlFor='password'>Password</label>
                 <Input
+                  id='password'
                   type='password'
                   name='password'
                   placeholder='Password' />
                 {errors.password && <p style={{color: 'red', fontSize: '12px'}}>{errors.password}</p>}
                 <br />
+                <label htmlFor='passwordConfirm'>Confirm Password</label>
                 <Input
+                  id='passwordConfirm'
                   type='password'
                   name='passwordConfirm'
                   placeholder='Confirm Password' />

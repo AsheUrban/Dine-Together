@@ -40,13 +40,17 @@ function SignIn(){
           <H2>Sign In</H2>
           {signInSuccess}
           <form onSubmit={doSignIn}>
+            <label htmlFor='email'>Email</label>
             <Input
+              id='email'
               type='text'
               name='email'
               placeholder='email' />
             {errors.email && <p style={{color: 'red', fontSize: '12px'}}>{errors.email}</p>}
             <br />
+            <label htmlFor='password'>Password</label>
             <Input
+              id='password'
               type='password'
               name='password'
               placeholder='Password' />

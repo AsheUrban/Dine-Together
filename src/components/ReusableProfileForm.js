@@ -35,7 +35,7 @@ function ReusableProfileForm(props) {
                 />
                 <CharacterCounter>{bestMeal.length}/{BEST_MEAL_LIMIT}</CharacterCounter>
 
-                <BioLabel htmlFor="goToMeals">Go-To Restaurant:</BioLabel>
+                <BioLabel htmlFor="goToMeals">Go-To Restaurants:</BioLabel>
                 <TextArea
                     id="goToMeals"
                     value={goToMeals}

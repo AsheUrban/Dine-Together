@@ -22,3 +22,5 @@ EditProfileForm.propTypes = {
     onBack: PropTypes.func.isRequired,
     isLoading: PropTypes.bool
 };
+
+export default EditProfileForm;

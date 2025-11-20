@@ -30,7 +30,10 @@ export {
 export {
     PageContainer,
     InfoSection,
-    RestaurantSection
+    RestaurantSection,
+    BioText,
+    EditProfileLink,
+    BioSection
 } from './profileStyles';
 
 export {
@@ -41,7 +44,7 @@ export {
     PostImage,
     PostDetails,
     PostedDate,
-    PostGrid,
+    PostGridStyles,
     PostActionButton
 } from './postStyles';
 
@@ -50,5 +53,5 @@ export {
 } from './feedStyles';
 
 export {
-    AvatarContainer,
+    AvatarContainer
 } from './avatarStyles';

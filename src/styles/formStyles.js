@@ -33,7 +33,7 @@ export const TextArea = styled.textarea`
 `;
 
 export const BioLabel = styled.label`
-    font-family: 'Rosaline', serif;
+    font-family: 'Lato', serif;
     font-size: 18px;
     color: #2C2C2C;
     margin-top: 15px;

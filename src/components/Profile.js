@@ -1,35 +1,38 @@
+import PostDetail from './PostDetail';
+import PostGrid from './PostGrid';
+import ProfileDetails from './ProfileDetails';
 import React, { useEffect, useState } from 'react';
 import { auth } from './../firebase.js';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from './../firebase.js';
-import PostDetail from './PostDetail';
-import Avatar from './Avatar';
-import {
-    H1,
-    H2,
-    H4Centered,
-    PageContainer,
-    InfoSection,
-    RestaurantSection,
-    PostGrid,
-    PostWrapper,
-    PostItem,
-    PostContent,
-    PostImage,
-    PostDetails,
-    PostedDate
-} from '../styles';
 import { subscribeToPosts } from '../services/firebaseService.js';
-import { formatDistanceToNow } from 'date-fns';
+import { updateUserBio } from '../services/firebaseService.js';
 import { usePostSelection } from '../hooks/postSelection';
 import { usePostUpdate } from '../hooks/postUpdate.js';
+import { useEditMode } from '../hooks/editMode.js';
+import { useFormSubmit } from '../hooks/formSubmit.js';
+import {
+    PageContainer,
+    RestaurantSection,
+} from '../styles';
 
 function Profile() {
     const [username, setUsername] = useState(null);
+    const [userBio, setUserBio] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [mainPostList, setMainPostList] = useState([]);
     const { selectedPost, handleSelectPost, handleBackToList } = usePostSelection();
+    const { isEditing, enterEditMode, exitEditMode } = useEditMode();
+    const { isLoading, handleSubmit } = useFormSubmit(async (bioData) => {
+        try {
+            await updateUserBio(auth.currentUser.uid, bioData);
+            setUserBio(prev => ({ ...prev, ...bioData }));
+            exitEditMode();
+        } catch (err) {
+            console.error('Error updating bio:', err);
+        }
+    });
     const handlePostUpdate = usePostUpdate(setMainPostList, selectedPost, handleSelectPost);
 
     useEffect(() => {
@@ -38,6 +41,7 @@ function Profile() {
                 const userDoc = await getDoc(doc(db, 'users', auth.currentUser.uid));
                 if (userDoc.exists()) {
                     setUsername(userDoc.data().username);
+                    setUserBio(userDoc.data());
                 } else {
                     setError('User not found');
                 }
@@ -85,32 +89,17 @@ function Profile() {
 
     return (
         <PageContainer>
-            <InfoSection>
-                <Avatar displayName={username} variant="profile" />
-                <H2>{username}</H2>
-            </InfoSection>
+           <ProfileDetails
+                username={username}
+                userBio={userBio}
+                isEditing={isEditing}
+                enterEditMode={enterEditMode}
+                exitEditMode={exitEditMode}
+                onSave={handleSubmit}
+                isLoading={isLoading}
+            />
             <RestaurantSection>
-                {mainPostList.length > 0 ? (
-                  <PostGrid>
-                    {mainPostList.map((post) => (
-                      <PostWrapper key={post.id}>
-                        <PostItem onClick={() => handleChangingSelectedPost(post.id)}>
-                          <H4Centered>{post.restaurantName}</H4Centered>
-                          <PostContent>
-                            <PostImage />
-                            <PostDetails>
-                              <p>{post.priceLevel ? '$'.repeat(post.priceLevel) : 'Price TBD'}</p>
-                              <p>{post.rating ? `⭐ ${post.rating} (${post.userRatingsTotal})` : 'Rating TBD'}</p>
-                            </PostDetails>
-                          </PostContent>
-                        </PostItem>
-                        <PostedDate>{formatDistanceToNow(post.timeOpen, {addSuffix: true})}</PostedDate>
-                      </PostWrapper>
-                    ))}
-                  </PostGrid>
-                ) : (
-                  <H1>No restaurants have been added yet. Explore restaurants to get started!</H1>
-                )}
+                <PostGrid postList={mainPostList} onPostSelection={handleChangingSelectedPost} />
             </RestaurantSection>
         </PageContainer>
     );

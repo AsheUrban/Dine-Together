@@ -37,14 +37,18 @@ function ReusablePostForm(props) {
                 type='hidden'
                 name='placeId'
                 defaultValue={props.placeId || ''} />
+              <label htmlFor='restaurantName'>Restaurant Name</label>
               <Input
+                id='restaurantName'
                 type='text'
                 name='restaurantName'
                 defaultValue={props.restaurantName || ''}
                 placeholder='Restaurant Name' />
               {errors?.restaurantName && <p style={{color: 'red', fontSize: '12px'}}>{errors.restaurantName}</p>}
               <br />
+              <label htmlFor='notes'>Personal notes</label>
               <TextArea
+                id='notes'
                 name='notes'
                 defaultValue={props.notes || ''}
                 placeholder='Personal notes.'
