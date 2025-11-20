@@ -6,11 +6,13 @@ import { auth } from '../firebase.js';
 import { FormContainer, H1 } from '../styles';
 import { subscribeToAllPosts, updatePostElapsedWaitTimes } from '../services/firebaseService.js';
 import { usePostSelection } from '../hooks/postSelection.js';
+import { usePostUpdate } from '../hooks/postUpdate.js';
 
 function Feed () {
   const [mainPostList, setMainPostList] = useState([]);
   const [error, setError] = useState(null);
   const { selectedPost, handleSelectPost, handleBackToList } = usePostSelection();
+  const handlePostUpdate = usePostUpdate(setMainPostList, selectedPost, handleSelectPost);
 
   useEffect(() => {
     function updateElapsedWaitTime() {
@@ -60,6 +62,7 @@ function Feed () {
       <PostDetail
       post={selectedPost}
       onBack={handleBackToList}
+      onPostUpdate={handlePostUpdate}
       />
     );
   } 

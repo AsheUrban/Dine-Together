@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { auth } from './../firebase.js';
-import {doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from './../firebase.js';
 import PostDetail from './PostDetail';
 import Avatar from './Avatar';
@@ -22,6 +22,7 @@ import {
 import { subscribeToPosts } from '../services/firebaseService.js';
 import { formatDistanceToNow } from 'date-fns';
 import { usePostSelection } from '../hooks/postSelection';
+import { usePostUpdate } from '../hooks/postUpdate.js';
 
 function Profile() {
     const [username, setUsername] = useState(null);
@@ -29,6 +30,7 @@ function Profile() {
     const [error, setError] = useState(null);
     const [mainPostList, setMainPostList] = useState([]);
     const { selectedPost, handleSelectPost, handleBackToList } = usePostSelection();
+    const handlePostUpdate = usePostUpdate(setMainPostList, selectedPost, handleSelectPost);
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -76,6 +78,7 @@ function Profile() {
           <PostDetail
             post={selectedPost}
             onBack={handleBackToList}
+            onPostUpdate={handlePostUpdate}
         />
      );
     }
