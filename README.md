@@ -63,6 +63,7 @@ The inspiration for the aesthetic of this project is vintage menus. Colors were 
 - **CORS Limitations:** Google Places API has browser-based CORS restrictions. Solution: Using `@react-google-maps/api` library which handles this properly.
 - **Architecture Scalability:** Original monolithic component structure made it difficult to add new features cleanly. Solution: Refactored to service-layer architecture with reusable styled components.
 - **State Machine Complexity:** Feed component had multiple overlapping states (form visibility, editing, selected post). Solution: Simplified to use custom hooks and moved form handling to appropriate components (Explore for add, PostDetail for edit).
+- **Post Author Data Fetching:** Displaying posts required fetching author usernames, creating potential N+1 request problem. Solution: Denormalized `authorUsername` into post documents for simplicity. Tradeoff: If username changes are implemented, will require batch migration of post documents. This pragmatic choice optimizes for current MVP scale; future TypeScript rebuild can use modern patterns (React Query, Suspense) if needed.
 ---
 
 ## **Known Bugs**
