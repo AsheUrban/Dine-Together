@@ -2,7 +2,7 @@ import { collection, addDoc, doc, updateDoc, deleteDoc, query, orderBy, where, o
 import { db } from '../firebase.js';
 import { formatDistanceToNow } from 'date-fns';
 
-export const subscribeToPosts = (userId, onPostUpdate, onError) => {
+export const subscribeToPlaces = (userId, onPlaceUpdate, onError) => {
     const queryByTimestamp = query(
         collection(db, "posts"),
         where('userId', '==', userId),
@@ -26,7 +26,7 @@ export const subscribeToPosts = (userId, onPostUpdate, onError) => {
                     id: doc.id
                 });
             });
-            onPostUpdate(posts);
+            onPlaceUpdate(posts);
         },
         (error) => {
             onError(error.message);
@@ -36,12 +36,12 @@ export const subscribeToPosts = (userId, onPostUpdate, onError) => {
     return unSubscribe;
 };
 
-export const addNewPost = async (postData) => {
+export const addNewPlace = async (placeData) => {
     const collectionRef = collection(db, 'posts');
-    return await addDoc(collectionRef, postData);
+    return await addDoc(collectionRef, placeData);
 };
 
-export const subscribeToAllPosts = (onPostUpdate, onError) => {
+export const subscribeToAllPlaces = (onPlaceUpdate, onError) => {
     const queryAllPosts = query(
         collection(db, "posts"),
         orderBy('timeOpen')
@@ -64,7 +64,7 @@ export const subscribeToAllPosts = (onPostUpdate, onError) => {
                     id: doc.id
                 });
             });
-            onPostUpdate(posts);
+            onPlaceUpdate(posts);
         },
         (error) => {
             onError(error.message);
@@ -73,20 +73,20 @@ export const subscribeToAllPosts = (onPostUpdate, onError) => {
     return unSubscribe;
 };
 
-export const updatePost = async (postToEdit) => {
-    const {id, ...dataToUpdate } = postToEdit;
-    const postRef = doc(db, 'posts', id);
-    return await updateDoc(postRef, dataToUpdate);
+export const updatePlace = async (placeToEdit) => {
+    const {id, ...dataToUpdate } = placeToEdit;
+    const placeRef = doc(db, 'posts', id);
+    return await updateDoc(placeRef, dataToUpdate);
 };
 
-export const deletePost = async (id) => {
+export const deletePlace = async (id) => {
     return await deleteDoc(doc(db, 'posts', id));
 };
 
-export const updatePostElapsedWaitTimes = (posts) => {
-    return posts.map(post => {
-        const newFormattedWaitTime = formatDistanceToNow(post.timeOpen);
-        return {...post, formattedWaitTime: newFormattedWaitTime};
+export const updatePlaceElapsedWaitTimes = (places) => {
+    return places.map(place => {
+        const newFormattedWaitTime = formatDistanceToNow(place.timeOpen);
+        return {...place, formattedWaitTime: newFormattedWaitTime};
     });
 };
 

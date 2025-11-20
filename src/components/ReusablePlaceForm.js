@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormContainer, Input, TextArea, Button, PostLabel } from '../styles';
-import { validatePost } from '../utils/validators';
+import { validatePlace } from '../utils/validators';
 
-function ReusablePostForm(props) {
+function ReusablePlaceForm(props) {
     const [errors, setErrors] = useState({});
 
     const handleFormSubmit = (event) => {
@@ -12,7 +12,7 @@ function ReusablePostForm(props) {
         const restaurantName = event.target.restaurantName.value;
         const notes = event.target.notes.value;
 
-        const validationErrors = validatePost(placeId, restaurantName, notes);
+        const validationErrors = validatePlace(placeId, restaurantName, notes);
 
         if(validationErrors) {
           setErrors(validationErrors);
@@ -20,12 +20,12 @@ function ReusablePostForm(props) {
         }
 
         setErrors({});
-        const postData = {
+        const placeData = {
           placeId,
           restaurantName,
           notes
         };
-        props.onSubmit(postData);
+        props.onSubmit(placeData);
 
     };
 
@@ -62,7 +62,7 @@ function ReusablePostForm(props) {
       );
   }
 
-  ReusablePostForm.propTypes = {
+  ReusablePlaceForm.propTypes = {
       onSubmit: PropTypes.func.isRequired,
       buttonText: PropTypes.string.isRequired,
       cancelButton: PropTypes.node,
@@ -72,4 +72,4 @@ function ReusablePostForm(props) {
       notes: PropTypes.string
   };
 
-  export default ReusablePostForm;
+  export default ReusablePlaceForm;

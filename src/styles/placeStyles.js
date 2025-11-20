@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const PostContainer = styled.div`
+export const PlaceContainer = styled.div`
     background-color: #F5F1E8;
     width: 350px;
     margin: auto;
@@ -12,7 +12,7 @@ export const PostContainer = styled.div`
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
-export const PostWrapper = styled.div`
+export const PlaceWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -20,7 +20,7 @@ export const PostWrapper = styled.div`
     width: 100%;
 `;
 
-export const PostItem = styled.div`
+export const PlaceItem = styled.div`
     background-color: #F5F1E8;
     border: 2px solid #D98560;
     padding: 20px;
@@ -37,13 +37,13 @@ export const PostItem = styled.div`
     }
 `;
 
-export const PostContent = styled.div`
+export const PlaceContent = styled.div`
     display: flex;
     gap: 15px;
     align-items: flex-start;
 `;
 
-export const PostImage = styled.div`
+export const PlaceImage = styled.div`
     width: 100px;
     height: 100px;
     min-width: 100px;
@@ -52,14 +52,14 @@ export const PostImage = styled.div`
     flex-shrink: 0;
 `;
 
-export const PostDetails = styled.div`
+export const PlaceDetails = styled.div`
     display: flex;
     flex-direction: column;
     gap: 8px;
     flex: 1;
 `;
 
-export const PostedDate = styled.p`
+export const PlacedDate = styled.p`
     font-size: 14px;
     color: #8B4513;
     margin-top: 0px;
@@ -70,7 +70,7 @@ export const PostedDate = styled.p`
     text-align: left;
 `;
 
-export const PostGridStyles = styled.div`
+export const PlaceGridStyles = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
@@ -85,7 +85,7 @@ export const PostGridStyles = styled.div`
     }
 `;
 
-export const PostActionButton = styled.button`
+export const PlaceActionButton = styled.button`
     background-color: #8B4513;
     border: 2px solid #D98560;
     margin: 10px;

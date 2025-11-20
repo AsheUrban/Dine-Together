@@ -38,16 +38,16 @@ export {
 } from './profileStyles';
 
 export {
-    PostContainer,
-    PostWrapper,
-    PostItem,
-    PostContent,
-    PostImage,
-    PostDetails,
-    PostedDate,
-    PostGridStyles,
-    PostActionButton
-} from './postStyles';
+    PlaceContainer,
+    PlaceWrapper,
+    PlaceItem,
+    PlaceContent,
+    PlaceImage,
+    PlaceDetails,
+    PlacedDate,
+    PlaceGridStyles,
+    PlaceActionButton
+} from './placeStyles';
 
 export {
     FeedContainer

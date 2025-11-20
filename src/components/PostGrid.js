@@ -1,17 +1,7 @@
 import React from 'react';
+import Place from './Place';
 import PropTypes from 'prop-types';
-import { formatDistanceToNow } from 'date-fns';
-import {
-    H1,
-    H4Centered,
-    PostGridStyles,
-    PostWrapper,
-    PostItem,
-    PostContent,
-    PostImage,
-    PostDetails,
-    PostedDate
-} from '../styles';
+import { H1 } from '../styles';
 
 function PostGrid(props) {
     const { postList, onPostSelection } = props;
@@ -19,23 +9,22 @@ function PostGrid(props) {
     return (
         <>
             {postList.length > 0 ? (
-                <PostGridStyles>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', width: '100%' }}>
                     {postList.map((post) => (
-                    <PostWrapper key={post.id}>
-                        <PostItem onClick={() => onPostSelection(post.id)}>
-                        <H4Centered>{post.restaurantName}</H4Centered>
-                        <PostContent>
-                            <PostImage />
-                            <PostDetails>
-                            <p>{post.priceLevel ? '$'.repeat(post.priceLevel) : 'Price TBD'}</p>
-                            <p>{post.rating ? `⭐ ${post.rating} (${post.userRatingsTotal})` : 'Rating TBD'}</p>
-                            </PostDetails>
-                        </PostContent>
-                        </PostItem>
-                        <PostedDate>{formatDistanceToNow(post.timeOpen, {addSuffix: true})}</PostedDate>
-                    </PostWrapper>
+                        <div key={post.id}>
+                            <Place
+                                whenPlaceClicked={onPostSelection}
+                                restaurantName={post.restaurantName}
+                                restaurantAddress={post.restaurantAddress}
+                                priceLevel={post.priceLevel}
+                                rating={post.rating}
+                                userRatingsTotal={post.userRatingsTotal}
+                                timeOpen={post.timeOpen}
+                                id={post.id}
+                            />
+                        </div>
                     ))}
-                </PostGridStyles>
+                </div>
             ) : (
                 <H1>No restaurants have been added yet. Explore restaurants to get started!</H1>
             )}
@@ -45,7 +34,7 @@ function PostGrid(props) {
 
 PostGrid.propTypes = {
     postList: PropTypes.array.isRequired,
-    onPostSelect: PropTypes.func.isRequired
+    onPostSelection: PropTypes.func.isRequired
 };
 
 export default PostGrid;

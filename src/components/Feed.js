@@ -1,23 +1,23 @@
 import React from 'react';
-import PostList from './PostList';
-import PostDetail from './PostDetail';
+import PlaceList from './PlaceList';
+import PlaceDetail from './PlaceDetail';
 import { useState, useEffect } from 'react';
 import { auth } from '../firebase.js';
 import { FormContainer, H1 } from '../styles';
-import { subscribeToAllPosts, updatePostElapsedWaitTimes } from '../services/firebaseService.js';
-import { usePostSelection } from '../hooks/postSelection.js';
-import { usePostUpdate } from '../hooks/postUpdate.js';
+import { subscribeToAllPlaces, updatePlaceElapsedWaitTimes } from '../services/firebaseService.js';
+import { usePlaceSelection } from '../hooks/placeSelection.js';
+import { usePlaceUpdate } from '../hooks/placeUpdate.js';
 
 function Feed () {
-  const [mainPostList, setMainPostList] = useState([]);
+  const [mainPlaceList, setMainPlaceList] = useState([]);
   const [error, setError] = useState(null);
-  const { selectedPost, handleSelectPost, handleBackToList } = usePostSelection();
-  const handlePostUpdate = usePostUpdate(setMainPostList, selectedPost, handleSelectPost);
+  const { selectedPlace, handleSelectPlace, handleBackToList } = usePlaceSelection();
+  const handlePlaceUpdate = usePlaceUpdate(setMainPlaceList, selectedPlace, handleSelectPlace);
 
   useEffect(() => {
     function updateElapsedWaitTime() {
-      const updatedPosts = updatePostElapsedWaitTimes(mainPostList);
-      setMainPostList(updatedPosts);
+      const updatedPlaces = updatePlaceElapsedWaitTimes(mainPlaceList);
+      setMainPlaceList(updatedPlaces);
     }
 
     const waitTimeUpdateTimer = setInterval(() =>
@@ -28,19 +28,19 @@ function Feed () {
     return function cleanup() {
       clearInterval(waitTimeUpdateTimer);
     }
-  }, [mainPostList])
+  }, [mainPlaceList])
 
   useEffect(() => {
-    const unSubscribe = subscribeToAllPosts(
-      (posts) => setMainPostList(posts),
+    const unSubscribe = subscribeToAllPlaces(
+      (places) => setMainPlaceList(places),
       (errorMessage) => setError(errorMessage)
     );
     return () => unSubscribe();
   }, []);
 
-  const handleChangingSelectedPost = (id) => {
-    const selection = mainPostList.filter(post => post.id === id)[0];
-    handleSelectPost(selection);
+  const handleChangingSelectedPlace = (id) => {
+    const selection = mainPlaceList.filter(place => place.id === id)[0];
+    handleSelectPlace(selection);
   }
 
   if (auth.currentUser == null) {
@@ -51,26 +51,26 @@ function Feed () {
         </FormContainer>
       </React.Fragment>
     )
-  } 
+  }
 
   if (error) {
     return <div>There was an error: {error}</div>
-  } 
-  
-  if (selectedPost) {
+  }
+
+  if (selectedPlace) {
     return (
-      <PostDetail
-      post={selectedPost}
+      <PlaceDetail
+      place={selectedPlace}
       onBack={handleBackToList}
-      onPostUpdate={handlePostUpdate}
+      onPlaceUpdate={handlePlaceUpdate}
       />
     );
-  } 
+  }
 
   return (
-    <PostList 
-      onPostSelection={handleChangingSelectedPost}
-      postList={mainPostList} 
+    <PlaceList
+      onPlaceSelection={handleChangingSelectedPlace}
+      placeList={mainPlaceList}
     />
   );
 }

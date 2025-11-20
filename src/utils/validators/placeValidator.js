@@ -1,4 +1,4 @@
-export const validatePost = (placeId, restaurantName, notes) => {
+export const validatePlace = (placeId, restaurantName, notes) => {
     const errors = {};
 
     // if(!placeId || placeId.trim() === '') {

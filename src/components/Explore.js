@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import NewPostForm from './NewPostForm.js';
+import NewPlaceForm from './NewPlaceForm.js';
 import { FormContainer, H3, Input, Button, Center } from '../styles';
-import { addNewPost } from '../services/firebaseService.js';
+import { addNewPlace } from '../services/firebaseService.js';
 import { auth } from '../firebase.js';
 
 function Explore() {
@@ -12,8 +12,8 @@ function Explore() {
         setSearchQuery(e.target.value);
     };
 
-    const handleAddingNewPost = async (newPostData) => {
-        await addNewPost(newPostData);
+    const handleAddingNewPlace = async (newPlaceData) => {
+        await addNewPlace(newPlaceData);
         SetShowAddForm(false);
     }
 
@@ -24,8 +24,8 @@ function Explore() {
     if(showAddForm) {
         return (
             <>
-                <NewPostForm
-                    onNewPostCreation={handleAddingNewPost}
+                <NewPlaceForm
+                    onNewPlaceCreation={handleAddingNewPlace}
                     userId={auth.currentUser.uid}
             />
             <center>
@@ -34,7 +34,7 @@ function Explore() {
             </>
         );
     }
-     return (      
+     return (
         <React.Fragment>
             <FormContainer>
                 <H3>Search restaurants</H3>

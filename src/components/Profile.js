@@ -1,14 +1,14 @@
-import PostDetail from './PostDetail';
+import PlaceDetail from './PlaceDetail';
 import PostGrid from './PostGrid';
 import ProfileDetails from './ProfileDetails';
 import React, { useEffect, useState } from 'react';
 import { auth } from './../firebase.js';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from './../firebase.js';
-import { subscribeToPosts } from '../services/firebaseService.js';
+import { subscribeToPlaces } from '../services/firebaseService.js';
 import { updateUserBio } from '../services/firebaseService.js';
-import { usePostSelection } from '../hooks/postSelection';
-import { usePostUpdate } from '../hooks/postUpdate.js';
+import { usePlaceSelection } from '../hooks/placeSelection';
+import { usePlaceUpdate } from '../hooks/placeUpdate.js';
 import { useEditMode } from '../hooks/editMode.js';
 import { useFormSubmit } from '../hooks/formSubmit.js';
 import {
@@ -21,8 +21,8 @@ function Profile() {
     const [userBio, setUserBio] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [mainPostList, setMainPostList] = useState([]);
-    const { selectedPost, handleSelectPost, handleBackToList } = usePostSelection();
+    const [mainPlaceList, setMainPlaceList] = useState([]);
+    const { selectedPlace, handleSelectPlace, handleBackToList } = usePlaceSelection();
     const { isEditing, enterEditMode, exitEditMode } = useEditMode();
     const { isLoading, handleSubmit } = useFormSubmit(async (bioData) => {
         try {
@@ -33,7 +33,7 @@ function Profile() {
             console.error('Error updating bio:', err);
         }
     });
-    const handlePostUpdate = usePostUpdate(setMainPostList, selectedPost, handleSelectPost);
+    const handlePlaceUpdate = usePlaceUpdate(setMainPlaceList, selectedPlace, handleSelectPlace);
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -56,17 +56,17 @@ function Profile() {
     }, []);
 
     useEffect(() => {
-        const unSubscribe = subscribeToPosts(
+        const unSubscribe = subscribeToPlaces(
             auth.currentUser.uid,
-            (posts) => setMainPostList(posts),
+            (places) => setMainPlaceList(places),
             (errorMessage) => setError(errorMessage)
         );
         return () => unSubscribe();
     }, []);
 
-    const handleChangingSelectedPost = (id) => {
-        const selection = mainPostList.filter(post => post.id === id)[0];
-        handleSelectPost(selection);
+    const handleChangingSelectedPlace = (id) => {
+        const selection = mainPlaceList.filter(place => place.id === id)[0];
+        handleSelectPlace(selection);
     }
 
     if(loading) {
@@ -77,12 +77,12 @@ function Profile() {
         return <div>{error}</div>;
     }
 
-    if(selectedPost) {
+    if(selectedPlace) {
         return (
-          <PostDetail
-            post={selectedPost}
+          <PlaceDetail
+            place={selectedPlace}
             onBack={handleBackToList}
-            onPostUpdate={handlePostUpdate}
+            onPlaceUpdate={handlePlaceUpdate}
         />
      );
     }
@@ -99,7 +99,7 @@ function Profile() {
                 isLoading={isLoading}
             />
             <RestaurantSection>
-                <PostGrid postList={mainPostList} onPostSelection={handleChangingSelectedPost} />
+                <PostGrid postList={mainPlaceList} onPostSelection={handleChangingSelectedPlace} />
             </RestaurantSection>
         </PageContainer>
     );
