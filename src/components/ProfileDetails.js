@@ -13,7 +13,7 @@ import {
 
 
 function ProfileDetails(props) {
-    const { username, userBio, isEditing, enterEditMode, onSave, isLoading } = props;
+    const { username, userBio, isEditing, enterEditMode, exitEditMode, onSave, isLoading } = props;
 
     if(isEditing) {
         return (
@@ -21,6 +21,7 @@ function ProfileDetails(props) {
                     <EditProfileForm
                         userBio={userBio}
                         onSave={onSave}
+                        onBack={exitEditMode}
                         isLoading={isLoading}
                     />
                 </InfoSection>

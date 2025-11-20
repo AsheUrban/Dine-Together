@@ -41,6 +41,16 @@ export const BioLabel = styled.label`
     display: block;
 `;
 
+export const PostLabel = styled.label`
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: #2C2C2C;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    display: block;
+`;
+
 export const CharacterCounter = styled.p`
     font-size: 12px;
     color: #666;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import NewPostForm from './NewPostForm.js';
-import { FormContainer, H2, Input, Button, Center } from '../styles';
+import { FormContainer, H3, Input, Button, Center } from '../styles';
 import { addNewPost } from '../services/firebaseService.js';
 import { auth } from '../firebase.js';
 
@@ -37,7 +37,7 @@ function Explore() {
      return (      
         <React.Fragment>
             <FormContainer>
-                <H2>Search restaurants</H2>
+                <H3>Search restaurants</H3>
                 <Input
                     type='text'
                     placeholder='Restaurant name or location...'

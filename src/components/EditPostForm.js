@@ -23,7 +23,7 @@ function EditPostForm (props) {
         placeId={post.placeId}
         notes={post.notes}
         cancelButton={<PostActionButton onClick={onBack}>Cancel</PostActionButton>}
-        deleteButton={<PostActionButton onClick={async ()=> { await onDelete(post.id); }}>Delete</PostActionButton>}
+        deleteButton={<PostActionButton onClick={()=> onDelete(post.id)}>Delete</PostActionButton>}
       />
     );
 }

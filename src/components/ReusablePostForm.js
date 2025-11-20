@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { FormContainer, Input, TextArea, Button } from '../styles';
+import { FormContainer, Input, TextArea, Button, PostLabel } from '../styles';
 import { validatePost } from '../utils/validators';
 
 function ReusablePostForm(props) {
@@ -37,21 +37,19 @@ function ReusablePostForm(props) {
                 type='hidden'
                 name='placeId'
                 defaultValue={props.placeId || ''} />
-              <label htmlFor='restaurantName'>Restaurant Name</label>
+              <PostLabel htmlFor='restaurantName'>Restaurant Name:</PostLabel>
               <Input
                 id='restaurantName'
                 type='text'
                 name='restaurantName'
-                defaultValue={props.restaurantName || ''}
-                placeholder='Restaurant Name' />
+                defaultValue={props.restaurantName || ''} />
               {errors?.restaurantName && <p style={{color: 'red', fontSize: '12px'}}>{errors.restaurantName}</p>}
               <br />
-              <label htmlFor='notes'>Personal notes</label>
+              <PostLabel htmlFor='notes'>Notes:</PostLabel>
               <TextArea
                 id='notes'
                 name='notes'
                 defaultValue={props.notes || ''}
-                placeholder='Personal notes.'
                 maxLength='200' />
               {errors?.notes && <p style={{color: 'red', fontSize: '12px'}}>{errors.notes}</p>}
               <br />

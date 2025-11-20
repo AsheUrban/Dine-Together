@@ -3,6 +3,7 @@ export {
     Input,
     TextArea,
     BioLabel,
+    PostLabel,
     CharacterCounter
 } from './formStyles';
 
