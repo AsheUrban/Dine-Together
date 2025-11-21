@@ -56,3 +56,10 @@ export {
 export {
     AvatarContainer
 } from './avatarStyles';
+
+export {
+    PostCard,
+    PostHeader,
+    Username,
+    PostCaption
+} from './postStyles';

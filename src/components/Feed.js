@@ -1,45 +1,17 @@
 import React from 'react';
-import PlaceList from './PlaceList';
+import PostList from './PostList';
 import PlaceDetail from './PlaceDetail';
-import { useState, useEffect } from 'react';
 import { auth } from '../firebase.js';
 import { FormContainer, H1 } from '../styles';
-import { subscribeToAllPlaces, updatePlaceElapsedWaitTimes } from '../services/firebaseService.js';
+import { useAllPosts } from '../hooks/allPosts.js';
 import { usePlaceSelection } from '../hooks/placeSelection.js';
-import { usePlaceUpdate } from '../hooks/placeUpdate.js';
 
 function Feed () {
-  const [mainPlaceList, setMainPlaceList] = useState([]);
-  const [error, setError] = useState(null);
+  const { posts, error } = useAllPosts();
   const { selectedPlace, handleSelectPlace, handleBackToList } = usePlaceSelection();
-  const handlePlaceUpdate = usePlaceUpdate(setMainPlaceList, selectedPlace, handleSelectPlace);
-
-  useEffect(() => {
-    function updateElapsedWaitTime() {
-      const updatedPlaces = updatePlaceElapsedWaitTimes(mainPlaceList);
-      setMainPlaceList(updatedPlaces);
-    }
-
-    const waitTimeUpdateTimer = setInterval(() =>
-      updateElapsedWaitTime(),
-      60000
-    );
-
-    return function cleanup() {
-      clearInterval(waitTimeUpdateTimer);
-    }
-  }, [mainPlaceList])
-
-  useEffect(() => {
-    const unSubscribe = subscribeToAllPlaces(
-      (places) => setMainPlaceList(places),
-      (errorMessage) => setError(errorMessage)
-    );
-    return () => unSubscribe();
-  }, []);
 
   const handleChangingSelectedPlace = (id) => {
-    const selection = mainPlaceList.filter(place => place.id === id)[0];
+    const selection = posts.filter(post => post.id === id)[0];
     handleSelectPlace(selection);
   }
 
@@ -62,15 +34,14 @@ function Feed () {
       <PlaceDetail
       place={selectedPlace}
       onBack={handleBackToList}
-      onPlaceUpdate={handlePlaceUpdate}
       />
     );
   }
 
   return (
-    <PlaceList
-      onPlaceSelection={handleChangingSelectedPlace}
-      placeList={mainPlaceList}
+    <PostList
+      onPostSelection={handleChangingSelectedPlace}
+      postList={posts}
     />
   );
 }

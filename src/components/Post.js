@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Place from './Place';
 import Avatar from './Avatar';
-import { PostCard, PostHeader, Username, PostCaption, PostContent } from '../styles';
+import { PostCard, PostHeader, Username, PostCaption } from '../styles';
 
 function Post({ postId, authorId, username, caption, place, onPostClick }) {
     const handleClick = () => {
