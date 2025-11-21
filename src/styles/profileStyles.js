@@ -57,3 +57,27 @@ export const EditProfileLink = styled.a`
         opacity: 0.7;
     }
 `;
+
+export const TabContainer = styled.div`
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 20px;
+`;
+
+export const TabButton = styled.button`
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #8B4513;
+    font-family: 'Lato', sans-serif;
+    font-weight: ${props => props.active ? 'bold' : 'normal'};
+    border-bottom: ${props => props.active ? '2px solid #8B4513' : 'none'};
+    padding: 0;
+    transition: all 0.2s ease;
+
+    &:hover {
+        opacity: 0.8;
+    }
+`;

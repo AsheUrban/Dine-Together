@@ -34,7 +34,9 @@ export {
     RestaurantSection,
     BioText,
     EditProfileLink,
-    BioSection
+    BioSection,
+    TabContainer,
+    TabButton
 } from './profileStyles';
 
 export {
@@ -45,7 +47,6 @@ export {
     PlaceImage,
     PlaceDetails,
     PlacedDate,
-    PlaceGridStyles,
     PlaceActionButton
 } from './placeStyles';
 
@@ -61,5 +62,6 @@ export {
     PostCard,
     PostHeader,
     Username,
-    PostCaption
+    PostCaption,
+    PostGridStyles
 } from './postStyles';

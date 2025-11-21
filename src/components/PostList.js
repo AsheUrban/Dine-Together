@@ -15,7 +15,15 @@ function PostList(props){
                             authorId={post.userId}
                             username={post.authorUsername}
                             caption={post.caption}
-                            place={post}
+                            place={{
+                                restaurantName: post.restaurantName,
+                                restaurantAddress: post.restaurantAddress,
+                                priceLevel: post.priceLevel,
+                                rating: post.rating,
+                                userRatingsTotal: post.userRatingsTotal,
+                                timeOpen: post.timeOpen,
+                                id: post.placeId
+                            }}
                             onPostClick={props.onPostSelection}
                         />
                     )

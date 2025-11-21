@@ -1,11 +1,12 @@
 import PlaceDetail from './PlaceDetail';
 import PostGrid from './PostGrid';
+import PlaceList from './PlaceList';
 import ProfileDetails from './ProfileDetails';
 import React, { useEffect, useState } from 'react';
 import { auth } from './../firebase.js';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from './../firebase.js';
-import { subscribeToPlaces } from '../services/firebaseService.js';
+import { subscribeToUserPlaces, subscribeToUserPosts } from '../services/firebaseService.js';
 import { updateUserBio } from '../services/firebaseService.js';
 import { usePlaceSelection } from '../hooks/placeSelection';
 import { usePlaceUpdate } from '../hooks/placeUpdate.js';
@@ -14,6 +15,8 @@ import { useFormSubmit } from '../hooks/formSubmit.js';
 import {
     PageContainer,
     RestaurantSection,
+    TabContainer,
+    TabButton
 } from '../styles';
 
 function Profile() {
@@ -22,6 +25,8 @@ function Profile() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [mainPlaceList, setMainPlaceList] = useState([]);
+    const [userPosts, setUserPosts] = useState([]);
+    const [activeTab, setActiveTab] = useState('posts');
     const { selectedPlace, handleSelectPlace, handleBackToList } = usePlaceSelection();
     const { isEditing, enterEditMode, exitEditMode } = useEditMode();
     const { isLoading, handleSubmit } = useFormSubmit(async (bioData) => {
@@ -56,7 +61,16 @@ function Profile() {
     }, []);
 
     useEffect(() => {
-        const unSubscribe = subscribeToPlaces(
+        const unSubscribe = subscribeToUserPosts(
+            auth.currentUser.uid,
+            (posts) => setUserPosts(posts),
+            (errorMessage) => setError(errorMessage)
+        );
+        return () => unSubscribe();
+    }, []);
+
+    useEffect(() => {
+        const unSubscribe = subscribeToUserPlaces(
             auth.currentUser.uid,
             (places) => setMainPlaceList(places),
             (errorMessage) => setError(errorMessage)
@@ -99,7 +113,15 @@ function Profile() {
                 isLoading={isLoading}
             />
             <RestaurantSection>
-                <PostGrid postList={mainPlaceList} onPostSelection={handleChangingSelectedPlace} />
+                <TabContainer>
+                    <TabButton active={activeTab === 'posts'} onClick={() => setActiveTab('posts')}>Posts</TabButton>
+                    <TabButton active={activeTab === 'places'} onClick={() => setActiveTab('places')}>Restaurants</TabButton>
+                </TabContainer>
+                {activeTab === 'posts' ? (
+                    <PostGrid postList={userPosts} onPostSelection={() => {}} />
+                ) : (
+                <PlaceList placeList={mainPlaceList} onPlaceSelection={handleChangingSelectedPlace} />
+                )}
             </RestaurantSection>
         </PageContainer>
     );

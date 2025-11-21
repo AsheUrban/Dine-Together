@@ -40,7 +40,7 @@ function Feed () {
 
   return (
     <PostList
-      onPostSelection={handleChangingSelectedPlace}
+      onPostSelection={() => {}}
       postList={posts}
     />
   );

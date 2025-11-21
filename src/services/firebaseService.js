@@ -1,6 +1,6 @@
 import { auth } from '../firebase.js';
 import { db } from '../firebase.js';
-import { collection, doc, updateDoc, query, orderBy, where, onSnapshot, getDoc, writeBatch, serverTimestamp, getDocs } from 'firebase/firestore';
+import { collection, doc, updateDoc, deleteDoc, query, orderBy, where, onSnapshot, getDoc, writeBatch, serverTimestamp, getDocs } from 'firebase/firestore';
 import { formatDistanceToNow } from 'date-fns';
 
 
@@ -17,19 +17,19 @@ export const subscribeToUserPosts = (userId, onPostsUpdate, onError) => {
         queryByTimestamp,
         async (querySnapshot) => {
             const posts = [];
-            for(const doc of querySnapshot.docs) {
-                const timeOpen = doc.get('timeOpen', {serverTimestamps: "estimate"}).toDate();
+            for(const docSnapShot of querySnapshot.docs) {
+                const timeOpen = docSnapShot.get('timeOpen', {serverTimestamps: "estimate"}).toDate();
                 const jsDate = new Date(timeOpen);
-                const placeDoc = await getDoc(doc(db, 'places', doc.data().placeId));
+                const placeDoc = await getDoc(doc(db, 'places', docSnapShot.data().placeId));
                 if(placeDoc.exists()) {
                     posts.push({
-                        userId: doc.data().userId,
-                        authorUsername: doc.data().authorUsername,
-                        caption: doc.data().caption,
-                        placeId: doc.data().placeId,
+                        userId: docSnapShot.data().userId,
+                        authorUsername: docSnapShot.data().authorUsername,
+                        caption: docSnapShot.data().caption,
+                        placeId: docSnapShot.data().placeId,
                         timeOpen: jsDate,
                         formattedWaitTime: formatDistanceToNow(jsDate),
-                        id: doc.id,
+                        id: docSnapShot.id,
                         restaurantName: placeDoc.data().restaurantName,
                         restaurantAddress: placeDoc.data().restaurantAddress,
                         notes: placeDoc.data().notes,
@@ -59,19 +59,19 @@ export const subscribeToAllPosts = (onPostsUpdate, onError) => {
         queryAllPosts,
         async (querySnapshot) => {
             const posts = [];
-            for (const doc of querySnapshot.docs) {
-                const timeOpen = doc.get('timeOpen', {serverTimestamps: "estimate"}).toDate();
+            for (const docSnapshot of querySnapshot.docs) {
+                const timeOpen = docSnapshot.get('timeOpen', {serverTimestamps: "estimate"}).toDate();
                 const jsDate = new Date(timeOpen);
-                const placeDoc = await getDoc(doc(db, 'places', doc.data().placeId));
+                const placeDoc = await getDoc(doc(db, 'places', docSnapshot.data().placeId));
                 if(placeDoc.exists()) {
                     posts.push({
-                        userId: doc.data().userId,
-                        authorUsername: doc.data().authorUsername,
-                        caption: doc.data().caption,
-                        placeId: doc.data().placeId,
+                        userId: docSnapshot.data().userId,
+                        authorUsername: docSnapshot.data().authorUsername,
+                        caption: docSnapshot.data().caption,
+                        placeId: docSnapshot.data().placeId,
                         timeOpen: jsDate,
                         formattedWaitTime: formatDistanceToNow(jsDate),
-                        id: doc.id,
+                        id: docSnapshot.id,
                         restaurantName: placeDoc.data().restaurantName,
                         restaurantAddress: placeDoc.data().restaurantAddress,
                         notes: placeDoc.data().notes,
@@ -95,8 +95,7 @@ export const subscribeToAllPosts = (onPostsUpdate, onError) => {
 
 export const subscribeToUserPlaces = (userId, onPlacesUpdate, onError) => {
     const queryUserPlaces = query(
-        collection(db, "userPlaces"),
-        where('userId', '==', userId),
+        collection(db, "users", userId, "userPlaces"),
         orderBy('timeAdded', 'desc')
     );
 
@@ -104,13 +103,16 @@ export const subscribeToUserPlaces = (userId, onPlacesUpdate, onError) => {
         queryUserPlaces,
         async (querySnapshot) => {
             const places = [];
-            for (const doc of querySnapshot.docs) {
-                const placeId = doc.data().placeId;
+            for (const docSnapshot of querySnapshot.docs) {
+                const placeId = docSnapshot.id;
+                const timeAdded = docSnapshot.get('timeAdded', {serverTimestamps: "estimate"}).toDate();
+                const jsDate = new Date(timeAdded);
                 const placeDoc = await getDoc(doc(db, 'places', placeId));
                 if(placeDoc.exists()) {
                     places.push({
                         ...placeDoc.data(),
-                        id: placeDoc.id
+                        id: placeDoc.id,
+                        timeOpen: jsDate
                     });
                 }
             }
@@ -206,19 +208,8 @@ export const updatePlace = async (placeId, placeData) => {
 };
 
 export const removeFromSavedPlaces = async (userId, placeId) => {
-    const userPlaceQuery = query(
-        collection(db, 'userPlaces'),
-        where('userId', '==', userId),
-        where('placeId', '==', placeId)
-    );
-
-    const userPlaceDocs = await getDocs(userPlaceQuery);
-    const batch = writeBatch(db);
-    userPlaceDocs.forEach(doc => {
-        batch.delete(doc.ref);
-    });
-
-    return batch.commit();
+    const userPlaceRef = doc(db, 'users', userId, 'userPlaces', placeId);
+    return await deleteDoc(userPlaceRef);
 };
 
 
