@@ -12,7 +12,13 @@ Dine-Together is a prototype React app designed with a single goal in mind: to m
 
 The main branch features auth-gated UI, username profiles, protected routes, and a real-time post/queue experience backed by Firebase. The codebase has been refactored with a clean service-layer architecture to support future API integrations (Google Places API).
 
-The remodel banch features major UI/UX updates and restyling of the app.
+The remodel branch is the current active development branch, featuring a complete architectural separation of Posts (social) and Places (restaurants) collections with a tabbed Profile interface and full place management functionality.
+
+| Branch | Status | Focus |
+|--------|--------|-------|
+| **remodel** | Active Development | Posts/Places separation, Profile tabs, place CRUD |
+| **main** | Stable MVP | Auth, user profiles, protected routes, post queue |
+
 ---
 
 ## **Technologies Used**
@@ -30,10 +36,14 @@ The MVP goal was a React application with:
 - A wishlist/queue of places to eat
 - Browser-based API integration (Google Places)
 
-**Current Status:** The codebase has been significantly refactored with a clean service-layer architecture. The **main** branch now features:
+**Current Status:** The **remodel** branch features a complete architectural separation of Posts (social) and Places (restaurants) collections:
+- Posts as social wrappers with captions and timestamps
+- Places as restaurant data that can be referenced by multiple posts
+- Profile page with tabbed interface (Posts | Restaurants)
+- Feed displays all posts from all users with place data joined at service layer
+- Place edit/update and delete functionality
 - Protected routes with centralized authentication
 - Username-based user profiles with Firestore integration
-- Separate sign-up and sign-in pages
 - Reusable styled components in a centralized styles directory
 - Firebase service layer for database operations
 - Ready for Google Places API integration
@@ -121,27 +131,40 @@ src/
 │   ├── SignIn.js              (Sign in page)
 │   ├── SignUp.js              (Sign up page)
 │   ├── Header.js              (Navigation header with user info)
-│   ├── Feed.js                (Display all restaurants - main feed view)
-│   ├── Profile.js             (User profile - view own restaurants)
-│   ├── Explore.js             (Search restaurants & manual add)
-│   ├── PostDetail.js          (Detail view with edit/delete - manages own state)
-│   ├── PostList.js            (Reusable list component)
+│   ├── Feed.js                (Display all posts from all users)
+│   ├── Profile.js             (User profile with Posts and Restaurants tabs)
+│   ├── Explore.js             (Search restaurants & manual add - WIP)
+│   ├── PlaceDetail.js         (View/edit saved place details)
+│   ├── EditPlaceForm.js       (Edit place information)
+│   ├── ReusablePlaceForm.js   (Reusable form component for places)
+│   ├── Post.js                (Individual social post component)
+│   ├── PostGrid.js            (Grid display of posts)
+│   ├── PostList.js            (List display of posts)
+│   ├── PlaceList.js           (List display of places)
+│   ├── ProfileDetails.js      (User bio section)
 │   ├── ProtectedRoute.js      (Auth-gated route wrapper)
-│   ├── NewPostForm.js         (Create new restaurant)
-│   └── EditPostForm.js        (Edit restaurant details)
+│   └── NewPostForm.js         (Create new post - WIP)
 ├── hooks/
-│   └── postSelection.js       (Custom hook for post selection state)
+│   ├── editMode.js            (Edit mode state management)
+│   ├── deleteConfirmation.js  (Delete confirmation dialog)
+│   ├── formSubmit.js          (Form submission handling)
+│   ├── placeSelection.js      (Place selection state)
+│   ├── userPosts.js           (User's posts subscription)
+│   ├── userPlaces.js          (User's saved places subscription)
+│   └── allPosts.js            (All posts subscription)
 ├── services/
-│   ├── firebaseService.js     (Firebase CRUD operations)
-│   └── validators/            (Input validation utilities)
+│   └── firebaseService.js     (Firebase CRUD and real-time subscriptions)
 ├── styles/
 │   ├── formStyles.js          (Form & input styled components)
 │   ├── globalStyles.js        (Global theme & typography)
 │   ├── postStyles.js          (Post card styled components)
+│   ├── placeStyles.js         (Place card styled components)
 │   ├── profileStyles.js       (Profile page styled components)
-│   ├── feedStyles.js          (Feed page styled components)
+│   ├── avatarStyles.js        (Avatar styled components)
+│   ├── FeedStyles.js          (Feed page styled components)
 │   └── index.js               (Centralized style exports)
-└── firebase.js                (Firebase configuration)
+├── firebase.js                (Firebase configuration)
+└── mood/                      (UI/UX design reference images)
 ```
 
 ---
@@ -149,9 +172,12 @@ src/
 ## **Next Steps**
 
 **Remodel Branch (In Progress):**
-- Complete vintage aesthetic UI redesign
-- Implement Google Places API integration for restaurant search
-- Build out Explore page with API results and manual fallback
+- Separate Posts (social) and Places (restaurants) collections
+- Profile page with Posts and Restaurants tabs
+- Place edit/update and delete functionality
+- Post edit/delete functionality (in progress)
+- Google Places API integration for restaurant search (planned)
+- Build out Explore page with API results and manual fallback (planned)
 
 **Main Branch (Post-Remodel):**
 The codebase is ready for Google Places API integration:
@@ -161,6 +187,12 @@ The codebase is ready for Google Places API integration:
 3. Add autocomplete and restaurant details to forms
 4. Integrate real restaurant photos from API
 5. Polish and test end-to-end workflows
+
+---
+
+## **Development Process**
+
+This is an independent educational project owned and developed by Ashe Urban. Claude (Anthropic's AI assistant) is used as a development tool to provide guidance, suggestions, and explanations. The developer maintains full ownership of all code, makes all implementation decisions, and owns all commits. This approach ensures deep learning through hands-on problem-solving while leveraging AI assistance for guidance and architectural discussion.
 
 ---
 
