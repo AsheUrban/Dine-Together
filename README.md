@@ -16,8 +16,8 @@ The remodel branch is the current active development branch, featuring a complet
 
 | Branch | Status | Focus |
 |--------|--------|-------|
-| **remodel** | Active Development | Posts/Places separation, Profile tabs, place CRUD |
-| **main** | Stable MVP | Auth, user profiles, protected routes, post queue |
+| **remodel** | Active Development | Posts/Places architectural separation with tabbed Profile, place management (CRUD), ready for Google Places API integration. 23 commits ahead of main. |
+| **main** | Stable MVP | Foundation with authentication, user profiles, protected routes, and basic post functionality. Use as reference for stable baseline. |
 
 ---
 
@@ -27,6 +27,71 @@ The remodel branch is the current active development branch, featuring a complet
 |------|----------|-------------|---------|
 | JavaScript, JSX | React 18 | Firebase (Auth, Firestore) | Service Layer Pattern |
 | CSS | Styled Components | Google Places API *(In Progress)* | Centralized Styling |
+
+---
+
+## **Architecture**
+
+This project uses a **service-layer pattern** to separate concerns and keep components clean:
+
+- **Posts & Places Collections** — Posts (social wrappers with captions) reference Places (restaurant data) by ID. One Place can be referenced by multiple Posts, keeping data normalized and shareable.
+- **Service Layer** (`firebaseService.js`) — Centralizes all Firebase operations (auth, CRUD, subscriptions) and joins Post + Place data at the service level, so components receive complete data in props.
+- **Custom Hooks** — 11 reusable hooks manage component state (data subscriptions, form handling, edit modes, delete confirmations), promoting code reuse and testability.
+- **Styled Components** — Centralized styling system with 8 style files, maintaining consistent theme and visual language across the app.
+
+This architecture scales cleanly: adding Google Places API integration requires changes only to the service layer and firebaseService.js, not to component logic.
+
+### **Service Layer Pattern**
+
+The **service layer** (`firebaseService.js`) sits between components and external services (Firebase, APIs). Instead of components calling Firebase directly, they call service functions.
+
+**Benefits:**
+- **Separation of concerns** — Components focus on UI; service layer handles data logic
+- **Reusability** — Multiple components can use the same service functions without duplication
+- **Testability** — Service logic can be tested independently from UI
+- **Flexibility** — Swapping Firebase for a different backend requires changes only in the service layer
+- **API Integration** — Adding Google Places API calls happens in the service layer without touching components
+
+**Example:** When Explore.js needs to search restaurants, it calls `firebaseService.searchRestaurants()` instead of directly calling Google Places API. The service layer handles the API call, error handling, and data transformation. Components receive clean data ready to display.
+
+### **Firestore Schema**
+
+```
+firestore/
+├── posts/
+│   └── {postId}
+│       ├── userId (string) - Author's Firebase UID
+│       ├── authorUsername (string) - Denormalized for Feed display
+│       ├── caption (string) - Optional social sharing text
+│       ├── placeId (string) - Reference to places collection
+│       └── timeOpen (timestamp) - When post was created
+│
+├── places/
+│   └── {placeId}
+│       ├── restaurantName (string)
+│       ├── restaurantAddress (string)
+│       ├── notes (string) - User observations/details
+│       ├── priceLevel (number) - 1-4 price indicator
+│       ├── rating (number) - Google Places rating
+│       ├── userRatingsTotal (number) - Number of ratings
+│       └── createdAt (timestamp) - When place was added to system
+│
+└── users/{userId}/
+    ├── username (string)
+    ├── email (string)
+    ├── bio (object) - User profile bio fields
+    │   ├── bestMeal (string) - Best meal of my life (~75 chars)
+    │   ├── goToMeals (string) - My go-to meals (~75 chars)
+    │   └── aboutMe (string) - About me (~150 chars)
+    └── userPlaces/ (subcollection)
+        └── {placeId}
+            └── timeAdded (timestamp) - When user saved this place
+```
+
+**Key Points:**
+- Posts reference Places by ID (one Place can be referenced by multiple Posts)
+- userPlaces subcollection links users to their saved restaurants
+- Service layer joins Post + Place data when fetching (no N+1 queries)
 
 ---
 
@@ -145,13 +210,17 @@ src/
 │   ├── ProtectedRoute.js      (Auth-gated route wrapper)
 │   └── NewPostForm.js         (Create new post - WIP)
 ├── hooks/
-│   ├── editMode.js            (Edit mode state management)
-│   ├── deleteConfirmation.js  (Delete confirmation dialog)
-│   ├── formSubmit.js          (Form submission handling)
-│   ├── placeSelection.js      (Place selection state)
-│   ├── userPosts.js           (User's posts subscription)
-│   ├── userPlaces.js          (User's saved places subscription)
-│   └── allPosts.js            (All posts subscription)
+│   ├── useEditMode.js         (Toggle edit/view state)
+│   ├── useDeleteConfirmation.js (Delete confirmation dialogs)
+│   ├── useFormSubmit.js       (Form submission with loading/error states)
+│   ├── usePlaceSelection.js   (Track selected place)
+│   ├── useUserPosts.js        (Subscribe to current user's posts)
+│   ├── useUserPlaces.js       (Subscribe to current user's saved places)
+│   ├── useAllPosts.js         (Subscribe to all posts for Feed)
+│   ├── useFeedPosts.js        (Manage Feed post data & updates)
+│   ├── useProfileData.js      (Manage profile username & bio)
+│   ├── usePostUpdate.js       (Handle post update logic)
+│   └── usePlaceUpdate.js      (Handle place update logic)
 ├── services/
 │   └── firebaseService.js     (Firebase CRUD and real-time subscriptions)
 ├── styles/
@@ -169,30 +238,75 @@ src/
 
 ---
 
-## **Next Steps**
+## **Development Roadmap**
 
-**Remodel Branch (In Progress):**
-- Separate Posts (social) and Places (restaurants) collections
-- Profile page with Posts and Restaurants tabs
+### **Phase 1: JavaScript MVP (Current - Remodel Branch)**
+
+**✅ Completed:**
+- Posts/Places architectural separation (two Firestore collections)
+- Profile page with tabbed interface (Posts | Restaurants)
 - Place edit/update and delete functionality
-- Post edit/delete functionality (in progress)
-- Google Places API integration for restaurant search (planned)
-- Build out Explore page with API results and manual fallback (planned)
+- 11 custom hooks for scalable state management
+- Vintage menu aesthetic with centralized styling
 
-**Main Branch (Post-Remodel):**
-The codebase is ready for Google Places API integration:
+**🚧 In Progress:**
+- Place save/remove functions with scalable subcollection structure
+- PostDetail component with ownership checks and place drill-down
+- PlaceDetail conditional rendering (Add/Edit/Remove based on save state)
+- Feed and Profile integration with PostDetail
+- Form validation and error handling
+- Responsive design refinements
+
+**📋 Pending Before API Integration:**
+- Complete PostDetail and PlaceDetail implementation
+- Wire PostDetail into Feed and Profile flows
+- Implement "who saved this place" display on PlaceDetail
+- Test end-to-end post and place workflows
+
+### **Phase 2: Google Places API Integration**
 
 1. Install `@react-google-maps/api` package
 2. Implement restaurant search in Explore component
-3. Add autocomplete and restaurant details to forms
-4. Integrate real restaurant photos from API
-5. Polish and test end-to-end workflows
+3. Add autocomplete functionality to forms
+4. Display real restaurant photos from API
+5. Integrate API data into place creation flow
+6. Test end-to-end workflows and polish UX
+
+### **Phase 3: TypeScript Refactor (Post-MVP)**
+
+After the JavaScript version is polished and deployed:
+- Migrate codebase to TypeScript
+- Introduce React Query for advanced state management
+- Add Zod/Yup for schema validation
+- Implement Suspense for async boundaries
+- Build foundation for social features (friends, connections, reservations)
 
 ---
 
 ## **Development Process**
 
-This is an independent educational project owned and developed by Ashe Urban. Claude (Anthropic's AI assistant) is used as a development tool to provide guidance, suggestions, and explanations. The developer maintains full ownership of all code, makes all implementation decisions, and owns all commits. This approach ensures deep learning through hands-on problem-solving while leveraging AI assistance for guidance and architectural discussion.
+This is an independent educational project owned and developed by Ashe Urban. Claude (Anthropic's AI assistant) is used as a development tool to provide guidance, suggestions, and explanations.
+
+**Ownership & Workflow:**
+- Ashe maintains full ownership of all code and makes all implementation decisions
+- All commits are authored by Ashe
+- Claude provides direction → Ashe implements → Review together
+- This ensures deep learning through hands-on problem-solving while leveraging AI assistance for guidance and architectural discussion
+
+**Collaboration Approach:**
+- Claude always reads code first before making recommendations
+- Architectural decisions are discussed before implementation
+- Code changes are explained with reasoning (the "why", not just the "what")
+- Each step is deliberate and traceable
+- Questions are treated as learning opportunities, not direction changes
+- Forward momentum is maintained with clear next steps
+
+**Code Presentation (Claude → Ashe):**
+- Changes are presented in diff format with color-coded additions/removals
+- Complete files are provided, never just snippets
+- Inline comments explain the "why" behind changes
+- Related changes are grouped together logically
+- Code is mentally tested for syntax and indentation before presentation
 
 ---
 
