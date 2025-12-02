@@ -1,6 +1,6 @@
 import { auth } from '../firebase.js';
 import { db } from '../firebase.js';
-import { collection, doc, updateDoc, deleteDoc, query, orderBy, where, onSnapshot, getDoc, writeBatch, serverTimestamp, getDocs } from 'firebase/firestore';
+import { collection, doc, updateDoc, query, orderBy, where, onSnapshot, getDoc, writeBatch, serverTimestamp, getDocs } from 'firebase/firestore';
 import { formatDistanceToNow } from 'date-fns';
 
 
@@ -202,16 +202,86 @@ export const deletePost = async (postId, removeFromSavedPlaces = false) => {
 
 // ===== PLACE OPERATIONS =====
 
+export const addToSavedPlaces = async (userId, placeId) => {
+    const batch = writeBatch(db);
+
+    try {
+        const placeSavedByRef = doc(db, 'placeSavedBy', placeId, 'users', userId);
+        batch.set(placeSavedByRef, {
+            timeAdded: serverTimestamp()
+        });
+
+        const userPlaceRef = doc(db, 'users', userId, 'userPlaces', placeId);
+        batch.set(userPlaceRef, {
+            timeAdded: serverTimestamp()
+        });
+
+        await batch.commit();
+    } catch (error) {
+        console.error('Error adding place to saved:', error);
+        throw error;
+    }
+};
+
+export const checkIfPlaceSaved = async (userId, placeId) => {
+    try {
+        const docRef = doc(db, 'placeSavedBy', placeId, 'users', userId);
+        const docSnap = await getDoc(docRef);
+        return docSnap.exists();
+    } catch (error) {
+        console.error('Error checking if place saved:', error);
+        return false;
+    }
+};
+
+export const getPlaceSavedByUsers = async (placeId) => {
+    try {
+        const usersRef = collection(db, 'placeSavedBy', placeId, 'users');
+        const snapshot = await getDocs(usersRef);
+        return snapshot.docs.map(doc => doc.id);
+    } catch (error) {
+        console.error('Error fetching place saved by users:', error);
+        return [];
+    }
+};
+
+export const getUsernamesFromIds = async (userIds) => {
+    try {
+        const usernames = {};
+        for(const userId of userIds) {
+            const userRef = doc(db, 'users', userId);
+            const usersnap = await getDoc(userRef);
+            if (usersnap.exists()) {
+                usernames[userId] = usersnap.dataa().username;
+            } 
+        }
+        return usernames;
+    } catch (error) {
+        return {};
+    }
+};
+
+export const removeFromSavedPlaces = async (userId, placeId) => {
+    const batch = writeBatch(db);
+
+    try {
+        const placeSavedByRef = doc(db, 'placeSavedBy', placeId, 'users', userId);
+        batch.delete(placeSavedByRef);
+        
+        const userPlaceRef = doc(db, 'users', userId, 'userPlaces', placeId);
+        batch.delete(userPlaceRef);
+
+        await batch.commit();
+    } catch (error) {
+        console.error('Error removing place from saved:', error);
+        throw error;
+    }
+};
+
 export const updatePlace = async (placeId, placeData) => {
     const placeRef = doc(db, 'places', placeId);
     return await updateDoc(placeRef, placeData);
 };
-
-export const removeFromSavedPlaces = async (userId, placeId) => {
-    const userPlaceRef = doc(db, 'users', userId, 'userPlaces', placeId);
-    return await deleteDoc(userPlaceRef);
-};
-
 
 // ===== UTILITY FUNCTIONS =====
 
