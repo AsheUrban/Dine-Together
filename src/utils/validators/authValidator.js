@@ -18,6 +18,7 @@ export const validateSignUp = (username, email, password, passwordConfirm) => {
     } else if (password.length > 72) {
         errors.password = 'Password must be no more than 72 characters.';
     } else {
+        // eslint-disable-next-line no-useless-escape
         const specialCharCount = (password.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]/g) || []).length;
         if(specialCharCount < 2) {
             errors.password = 'Password must include at least 2 special characters.';

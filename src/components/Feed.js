@@ -10,10 +10,10 @@ function Feed () {
   const { posts, error } = useAllPosts();
   const { selectedPlace, handleSelectPlace, handleBackToList } = usePlaceSelection();
 
-  const handleChangingSelectedPlace = (id) => {
-    const selection = posts.filter(post => post.id === id)[0];
-    handleSelectPlace(selection);
-  }
+  // const handleChangingSelectedPlace = (id) => {
+  //   const selection = posts.filter(post => post.id === id)[0];
+  //   handleSelectPlace(selection);
+  // }
 
   if (auth.currentUser == null) {
     return (

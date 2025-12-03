@@ -8,10 +8,10 @@ import {
     ConfirmDialogButtons
 } from '../styles';
 
-function ConfirmDialog({ isOpen, message, onConfirm, onCancel, isLoading   }) {
+function ConfirmDialog({ isOpen, message, onConfirm, onCancel, isLoading }) {
     const overlayRef = useRef(null);
 
-    useEffect(() {
+    useEffect(() => {
         if(!isOpen) return;
 
         const handleClickOutside = (e) => {
