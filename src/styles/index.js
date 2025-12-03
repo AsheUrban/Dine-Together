@@ -26,7 +26,8 @@ export {
     LinkStyle,
     BackgroundStyles,
     SignUpLink,
-    Center
+    Center,
+    GlobalContentWrapper
 } from './globalStyles';
 
 export {
@@ -60,6 +61,7 @@ export {
 } from './avatarStyles';
 
 export {
+    PostWrapper,
     PostCard,
     PostHeader,
     Username,

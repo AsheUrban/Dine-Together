@@ -28,6 +28,7 @@ function Post({ postId, authorId, username, caption, place, onPostClick }) {
             />
         </PostCard>
     );
+    
 }
 
 Post.propTypes = {

@@ -189,3 +189,11 @@ export const Center = styled.div`
     margin: auto;
     font-family: 'Lato', sans-serif;
 `;
+
+export const GlobalContentWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    height: fit-content;
+    width: 100%;
+`;

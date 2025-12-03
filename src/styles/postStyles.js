@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import { GlobalContentWrapper } from './globalStyles';
+
+export const PostWrapper = GlobalContentWrapper;
 
 export const PostCard = styled.div`
     background-color: #F5F1E8;

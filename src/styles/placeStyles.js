@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import { GlobalContentWrapper } from './globalStyles';
+
+export const PlaceWrapper = GlobalContentWrapper;
 
 export const PlaceContainer = styled.div`
     background-color: #F5F1E8;
@@ -10,14 +13,6 @@ export const PlaceContainer = styled.div`
     text-align: center;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-`;
-
-export const PlaceWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    height: fit-content;
-    width: 100%;
 `;
 
 export const PlaceItem = styled.div`
