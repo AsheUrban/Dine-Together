@@ -49,7 +49,8 @@ export {
     PlaceImage,
     PlaceDetails,
     PlacedDate,
-    PlaceActionButton
+    PlaceActionButton,
+    PlaceGridStyles
 } from './placeStyles';
 
 export {
@@ -66,5 +67,4 @@ export {
     PostHeader,
     Username,
     PostCaption,
-    PostGridStyles
 } from './postStyles';

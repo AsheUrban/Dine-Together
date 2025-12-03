@@ -12,7 +12,7 @@ function Post({ postId, authorId, username, caption, place, onPostClick }) {
     return (
         <PostCard onClick={handleClick}>
             <PostHeader>
-                <Avatar displayName={username} variant="header"/>
+                <Avatar displayName={username} variant="profile"/>
                 <Username>{username}</Username>
             </PostHeader>
             <PostCaption>{caption}</PostCaption>

@@ -1,6 +1,6 @@
 import PlaceDetail from './PlaceDetail';
-import PostGrid from './PostGrid';
-import PlaceList from './PlaceList';
+import PlaceGrid from './PlaceGrid';
+import PostList from './PostList';
 import ProfileDetails from './ProfileDetails';
 import React, { useEffect, useState } from 'react';
 import { auth } from './../firebase.js';
@@ -26,7 +26,7 @@ function Profile() {
     const [error, setError] = useState(null);
     const [mainPlaceList, setMainPlaceList] = useState([]);
     const [userPosts, setUserPosts] = useState([]);
-    const [activeTab, setActiveTab] = useState('posts');
+    const [activeTab, setActiveTab] = useState('places');
     const { selectedPlace, handleSelectPlace, handleBackToList } = usePlaceSelection();
     const { isEditing, enterEditMode, exitEditMode } = useEditMode();
     const { isLoading, handleSubmit } = useFormSubmit(async (bioData) => {
@@ -114,13 +114,13 @@ function Profile() {
             />
             <RestaurantSection>
                 <TabContainer>
-                    <TabButton active={activeTab === 'posts'} onClick={() => setActiveTab('posts')}>Posts</TabButton>
                     <TabButton active={activeTab === 'places'} onClick={() => setActiveTab('places')}>Restaurants</TabButton>
+                    <TabButton active={activeTab === 'posts'} onClick={() => setActiveTab('posts')}>Posts</TabButton>
                 </TabContainer>
                 {activeTab === 'posts' ? (
-                    <PostGrid postList={userPosts} onPostSelection={() => {}} />
+                    <PostList postList={userPosts} onPostSelection={() => {}} />
                 ) : (
-                <PlaceList placeList={mainPlaceList} onPlaceSelection={handleChangingSelectedPlace} />
+                <PlaceGrid placeList={mainPlaceList} onPlaceSelection={handleChangingSelectedPlace} />
                 )}
             </RestaurantSection>
         </PageContainer>

@@ -5,7 +5,7 @@ export const PostWrapper = GlobalContentWrapper;
 
 export const PostCard = styled.div`
     background-color: #F5F1E8;
-    border: 2px solid #D98560;
+    border: 2px solid #8B4513;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -25,7 +25,7 @@ export const PostHeader = styled.div`
     gap: 12px;
     margin-bottom: 15px;
     padding-bottom: 12px;
-    border-bottom: 1px solid #D4A574;
+    border-bottom: 1px solid #8B4513;
 `;
 
 export const Username = styled.p`
@@ -44,17 +44,3 @@ export const PostCaption = styled.p`
     line-height: 1.5;
 `;
 
-export const PostGridStyles = styled.div`
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    width: 100%;
-
-    @media (max-width: 1024px) {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media (max-width: 640px) {
-        grid-template-columns: 1fr;
-    }
-`;
