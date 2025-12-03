@@ -1,5 +1,5 @@
 const { initializeApp } = require("firebase/app");
-const { getFirestore, collection, addDoc, setDoc, doc, serverTimestamp } = require("firebase/firestore");
+const { getFirestore, collection, addDoc, setDoc, doc, serverTimestamp, writeBatch } = require("firebase/firestore");
 const { getAuth } = require("firebase/auth");
 
 const firebaseConfig = {
@@ -72,22 +72,62 @@ async function addTestData() {
       console.log(`  Created place: ${testPlaces[i].restaurantName} (${placeRef.id})`);
     }
 
-    // Add userPlaces links for user 1
-    console.log("\nAdding userPlaces links for User 1...");
+    // Add saved places for user 1 (both placeSavedBy and userPlaces)
+    console.log("\nAdding saved places for User 1...");
     for (const placeId of user1PlaceIds) {
-      await setDoc(doc(db, "users", user1Id, "userPlaces", placeId), {
+      const batch = writeBatch(db);
+
+      const placeSavedByRef = doc(db, "placeSavedBy", placeId, "users", user1Id);
+      batch.set(placeSavedByRef, {
         timeAdded: serverTimestamp()
       });
-      console.log(`  Linked place ${placeId} to user 1`);
+
+      const userPlaceRef = doc(db, "users", user1Id, "userPlaces", placeId);
+      batch.set(userPlaceRef, {
+        timeAdded: serverTimestamp()
+      });
+
+      await batch.commit();
+      console.log(`  Linked place ${placeId} to user 1 (both placeSavedBy and userPlaces)`);
     }
 
-    // Add userPlaces links for user 2
-    console.log("\nAdding userPlaces links for User 2...");
+    // Add saved places for user 2 (both placeSavedBy and userPlaces)
+    console.log("\nAdding saved places for User 2...");
     for (const placeId of user2PlaceIds) {
-      await setDoc(doc(db, "users", user2Id, "userPlaces", placeId), {
+      const batch = writeBatch(db);
+
+      const placeSavedByRef = doc(db, "placeSavedBy", placeId, "users", user2Id);
+      batch.set(placeSavedByRef, {
         timeAdded: serverTimestamp()
       });
-      console.log(`  Linked place ${placeId} to user 2`);
+
+      const userPlaceRef = doc(db, "users", user2Id, "userPlaces", placeId);
+      batch.set(userPlaceRef, {
+        timeAdded: serverTimestamp()
+      });
+
+      await batch.commit();
+      console.log(`  Linked place ${placeId} to user 2 (both placeSavedBy and userPlaces)`);
+    }
+
+    // Cross-save: User 1 saves one of User 2's places
+    console.log("\nAdding cross-saves between users...");
+    const crossSavePlace = user2PlaceIds[0]; // User 1 saves Sushi Paradise
+    {
+      const batch = writeBatch(db);
+
+      const placeSavedByRef = doc(db, "placeSavedBy", crossSavePlace, "users", user1Id);
+      batch.set(placeSavedByRef, {
+        timeAdded: serverTimestamp()
+      });
+
+      const userPlaceRef = doc(db, "users", user1Id, "userPlaces", crossSavePlace);
+      batch.set(userPlaceRef, {
+        timeAdded: serverTimestamp()
+      });
+
+      await batch.commit();
+      console.log(`  User 1 saved User 2's place: ${crossSavePlace}`);
     }
 
     // Add posts for user 1

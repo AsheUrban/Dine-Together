@@ -252,7 +252,7 @@ export const getUsernamesFromIds = async (userIds) => {
             const userRef = doc(db, 'users', userId);
             const usersnap = await getDoc(userRef);
             if (usersnap.exists()) {
-                usernames[userId] = usersnap.dataa().username;
+                usernames[userId] = usersnap.data().username;
             } 
         }
         return usernames;

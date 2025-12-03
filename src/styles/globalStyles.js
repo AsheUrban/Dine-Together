@@ -146,6 +146,21 @@ export const Button = styled.button`
     }
 `;
 
+export const LinkStyle = styled.button`
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #8B4513;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    padding: 0;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: #D98560;
+    }
+`;
+
 // Background
 export const BackgroundStyles = styled.div`
     background-color: #F5F1E8;

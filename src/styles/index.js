@@ -23,6 +23,7 @@ export {
     NavLink,
     SignOutButton,
     Button,
+    LinkStyle,
     BackgroundStyles,
     SignUpLink,
     Center
