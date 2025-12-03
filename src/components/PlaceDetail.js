@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import EditPlaceForm from './EditPlaceForm';
 import { auth } from '../firebase.js';
-import { PlaceContainer, H3Centered, H4, PlaceActionButton, LinkStyle } from '../styles';
+import { PlaceContainer, H3Centered, H4, PlaceActionButton } from '../styles';
 import { updatePlace, removeFromSavedPlaces } from '../services/firebaseService';
 import { useEditMode } from '../hooks/editMode';
 import { useDeleteConfirmation } from '../hooks/deleteConfirmation';
@@ -12,7 +12,7 @@ function PlaceDetail(props){
     const { place, onBack, onPlaceUpdate } = props;
     const { isEditing, enterEditMode, exitEditMode } = useEditMode();
     const { confirmDelete } = useDeleteConfirmation();
-    const { isSaved, savedByUsers, savedByUsernames, showAllSavedBy, setShowAllSavedBy, isLoading, savePlace, removePlace } = usePlaceSaveState(place.id);
+    const { isSaved, isLoading, savePlace, removePlace } = usePlaceSaveState(place.id);
    
     const handleEditingPlace = async (placeToEdit) => {
         const { id, ...placeData } = placeToEdit;
@@ -33,28 +33,6 @@ function PlaceDetail(props){
         }
     }
 
-    const renderSavedByInfo = () => {
-        if (savedByUsers.length === 0) return null;
-
-        if (savedByUsers.length <= 3) {
-            return (
-                <p> 
-                    {savedByUsers.map(userId => savedByUsernames[userId]).join(', ')} 
-                </p>
-            );
-        }
-
-        return (
-            <p>
-                {showAllSavedBy ?
-                    savedByUsers.map(userId => savedByUsernames[userId]).join(', ')
-                    : `${savedByUsers.length} people`
-                }
-                {!showAllSavedBy && <LinkStyle onClick={() => setShowAllSavedBy(true)}>more</LinkStyle>}
-            </p>
-        );
-    };
-
     if(isEditing) {
         return (
                 <EditPlaceForm
@@ -71,7 +49,6 @@ function PlaceDetail(props){
         <React.Fragment>
             <PlaceContainer>
                 <H3Centered>{place.restaurantName}</H3Centered>
-                {renderSavedByInfo()}
                 <H4>{place.restaurantAddress}</H4>
                 <p><em>{place.notes}</em></p>
                 {isSaved ? (

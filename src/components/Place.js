@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { formatDistanceToNow } from 'date-fns';
-import { H3Centered, H4, PlaceWrapper, PlaceItem, PlaceContent, PlaceImage, PlaceDetails, PlacedDate } from '../styles';
+import { H3Centered, H4, PlaceWrapper, PlaceItem, PlaceContent, PlaceImage, PlaceDetails } from '../styles';
 
 function Place(props){
     return (
@@ -17,7 +16,6 @@ function Place(props){
                     </PlaceDetails>
                 </PlaceContent>
             </PlaceItem>
-            <PlacedDate>{formatDistanceToNow(props.timeOpen, { addSuffix: true })}</PlacedDate>
         </PlaceWrapper>
     );
 }
@@ -28,7 +26,6 @@ Place.propTypes = {
     priceLevel: PropTypes.number,
     rating: PropTypes.number,
     userRatingsTotal: PropTypes.number,
-    timeOpen: PropTypes.object,
     id: PropTypes.string,
     whenPlaceClicked: PropTypes.func
 }

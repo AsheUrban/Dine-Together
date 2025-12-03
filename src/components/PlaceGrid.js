@@ -18,8 +18,7 @@ function PlaceGrid(props) {
                                 priceLevel={place.priceLevel}
                                 rating={place.rating}
                                 userRatingsTotal={place.userRatingsTotal}
-                                timeOpen={place.timeOpen}
-                                id={place.placeId}
+                                id={place.id}
                             whenPlaceClicked={onPlaceSelection}
                         />
                     ))}

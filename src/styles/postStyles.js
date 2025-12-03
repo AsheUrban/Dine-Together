@@ -8,6 +8,7 @@ export const PostCard = styled.div`
     border: 2px solid #8B4513;
     padding: 20px;
     border-radius: 10px;
+    margin-top: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: opacity 0.2s ease;

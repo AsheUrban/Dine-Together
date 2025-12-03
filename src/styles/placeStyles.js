@@ -58,7 +58,7 @@ export const PlacedDate = styled.p`
     font-size: 14px;
     color: #8B4513;
     margin-top: 0px;
-    margin-bottom: 0;
+    margin-bottom: 10px;
     margin-left: 0;
     font-family: 'Lato', sans-serif;
     font-style: italic;
