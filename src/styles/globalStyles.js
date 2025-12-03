@@ -197,3 +197,123 @@ export const GlobalContentWrapper = styled.div`
     height: fit-content;
     width: 100%;
 `;
+
+// ConfirmDialog Components
+export const ConfirmDialogOverlay = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+`;
+
+export const ConfirmDialogContainer = styled.div`
+    background-color: #F5F1E8;
+    border: 2px solid #8B4513;
+    border-radius: 10px;
+    padding: 40px;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+`;
+
+export const ConfirmDialogMessage = styled.p`
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    color: #2C2C2C;
+    margin: 0 0 30px 0;
+    line-height: 1.6;
+`;
+
+export const ConfirmDialogButtons = styled.div`
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+`;
+
+export const ConfirmDialogButton = styled.button`
+    background-color: ${props => props.danger ? '#8B4513' : '#D4A574'};
+    border: 2px solid ${props => props.danger ? '#D98560' : '#8B4513'};
+    color: ${props => props.danger ? '#F5F1E8' : '#2C2C2C'};
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    opacity: ${props => props.disabled ? 0.6 : 1};
+    pointer-events: ${props => props.disabled ? 'none' : 'auto'};
+
+    &:hover {
+        background-color: ${props => props.danger ? '#D98560' : '#8B4513'};
+        color: ${props => props.danger ? '#2C2C2C' : '#F5F1E8'};
+    }
+`;
+
+// KebabMenu Components
+export const KebabMenuButton = styled.button`
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #8B4513;
+    padding: 4px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+    position: relative;
+
+    &:hover {
+        color: #D98560;
+    }
+`;
+
+export const KebabMenuContainer = styled.div`
+    position: relative;
+`;
+
+export const KebabMenuDropdown = styled.div`
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #F5F1E8;
+    border: 2px solid #8B4513;
+    border-radius: 8px;
+    min-width: 150px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    margin-top: 4px;
+`;
+
+export const KebabMenuItem = styled.button`
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 12px 16px;
+    text-align: left;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    color: #2C2C2C;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: #D98560;
+        color: #F5F1E8;
+    }
+
+    &:first-child {
+        border-radius: 6px 6px 0 0;
+    }
+
+    &:last-child {
+        border-radius: 0 0 6px 6px;
+    }
+`;
