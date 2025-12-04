@@ -6,19 +6,7 @@
 ---
 
 ## **Project Overview**
-<<<<<<< HEAD
-
-### **Branch Status**
-
-| Branch | Status | Focus |
-|--------|--------|-------|
-| **remodel** | Active Development | Posts/Places separation, KebabMenu, ConfirmDialog, tabbed Profile interface, place management |
-| **main** | Stable MVP | Foundation with auth, profiles, protected routes, service-layer architecture |
-
-**Capstone Project** — React-based web application using **Firebase** (Auth + Firestore) with a modern, scalable service-layer architecture.
-=======
 **Ongoing Independent Project** — React-based web application using Firebase (Auth + Firestore) with a modern, scalable service-layer architecture.
->>>>>>> remodel
 
 Dine-Together is a prototype React app designed with a single goal in mind: to make planning dinners with friends simple. No more back-and-forth, easily see which restaurants all parties are interested in going to, make a reservation in app, everyone gets notified. Done. While this goal was ambitious and not reached by this project, it continues to be an idea I have yet to see executed well and hope to return to one day!
 
@@ -155,13 +143,6 @@ The inspiration for the aesthetic of this project is vintage menus. Colors were 
 
 ## **Known Bugs**
 - Google Places integration is **in progress** (ready for development).
-<<<<<<< HEAD
-
-**Recently Fixed:**
-- Form validation and error handling — Sign up, sign in, and post creation now validate input with user-friendly error messages.
-
-=======
->>>>>>> remodel
 ---
 
 ## **Setup / Installation (Main Branch)**
