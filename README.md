@@ -10,14 +10,28 @@
 
 Dine-Together is a prototype React app designed with a single goal in mind: to make planning dinners with friends simple. No more back-and-forth, easily see which restaurants all parties are interested in going to, make a reservation in app, everyone gets notified. Done. While this goal was ambitious and not reached by this project, it continues to be an idea I have yet to see executed well and hope to return to one day!
 
-The main branch features auth-gated UI, username profiles, protected routes, and a real-time post/queue experience backed by Firebase. The codebase has been refactored with a clean service-layer architecture to support future API integrations (Google Places API). For active development with advanced features, see the **remodel** branch.
+**Main branch** is a functional snapshot of current development work, synced with remodel on 2025-12-04. The app runs without errors and represents active work in progress.
 
-The remodel branch is the current active development branch, featuring a complete architectural separation of Posts (social) and Places (restaurants) collections with a tabbed Profile interface and full place management functionality.
+**What's Working:**
+- User authentication (sign up, sign in, sign out)
+- Profile pages with tabbed interface (Posts | Restaurants)
+- Feed displaying all posts from all users
+- Place management (view, edit, save, remove saved places)
+- Real-time subscriptions to posts and places
+- Posts/Places architectural separation
+
+**What's Pending Implementation:**
+- Post edit/delete functionality (KebabMenu component designed but not yet wired)
+- Delete confirmation dialogs (ConfirmDialog component built but not integrated)
+- Form validation and error handling
+- Google Places API integration
+
+**Remodel branch** is the active development branch where all new work happens. For the most current code, see remodel.
 
 | Branch | Status | Focus |
 |--------|--------|-------|
-| **remodel** | Active Development | Posts/Places architectural separation with tabbed Profile, place management (CRUD), ready for Google Places API integration. 23 commits ahead of main. |
-| **main** | Stable MVP | Foundation with authentication, user profiles, protected routes, and basic post functionality. Use as reference for stable baseline. |
+| **remodel** | Active Development | All new features developed here. KebabMenu and ConfirmDialog implementation next. |
+| **main** | Development Snapshot (2025-12-04) | Functional snapshot synced with remodel. Runs without errors, some features pending implementation (see above). |
 
 ---
 
