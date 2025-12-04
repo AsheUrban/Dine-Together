@@ -1,51 +1,34 @@
 import React from 'react';
-import { useState } from 'react';
-import ReusableForm from './ReusableForm';
 import PropTypes from 'prop-types';
-import { validatePost } from '../utils/validators';
+import ReusablePostForm from './ReusablePostForm';
+import { PlaceActionButton } from '../styles';
 
-function EditPostForm (props) {
-  const { post } = props;
-  const [errors, setErrors] = useState({});
+function EditPostForm(props) {
+    const { post, onBack, onDelete } = props;
 
-  function handleEditPostFormSubmission(event) {
-    event.preventDefault();
-    const placeId = event.target.placeId.value;
-    const restaurantName = event.target.restaurantName.value;
-    const notes = event.target.notes.value;
+    const handleSubmit = (postData) => {
+        props.onEditPost({
+            ...postData,
+            id: post.id
+        });
+    };
 
-    const validationErrors = validatePost(placeId, restaurantName, notes);
-
-    if(validationErrors) {
-      setErrors(validationErrors);
-      return;
-    }
-
-    setErrors({});
-
-    props.onEditPost({
-      userId: props.userId,
-      placeId: placeId,
-      restaurantName: event.target.restaurantName.value,
-      notes: event.target.notes.value,
-      id: post.id
-    });
-  }
-
-  return (
-    <React.Fragment>
-      <ReusableForm 
-        formSubmissionHandler={handleEditPostFormSubmission} 
-        buttonText='Update Restaurant' 
-        errors={errors} />
-    </React.Fragment>
-  );
+    return (
+        <ReusablePostForm
+            onSubmit={handleSubmit}
+            buttonText='Save'
+            caption={post.caption}
+            cancelButton={<PlaceActionButton onClick={onBack}>Cancel</PlaceActionButton>}
+            deleteButton={<PlaceActionButton onClick={() => onDelete(post.id)}>Delete</PlaceActionButton>}
+        />
+    );
 }
 
 EditPostForm.propTypes = {
-  onEditPost: PropTypes.func,
-  post: PropTypes.object,
-  userId: PropTypes.string
+    onEditPost: PropTypes.func.isRequired,
+    post: PropTypes.object.isRequired,
+    onBack: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired
 };
 
 export default EditPostForm;

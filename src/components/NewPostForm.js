@@ -1,50 +1,29 @@
 import React from 'react';
-import { useState } from 'react';
-import PropTypes from 'prop-types'; 
-import ReusableForm from './ReusableForm';
+import PropTypes from 'prop-types';
+import ReusablePostForm from './ReusablePostForm';
 import { serverTimestamp } from "firebase/firestore";
-import { validatePost } from '../utils/validators';
 
-function NewPostForm(props){
-  const [errors, setErrors] = useState({});
+function NewPostForm(props) {
+    const handleSubmit = (postData) => {
+        props.onNewPostCreation({
+            ...postData,
+            placeId: props.placeId,
+            userId: props.userId
+        });
+    };
 
-  function handleNewPostFormSubmission(event) {
-    event.preventDefault();
-    const placeId = event.target.placeId.value;
-    const restaurantName = event.target.restaurantName.value;
-    const notes = event.target.notes.value;
-
-    const validationErrors = validatePost(placeId, restaurantName, notes);
-
-    if(validationErrors) {
-      setErrors(validationErrors);
-      return;
-    }
-
-    setErrors({});
-
-    props.onNewPostCreation({
-      userId: props.userId,
-      placeId: placeId,
-      restaurantName: restaurantName,
-      notes: notes,
-      timeOpen: serverTimestamp()
-    });
-  }
-
-  return (
-    <React.Fragment>
-      <ReusableForm 
-        formSubmissionHandler={handleNewPostFormSubmission}
-        buttonText='Add Restaurant'
-      errors={errors} />
-    </React.Fragment>
-  );
+    return (
+        <ReusablePostForm
+            onSubmit={handleSubmit}
+            buttonText='Create Post'
+        />
+    );
 }
 
 NewPostForm.propTypes = {
-  onNewPostCreation: PropTypes.func,
-  userId: PropTypes.string
+    onNewPostCreation: PropTypes.func.isRequired,
+    placeId: PropTypes.string.isRequired,
+    userId: PropTypes.string
 };
 
 export default NewPostForm;

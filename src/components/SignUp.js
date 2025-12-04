@@ -4,14 +4,14 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { doc, setDoc } from "firebase/firestore";
 import { db } from './../firebase.js';
-import { DineTogetherPosts, Input, H2, Button, SignUpLink } from '../styles';
+import { FormContainer, Input, H2, Button, SignUpLink } from '../styles';
 import { validateSignUp } from '../utils/validators';
 
-  function SignUp(){  
+  function SignUp(){
     const navigate = useNavigate();
     const [signUpSuccess, setSignUpSuccess] = useState(null);
     const [errors, setErrors] = useState({});
-  
+
     function doSignUp(event) {
       event.preventDefault();
       const username = event.target.username.value;
@@ -27,19 +27,19 @@ import { validateSignUp } from '../utils/validators';
       }
 
       setErrors({});
-  
+
       createUserWithEmailAndPassword(auth, email, password)
         .then(async (userCredential) => {
           await updateProfile(userCredential.user, {
             displayName: username
         });
-        
+
         await setDoc(doc(db, 'users', userCredential.user.uid), {
           username: username,
           email: email,
           createdAt: new Date()
         });
-  
+
           setSignUpSuccess(`You've successfully signed up, ${username}!`)
           setTimeout(() => navigate('/'), 1000);
         })
@@ -47,34 +47,42 @@ import { validateSignUp } from '../utils/validators';
           setSignUpSuccess(`There was an error signing up: ${error.message}!`)
         });
     }
-  
+
     return (
         <React.Fragment>
-          <DineTogetherPosts>
+          <FormContainer>
             <H2>Sign up</H2>
               {signUpSuccess}
               <form onSubmit={doSignUp}>
+                <label htmlFor='username'>Username</label>
                 <Input
+                  id='username'
                   type='text'
                   name='username'
                   placeholder='Username'
                   required />
                 {errors.username && <p style={{color: 'red', fontSize: '12px'}}>{errors.username}</p>}
                 <br />
+                <label htmlFor='email'>Email</label>
                 <Input
+                  id='email'
                   type='text'
                   name='email'
                   placeholder='email'
                   required />
                 {errors.email && <p style={{color: 'red', fontSize: '12px'}}>{errors.email}</p>}
                 <br />
+                <label htmlFor='password'>Password</label>
                 <Input
+                  id='password'
                   type='password'
                   name='password'
                   placeholder='Password' />
                 {errors.password && <p style={{color: 'red', fontSize: '12px'}}>{errors.password}</p>}
                 <br />
+                <label htmlFor='passwordConfirm'>Confirm Password</label>
                 <Input
+                  id='passwordConfirm'
                   type='password'
                   name='passwordConfirm'
                   placeholder='Confirm Password' />
@@ -83,7 +91,7 @@ import { validateSignUp } from '../utils/validators';
                 <Button type='submit'>Sign up</Button>
               </form>
               <p>Already have an account? <SignUpLink to ="/sign-in">Sign in</SignUpLink></p>
-            </DineTogetherPosts>
+            </FormContainer>
         </React.Fragment>
       );
     }

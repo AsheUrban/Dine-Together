@@ -6,6 +6,7 @@
 ---
 
 ## **Project Overview**
+<<<<<<< HEAD
 
 ### **Branch Status**
 
@@ -15,10 +16,20 @@
 | **main** | Stable MVP | Foundation with auth, profiles, protected routes, service-layer architecture |
 
 **Capstone Project** — React-based web application using **Firebase** (Auth + Firestore) with a modern, scalable service-layer architecture.
+=======
+**Ongoing Independent Project** — React-based web application using Firebase (Auth + Firestore) with a modern, scalable service-layer architecture.
+>>>>>>> remodel
 
 Dine-Together is a prototype React app designed with a single goal in mind: to make planning dinners with friends simple. No more back-and-forth, easily see which restaurants all parties are interested in going to, make a reservation in app, everyone gets notified. Done. While this goal was ambitious and not reached by this project, it continues to be an idea I have yet to see executed well and hope to return to one day!
 
 The main branch features auth-gated UI, username profiles, protected routes, and a real-time post/queue experience backed by Firebase. The codebase has been refactored with a clean service-layer architecture to support future API integrations (Google Places API). For active development with advanced features, see the **remodel** branch.
+
+The remodel branch is the current active development branch, featuring a complete architectural separation of Posts (social) and Places (restaurants) collections with a tabbed Profile interface and full place management functionality.
+
+| Branch | Status | Focus |
+|--------|--------|-------|
+| **remodel** | Active Development | Posts/Places architectural separation with tabbed Profile, place management (CRUD), ready for Google Places API integration. 23 commits ahead of main. |
+| **main** | Stable MVP | Foundation with authentication, user profiles, protected routes, and basic post functionality. Use as reference for stable baseline. |
 
 ---
 
@@ -26,8 +37,73 @@ The main branch features auth-gated UI, username profiles, protected routes, and
 
 | Core | Frontend | APIs / BaaS | Architecture |
 |------|----------|-------------|---------|
-| JavaScript, JSX | React 18 | **Firebase** (Auth, Firestore) | Service Layer Pattern |
-| CSS | Styled Components | **Google Places API** *(In Progress)* | Centralized Styling |
+| JavaScript, JSX | React 18 | Firebase (Auth, Firestore) | Service Layer Pattern |
+| CSS | Styled Components | Google Places API *(In Progress)* | Centralized Styling |
+
+---
+
+## **Architecture**
+
+This project uses a **service-layer pattern** to separate concerns and keep components clean:
+
+- **Posts & Places Collections** — Posts (social wrappers with captions) reference Places (restaurant data) by ID. One Place can be referenced by multiple Posts, keeping data normalized and shareable.
+- **Service Layer** (`firebaseService.js`) — Centralizes all Firebase operations (auth, CRUD, subscriptions) and joins Post + Place data at the service level, so components receive complete data in props.
+- **Custom Hooks** — 11 reusable hooks manage component state (data subscriptions, form handling, edit modes, delete confirmations), promoting code reuse and testability.
+- **Styled Components** — Centralized styling system with 8 style files, maintaining consistent theme and visual language across the app.
+
+This architecture scales cleanly: adding Google Places API integration requires changes only to the service layer and firebaseService.js, not to component logic.
+
+### **Service Layer Pattern**
+
+The **service layer** (`firebaseService.js`) sits between components and external services (Firebase, APIs). Instead of components calling Firebase directly, they call service functions.
+
+**Benefits:**
+- **Separation of concerns** — Components focus on UI; service layer handles data logic
+- **Reusability** — Multiple components can use the same service functions without duplication
+- **Testability** — Service logic can be tested independently from UI
+- **Flexibility** — Swapping Firebase for a different backend requires changes only in the service layer
+- **API Integration** — Adding Google Places API calls happens in the service layer without touching components
+
+**Example:** When Explore.js needs to search restaurants, it calls `firebaseService.searchRestaurants()` instead of directly calling Google Places API. The service layer handles the API call, error handling, and data transformation. Components receive clean data ready to display.
+
+### **Firestore Schema**
+
+```
+firestore/
+├── posts/
+│   └── {postId}
+│       ├── userId (string) - Author's Firebase UID
+│       ├── authorUsername (string) - Denormalized for Feed display
+│       ├── caption (string) - Optional social sharing text
+│       ├── placeId (string) - Reference to places collection
+│       └── timeOpen (timestamp) - When post was created
+│
+├── places/
+│   └── {placeId}
+│       ├── restaurantName (string)
+│       ├── restaurantAddress (string)
+│       ├── notes (string) - User observations/details
+│       ├── priceLevel (number) - 1-4 price indicator
+│       ├── rating (number) - Google Places rating
+│       ├── userRatingsTotal (number) - Number of ratings
+│       └── createdAt (timestamp) - When place was added to system
+│
+└── users/{userId}/
+    ├── username (string)
+    ├── email (string)
+    ├── bio (object) - User profile bio fields
+    │   ├── bestMeal (string) - Best meal of my life (~75 chars)
+    │   ├── goToMeals (string) - My go-to meals (~75 chars)
+    │   └── aboutMe (string) - About me (~150 chars)
+    └── userPlaces/ (subcollection)
+        └── {placeId}
+            └── timeAdded (timestamp) - When user saved this place
+```
+
+**Key Points:**
+- Posts reference Places by ID (one Place can be referenced by multiple Posts)
+- userPlaces subcollection links users to their saved restaurants
+- Service layer joins Post + Place data when fetching (no N+1 queries)
 
 ---
 
@@ -37,10 +113,14 @@ The MVP goal was a React application with:
 - A wishlist/queue of places to eat
 - Browser-based API integration (Google Places)
 
-**Current Status:** The codebase has been significantly refactored with a clean service-layer architecture. The **main** branch now features:
+**Current Status:** The **remodel** branch features a complete architectural separation of Posts (social) and Places (restaurants) collections:
+- Posts as social wrappers with captions and timestamps
+- Places as restaurant data that can be referenced by multiple posts
+- Profile page with tabbed interface (Posts | Restaurants)
+- Feed displays all posts from all users with place data joined at service layer
+- Place edit/update and delete functionality
 - Protected routes with centralized authentication
 - Username-based user profiles with Firestore integration
-- Separate sign-up and sign-in pages
 - Reusable styled components in a centralized styles directory
 - Firebase service layer for database operations
 - Ready for Google Places API integration
@@ -58,27 +138,30 @@ The MVP goal was a React application with:
 ---
 
 ## **Diagrams & Design**
-* ![plot](src/img/capstone.png) - _Mock up of branding and colors_
-* ![plot](src/img/capstonecolorpalette.png) - _Color palette (HEX)_
-* ![plot](src/img/capstoneflow1.jpg) - _System & component diagram_
-* ![plot](src/img/capstoneflow2.jpg) - _Additional planning notes_
+The inspiration for the aesthetic of this project is vintage menus. Colors were selected that provide a sense of nostalgia and warmth. Using this app should feel a bit like browswer an old menu for a favorite dish.
+![plot](src/img/colorPalette.png)
+![plot](src/img/vintageMenu3.png)
+![plot](src/img/vintageMenu2.png)
+![plot](src/img/vintageMenu1.png)
 
 ---
 
 ## **Challenges Encountered & Solutions**
 - **CORS Limitations:** Google Places API has browser-based CORS restrictions. Solution: Using `@react-google-maps/api` library which handles this properly.
 - **Architecture Scalability:** Original monolithic component structure made it difficult to add new features cleanly. Solution: Refactored to service-layer architecture with reusable styled components.
-- **Code Duplication:** Styled components were repeated across multiple files. Solution: Centralized all styles in `src/styles/formStyles.js`.
-- **Authentication Flow:** Sign up and sign in were on the same page causing UX confusion. Solution: Separated into distinct routes with proper navigation.
-
+- **State Machine Complexity:** Feed component had multiple overlapping states (form visibility, editing, selected post). Solution: Simplified to use custom hooks and moved form handling to appropriate components (Explore for add, PostDetail for edit).
+- **Post Author Data Fetching:** Displaying posts required fetching author usernames, creating potential N+1 request problem. Solution: Denormalized `authorUsername` into post documents for simplicity. Tradeoff: If username changes are implemented, will require batch migration of post documents. This pragmatic choice optimizes for current MVP scale; future TypeScript rebuild can use modern patterns (React Query, Suspense) if needed.
 ---
 
 ## **Known Bugs**
 - Google Places integration is **in progress** (ready for development).
+<<<<<<< HEAD
 
 **Recently Fixed:**
 - Form validation and error handling — Sign up, sign in, and post creation now validate input with user-friendly error messages.
 
+=======
+>>>>>>> remodel
 ---
 
 ## **Setup / Installation (Main Branch)**
@@ -129,34 +212,120 @@ The MVP goal was a React application with:
 src/
 ├── components/
 │   ├── App.js                 (Main app with routing & auth state)
-│   ├── PostControl.js         (Container for post management)
 │   ├── SignIn.js              (Sign in page)
 │   ├── SignUp.js              (Sign up page)
 │   ├── Header.js              (Navigation header with user info)
-│   ├── Profile.js             (User profile page)
+│   ├── Feed.js                (Display all posts from all users)
+│   ├── Profile.js             (User profile with Posts and Restaurants tabs)
+│   ├── Explore.js             (Search restaurants & manual add - WIP)
+│   ├── PlaceDetail.js         (View/edit saved place details)
+│   ├── EditPlaceForm.js       (Edit place information)
+│   ├── ReusablePlaceForm.js   (Reusable form component for places)
+│   ├── Post.js                (Individual social post component with ownership)
+│   ├── PostList.js            (List display of posts)
+│   ├── PlaceList.js           (List display of places)
+│   ├── PlaceGrid.js           (Grid display of places)
+│   ├── ProfileDetails.js      (User bio section)
 │   ├── ProtectedRoute.js      (Auth-gated route wrapper)
-│   ├── PostList.js            (Display all posts)
-│   ├── NewPostForm.js         (Create new post)
-│   └── EditPostForm.js        (Edit existing post)
+│   ├── KebabMenu.js           (Reusable dropdown menu for Post/Place actions)
+│   ├── ConfirmDialog.js       (Modal confirmation for delete operations)
+│   └── ReusablePostForm.js    (Reusable form component for posts)
+├── hooks/
+│   ├── useEditMode.js         (Toggle edit/view state)
+│   ├── useFormSubmit.js       (Form submission with loading/error states)
+│   ├── usePlaceSelection.js   (Track selected place)
+│   ├── useUserPosts.js        (Subscribe to current user's posts)
+│   ├── useUserPlaces.js       (Subscribe to current user's saved places)
+│   ├── useAllPosts.js         (Subscribe to all posts for Feed)
+│   ├── usePostUpdate.js       (Handle post update logic)
+│   ├── usePlaceUpdate.js      (Handle place update logic)
+│   └── usePlaceSaveState.js   (Manage saved place state & "saved by" display)
 ├── services/
-│   ├── firebaseService.js     (Firebase CRUD operations)
-│   └── placesService.js       (Google Places API - ready for implementation)
+│   └── firebaseService.js     (Firebase CRUD and real-time subscriptions)
 ├── styles/
-│   └── formStyles.js          (Centralized styled components)
-└── firebase.js                (Firebase configuration)
+│   ├── formStyles.js          (Form & input styled components)
+│   ├── globalStyles.js        (Global theme & typography)
+│   ├── postStyles.js          (Post card styled components)
+│   ├── placeStyles.js         (Place card styled components)
+│   ├── profileStyles.js       (Profile page styled components)
+│   ├── avatarStyles.js        (Avatar styled components)
+│   ├── FeedStyles.js          (Feed page styled components)
+│   └── index.js               (Centralized style exports)
+├── firebase.js                (Firebase configuration)
+└── mood/                      (UI/UX design reference images)
 ```
 
 ---
 
-## **Next Steps**
+## **Development Roadmap**
 
-The codebase is ready for Google Places API integration:
+### **Phase 1: JavaScript MVP (Current - Remodel Branch)**
+
+**✅ Completed:**
+- Posts/Places architectural separation (two Firestore collections)
+- Profile page with tabbed interface (Posts | Restaurants)
+- Place edit/update and delete functionality
+- 11 custom hooks for scalable state management
+- Vintage menu aesthetic with centralized styling
+
+**🚧 In Progress:**
+- KebabMenu component integration (menu built, wiring to Post.js and callbacks in progress)
+- ConfirmDialog component for delete confirmations (built, integration pending)
+- Post edit/delete functionality via KebabMenu and ConfirmDialog
+- Feed and Profile callback handling for post actions
+- Responsive design refinements
+
+**📋 Pending Before API Integration:**
+- Complete KebabMenu wiring into Post.js, Feed.js, and Profile.js
+- Test end-to-end post edit/delete workflows
+- Form validation and error handling
+- PlaceDetail refactor to use KebabMenu + ConfirmDialog for consistency
+- Responsive design polishing
+
+### **Phase 2: Google Places API Integration**
 
 1. Install `@react-google-maps/api` package
-2. Implement `placesService.js` with restaurant search functionality
-3. Create `restaurantDataService.js` as an abstraction layer
-4. Integrate search into `NewPostForm.js`
-5. Add restaurant autocomplete and details
+2. Implement restaurant search in Explore component
+3. Add autocomplete functionality to forms
+4. Display real restaurant photos from API
+5. Integrate API data into place creation flow
+6. Test end-to-end workflows and polish UX
+
+### **Phase 3: TypeScript Refactor (Post-MVP)**
+
+After the JavaScript version is polished and deployed:
+- Migrate codebase to TypeScript
+- Introduce React Query for advanced state management
+- Add Zod/Yup for schema validation
+- Implement Suspense for async boundaries
+- Build foundation for social features (friends, connections, reservations)
+
+---
+
+## **Development Process**
+
+This is an independent educational project owned and developed by Ashe Urban. Claude (Anthropic's AI assistant) is used as a development tool to provide guidance, suggestions, and explanations.
+
+**Ownership & Workflow:**
+- Ashe maintains full ownership of all code and makes all implementation decisions
+- All commits are authored by Ashe
+- Claude provides direction → Ashe implements → Review together
+- This ensures deep learning through hands-on problem-solving while leveraging AI assistance for guidance and architectural discussion
+
+**Collaboration Approach:**
+- Claude always reads code first before making recommendations
+- Architectural decisions are discussed before implementation
+- Code changes are explained with reasoning (the "why", not just the "what")
+- Each step is deliberate and traceable
+- Questions are treated as learning opportunities, not direction changes
+- Forward momentum is maintained with clear next steps
+
+**Code Presentation (Claude → Ashe):**
+- Changes are presented in diff format with color-coded additions/removals
+- Complete files are provided, never just snippets
+- Inline comments explain the "why" behind changes
+- Related changes are grouped together logically
+- Code is mentally tested for syntax and indentation before presentation
 
 ---
 

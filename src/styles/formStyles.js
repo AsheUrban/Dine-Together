@@ -1,73 +1,58 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
-  export const DineTogetherPosts = styled.div`
-    background-color: rgba(231, 221, 238, 0.95);
+export const FormContainer = styled.div`
+    background-color: #F5F1E8;
     width: 350px;
     margin: auto;
     margin-top: 50px;
     padding: 60px;
-    border: 2px solid #fffbc8;
+    border: 2px solid #D4A574;
     text-align: center;
     border-radius: 10px;
-  `;
+`;
 
-  export const Input = styled.input`
+export const Input = styled.input`
     border-radius: 5px;
-    border: 1px solid black;
+    border: 1px solid #2C2C2C;
     margin: auto;
     margin-bottom: 10px;
-  `;
+    font-family: 'Lato', sans-serif;
+    color: #2C2C2C;
+    padding: 8px;
+`;
 
-  export const TextArea = styled.textarea`
+export const TextArea = styled.textarea`
     border-radius: 5px;
-    border: 1px solid black;
+    border: 1px solid #2C2C2C;
     margin: auto;
     width: 100%;
     box-sizing: border-box;
     padding: 8px;
-  `;
+    font-family: 'Lato', sans-serif;
+    color: #2C2C2C;
+`;
 
-  export const Button = styled.button`
-    background-color: #700629;
-    border: 2px solid #FFFBC8;
-    margin: 10px;
-    color: #FFFBC8;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline;
-    font-size: 16px;
-    border-radius: 10px;
-    cursor: pointer;
-  `;
+export const BioLabel = styled.label`
+    font-family: 'Lato', serif;
+    font-size: 18px;
+    color: #2C2C2C;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    display: block;
+`;
 
-  export const H1 = styled.h1`
-    font-size: 30px;
-    color: #700629;
-    margin: 0;
-  `;  
+export const PostLabel = styled.label`
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: #2C2C2C;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    display: block;
+`;
 
-  export const H2 = styled.h2`
-    font-size: 22px;
-    color: #700629;
-  `;
-
-  export const SignUpLink = styled(Link)`
-    color: #700629;
-    text-decoration: none;
-    &:hover {
-      text-decoration: underline;
-    }
-  `;
-
-  export const Center = styled.div`
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    width: 1230px;
-    color: #FFFBC8;
-    padding: 25px;
-    margin: auto;
-  `;
-
+export const CharacterCounter = styled.p`
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+`;
