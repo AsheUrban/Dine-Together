@@ -202,25 +202,25 @@ src/
 │   ├── PlaceDetail.js         (View/edit saved place details)
 │   ├── EditPlaceForm.js       (Edit place information)
 │   ├── ReusablePlaceForm.js   (Reusable form component for places)
-│   ├── Post.js                (Individual social post component)
-│   ├── PostGrid.js            (Grid display of posts)
+│   ├── Post.js                (Individual social post component with ownership)
 │   ├── PostList.js            (List display of posts)
 │   ├── PlaceList.js           (List display of places)
+│   ├── PlaceGrid.js           (Grid display of places)
 │   ├── ProfileDetails.js      (User bio section)
 │   ├── ProtectedRoute.js      (Auth-gated route wrapper)
-│   └── NewPostForm.js         (Create new post - WIP)
+│   ├── KebabMenu.js           (Reusable dropdown menu for Post/Place actions)
+│   ├── ConfirmDialog.js       (Modal confirmation for delete operations)
+│   └── ReusablePostForm.js    (Reusable form component for posts)
 ├── hooks/
 │   ├── useEditMode.js         (Toggle edit/view state)
-│   ├── useDeleteConfirmation.js (Delete confirmation dialogs)
 │   ├── useFormSubmit.js       (Form submission with loading/error states)
 │   ├── usePlaceSelection.js   (Track selected place)
 │   ├── useUserPosts.js        (Subscribe to current user's posts)
 │   ├── useUserPlaces.js       (Subscribe to current user's saved places)
 │   ├── useAllPosts.js         (Subscribe to all posts for Feed)
-│   ├── useFeedPosts.js        (Manage Feed post data & updates)
-│   ├── useProfileData.js      (Manage profile username & bio)
 │   ├── usePostUpdate.js       (Handle post update logic)
-│   └── usePlaceUpdate.js      (Handle place update logic)
+│   ├── usePlaceUpdate.js      (Handle place update logic)
+│   └── usePlaceSaveState.js   (Manage saved place state & "saved by" display)
 ├── services/
 │   └── firebaseService.js     (Firebase CRUD and real-time subscriptions)
 ├── styles/
@@ -250,18 +250,18 @@ src/
 - Vintage menu aesthetic with centralized styling
 
 **🚧 In Progress:**
-- Place save/remove functions with scalable subcollection structure
-- PostDetail component with ownership checks and place drill-down
-- PlaceDetail conditional rendering (Add/Edit/Remove based on save state)
-- Feed and Profile integration with PostDetail
-- Form validation and error handling
+- KebabMenu component integration (menu built, wiring to Post.js and callbacks in progress)
+- ConfirmDialog component for delete confirmations (built, integration pending)
+- Post edit/delete functionality via KebabMenu and ConfirmDialog
+- Feed and Profile callback handling for post actions
 - Responsive design refinements
 
 **📋 Pending Before API Integration:**
-- Complete PostDetail and PlaceDetail implementation
-- Wire PostDetail into Feed and Profile flows
-- Implement "who saved this place" display on PlaceDetail
-- Test end-to-end post and place workflows
+- Complete KebabMenu wiring into Post.js, Feed.js, and Profile.js
+- Test end-to-end post edit/delete workflows
+- Form validation and error handling
+- PlaceDetail refactor to use KebabMenu + ConfirmDialog for consistency
+- Responsive design polishing
 
 ### **Phase 2: Google Places API Integration**
 
@@ -311,11 +311,14 @@ This is an independent educational project owned and developed by Ashe Urban. Cl
 ---
 
 ## **License**
-*Educational Use Only* — created as part of a software development curriculum.  
 
-Copyright © 2022  
-*Ashe Urban*  
+**All Rights Reserved** — This project is proprietary software.
 
-**Contact:** [theasheurban@gmail.com](mailto:theasheurban@gmail.com)
+Unauthorized use, reproduction, modification, or distribution is prohibited without explicit written permission from the author.
+
+For inquiries regarding licensing or commercial use, contact: [theasheurban@gmail.com](mailto:theasheurban@gmail.com)
+
+Copyright © 2025
+*Ashe Urban*
 
 > Reference: [Create React App docs](https://create-react-app.dev/)

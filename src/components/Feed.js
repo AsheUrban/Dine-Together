@@ -8,7 +8,7 @@ import { usePlaceSelection } from '../hooks/placeSelection.js';
 
 function Feed () {
   const { posts, error } = useAllPosts();
-  const { selectedPlace, handleSelectPlace, handleBackToList } = usePlaceSelection();
+  const { selectedPlace, handleBackToList } = usePlaceSelection();
 
   // const handleChangingSelectedPlace = (id) => {
   //   const selection = posts.filter(post => post.id === id)[0];
