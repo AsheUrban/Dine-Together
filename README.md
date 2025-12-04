@@ -6,11 +6,19 @@
 ---
 
 ## **Project Overview**
+
+### **Branch Status**
+
+| Branch | Status | Focus |
+|--------|--------|-------|
+| **remodel** | Active Development | Posts/Places separation, KebabMenu, ConfirmDialog, tabbed Profile interface, place management |
+| **main** | Stable MVP | Foundation with auth, profiles, protected routes, service-layer architecture |
+
 **Capstone Project** — React-based web application using **Firebase** (Auth + Firestore) with a modern, scalable service-layer architecture.
 
 Dine-Together is a prototype React app designed with a single goal in mind: to make planning dinners with friends simple. No more back-and-forth, easily see which restaurants all parties are interested in going to, make a reservation in app, everyone gets notified. Done. While this goal was ambitious and not reached by this project, it continues to be an idea I have yet to see executed well and hope to return to one day!
 
-The main branch features auth-gated UI, username profiles, protected routes, and a real-time post/queue experience backed by Firebase. The codebase has been refactored with a clean service-layer architecture to support future API integrations (Google Places API).
+The main branch features auth-gated UI, username profiles, protected routes, and a real-time post/queue experience backed by Firebase. The codebase has been refactored with a clean service-layer architecture to support future API integrations (Google Places API). For active development with advanced features, see the **remodel** branch.
 
 ---
 
@@ -69,7 +77,7 @@ The MVP goal was a React application with:
 - Google Places integration is **in progress** (ready for development).
 
 **Recently Fixed:**
-- ✅ Form validation and error handling — Sign up, sign in, and post creation now validate input with user-friendly error messages.
+- Form validation and error handling — Sign up, sign in, and post creation now validate input with user-friendly error messages.
 
 ---
 
@@ -153,11 +161,14 @@ The codebase is ready for Google Places API integration:
 ---
 
 ## **License**
-*Educational Use Only* — created as part of a software development curriculum.  
 
-Copyright © 2022  
-*Ashe Urban*  
+**All Rights Reserved** — This project is proprietary software.
 
-**Contact:** [theasheurban@gmail.com](mailto:theasheurban@gmail.com)
+Unauthorized use, reproduction, modification, or distribution is prohibited without explicit written permission from the author.
+
+For inquiries regarding licensing or commercial use, contact: [theasheurban@gmail.com](mailto:theasheurban@gmail.com)
+
+Copyright © 2025
+*Ashe Urban*
 
 > Reference: [Create React App docs](https://create-react-app.dev/)

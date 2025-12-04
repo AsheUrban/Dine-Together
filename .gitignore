@@ -26,3 +26,8 @@ yarn-error.log*
 
 # Session notes (local development reference)
 SESSION_NOTES.md
+SESSION_NOTES_CURRENT.md
+SESSION_LOG_*.md
+
+# UI/UX design reference (local development only)
+mood/
