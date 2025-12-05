@@ -25,7 +25,8 @@ yarn-error.log*
 .env
 
 # Session notes (local development reference)
-SESSION_NOTES.md
+SESSION_GUIDELINES.md
+SESSION_NOTES_HISTORICAL.md
 SESSION_NOTES_CURRENT.md
 SESSION_LOG_*.md
 
