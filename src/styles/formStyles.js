@@ -8,11 +8,9 @@ export const FormContainer = styled.div`
     padding: 60px;
     border: 2px solid #D4A574;
     text-align: center;
-    border-radius: 10px;
 `;
 
 export const Input = styled.input`
-    border-radius: 5px;
     border: 1px solid #2C2C2C;
     margin: auto;
     margin-bottom: 10px;
@@ -22,7 +20,6 @@ export const Input = styled.input`
 `;
 
 export const TextArea = styled.textarea`
-    border-radius: 5px;
     border: 1px solid #2C2C2C;
     margin: auto;
     width: 100%;

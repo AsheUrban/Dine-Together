@@ -13,7 +13,6 @@ export const InfoSection = styled.div`
     flex: 0 0 300px;
     background-color: #D98560;
     padding: 40px;
-    border-radius: 10px;
     height: fit-content;
     display: flex;
     flex-direction: column;
@@ -21,7 +20,6 @@ export const InfoSection = styled.div`
 `;
 
 export const BioSection = styled.div`
-    border-radius: 10px;
     border: 2px solid #8B4513;
     width: 100%;
     padding: 10px;

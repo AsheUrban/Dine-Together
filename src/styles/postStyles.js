@@ -7,7 +7,6 @@ export const PostCard = styled.div`
     background-color: #F5F1E8;
     border: 2px solid #8B4513;
     padding: 20px;
-    border-radius: 10px;
     margin-top: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;

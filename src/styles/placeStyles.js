@@ -11,7 +11,6 @@ export const PlaceContainer = styled.div`
     padding: 45px;
     border: 2px solid #D4A574;
     text-align: center;
-    border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
@@ -19,7 +18,6 @@ export const PlaceItem = styled.div`
     background-color: #F5F1E8;
     border: 2px solid #D98560;
     padding: 20px;
-    border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
     box-sizing: border-box;
@@ -43,7 +41,6 @@ export const PlaceImage = styled.div`
     height: 100px;
     min-width: 100px;
     background-color: #D4A574;
-    border-radius: 8px;
     flex-shrink: 0;
 `;
 
@@ -75,7 +72,6 @@ export const PlaceActionButton = styled.button`
     text-decoration: none;
     display: inline;
     font-size: 16px;
-    border-radius: 10px;
     cursor: pointer;
     font-family: 'Lato', sans-serif;
     transition: all 0.2s ease;
