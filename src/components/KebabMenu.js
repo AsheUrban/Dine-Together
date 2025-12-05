@@ -22,7 +22,7 @@ function KebabMenu({  items, onItemClick }) {
 
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [isOpen, handleClickOutside]);
+    }, [isOpen]);
 
     const handleItemClick = (item) => {
         onItemClick(item);

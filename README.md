@@ -10,14 +10,14 @@
 
 Dine-Together is a prototype React app designed with a single goal in mind: to make planning dinners with friends simple. No more back-and-forth, easily see which restaurants all parties are interested in going to, make a reservation in app, everyone gets notified. Done. While this goal was ambitious and not reached by this project, it continues to be an idea I have yet to see executed well and hope to return to one day!
 
-The main branch features auth-gated UI, username profiles, protected routes, and a real-time post/queue experience backed by Firebase. The codebase has been refactored with a clean service-layer architecture to support future API integrations (Google Places API).
+**Remodel branch** (this branch) is the active development branch where all new work happens. All features are implemented here first. Currently working on KebabMenu and ConfirmDialog integration for post edit/delete functionality.
 
-The remodel branch is the current active development branch, featuring a complete architectural separation of Posts (social) and Places (restaurants) collections with a tabbed Profile interface and full place management functionality.
+**Main branch** is a functional snapshot synced with remodel on 2025-12-04. It represents the current state of work and runs without errors, though some features are pending implementation.
 
 | Branch | Status | Focus |
 |--------|--------|-------|
-| **remodel** | Active Development | Posts/Places architectural separation with tabbed Profile, place management (CRUD), ready for Google Places API integration. 23 commits ahead of main. |
-| **main** | Stable MVP | Foundation with authentication, user profiles, protected routes, and basic post functionality. Use as reference for stable baseline. |
+| **remodel** | Active Development | All new work developed here. Next: KebabMenu and ConfirmDialog implementation for post edit/delete. |
+| **main** | Development Snapshot (2025-12-04) | Synced with remodel. Functional snapshot representing current state of active development. |
 
 ---
 
@@ -242,21 +242,21 @@ src/
 
 ### **Phase 1: JavaScript MVP (Current - Remodel Branch)**
 
-**✅ Completed:**
+**Completed:**
 - Posts/Places architectural separation (two Firestore collections)
 - Profile page with tabbed interface (Posts | Restaurants)
 - Place edit/update and delete functionality
 - 11 custom hooks for scalable state management
 - Vintage menu aesthetic with centralized styling
 
-**🚧 In Progress:**
+**In Progress:**
 - KebabMenu component integration (menu built, wiring to Post.js and callbacks in progress)
 - ConfirmDialog component for delete confirmations (built, integration pending)
 - Post edit/delete functionality via KebabMenu and ConfirmDialog
 - Feed and Profile callback handling for post actions
 - Responsive design refinements
 
-**📋 Pending Before API Integration:**
+**Pending Before API Integration:**
 - Complete KebabMenu wiring into Post.js, Feed.js, and Profile.js
 - Test end-to-end post edit/delete workflows
 - Form validation and error handling
