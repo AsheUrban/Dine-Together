@@ -52,6 +52,7 @@ export const H4 = styled.h4`
 
 export const H4Centered = styled.h4`
     font-size: 18px;
+    text-align: center;
     color: #8B4513;
     font-family: 'Lato', sans-serif;
     font-weight: 700;
@@ -63,6 +64,27 @@ export const H5 = styled.h5`
     color: #D98560;
     font-family: 'Lato', sans-serif;
     font-weight: 700;
+    margin: 5px 0;
+`;
+
+export const H6 = styled.h6`
+    font-size: 14px;
+    color: #2C2C2C;
+    font-family: 'Lato', sans-serif;
+    font-style: italic;
+    font-weight: 300;
+    text-decoration: underline;
+    margin: 5px 0;
+`;
+
+export const H6Centered = styled.h6`
+    font-size: 14px;
+    text-align: center;
+    color: #2C2C2C;
+    font-family: 'Lato', sans-serif;
+    font-style: italic;
+    font-weight: 300;
+    text-decoration: underline;
     margin: 5px 0;
 `;
 

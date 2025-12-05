@@ -4,8 +4,7 @@ import PostList from './PostList';
 import ProfileDetails from './ProfileDetails';
 import React, { useEffect, useState } from 'react';
 import { auth } from './../firebase.js';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from './../firebase.js';
+import { useUser } from '../hooks/user.js';
 import { subscribeToUserPlaces, subscribeToUserPosts } from '../services/firebaseService.js';
 import { updateUserBio } from '../services/firebaseService.js';
 import { usePlaceSelection } from '../hooks/placeSelection';
@@ -20,19 +19,15 @@ import {
 } from '../styles';
 
 function Profile() {
-    const [username, setUsername] = useState(null);
-    const [userBio, setUserBio] = useState({});
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const [mainPlaceList, setMainPlaceList] = useState([]);
     const [userPosts, setUserPosts] = useState([]);
     const [activeTab, setActiveTab] = useState('places');
+    const { username, userBio, loading, error } = useUser(auth.currentUser.uid);
     const { selectedPlace, handleSelectPlace, handleBackToList } = usePlaceSelection();
     const { isEditing, enterEditMode, exitEditMode } = useEditMode();
     const { isLoading, handleSubmit } = useFormSubmit(async (bioData) => {
         try {
             await updateUserBio(auth.currentUser.uid, bioData);
-            setUserBio(prev => ({ ...prev, ...bioData }));
             exitEditMode();
         } catch (err) {
             console.error('Error updating bio:', err);
@@ -41,30 +36,9 @@ function Profile() {
     const handlePlaceUpdate = usePlaceUpdate(setMainPlaceList, selectedPlace, handleSelectPlace);
 
     useEffect(() => {
-        const fetchUserProfile = async () => {
-            try {
-                const userDoc = await getDoc(doc(db, 'users', auth.currentUser.uid));
-                if (userDoc.exists()) {
-                    setUsername(userDoc.data().username);
-                    setUserBio(userDoc.data());
-                } else {
-                    setError('User not found');
-                }
-            } catch (err) {
-                setError('Error loading profile');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchUserProfile();
-    }, []);
-
-    useEffect(() => {
         const unSubscribe = subscribeToUserPosts(
             auth.currentUser.uid,
-            (posts) => setUserPosts(posts),
-            (errorMessage) => setError(errorMessage)
+            (posts) => setUserPosts(posts)
         );
         return () => unSubscribe();
     }, []);
@@ -72,8 +46,7 @@ function Profile() {
     useEffect(() => {
         const unSubscribe = subscribeToUserPlaces(
             auth.currentUser.uid,
-            (places) => setMainPlaceList(places),
-            (errorMessage) => setError(errorMessage)
+            (places) => setMainPlaceList(places)
         );
         return () => unSubscribe();
     }, []);

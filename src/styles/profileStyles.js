@@ -48,6 +48,7 @@ export const EditProfileLink = styled.a`
     cursor: pointer;
     font-size: 10px;
     font-family: 'Inter', sans-serif;
+    font-style: italic;
     font-weight: 500;
     transition: opacity 0.2s ease;
 
