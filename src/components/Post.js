@@ -2,14 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Place from './Place';
 import Avatar from './Avatar';
+import KebabMenu from './KebabMenu';
 import { formatDistanceToNow } from 'date-fns';
-import { PostCard, PostHeader, Username, PostCaption, PostWrapper, PlacedDate, LinkStyle } from '../styles';
+import { PostCard, PostHeader, PostHeaderLeft, Username, PostCaption, PostWrapper, PlacedDate, LinkStyle } from '../styles';
 import { usePlaceSaveState } from '../hooks/placeSaveState';
 
-function Post({ postId, authorId, username, caption, place, timeOpen, onPostClick }) {
+function Post({ postId, authorId, username, caption, place, timeOpen, onPostClick, isOwner, onEditPost, onDeletePost }) {
     const { savedByUsers, savedByUsernames, showAllSavedBy, setShowAllSavedBy } = usePlaceSaveState(place.id);
     const handleClick = () => {
         onPostClick(postId, place, authorId);
+    };
+
+    const handleMenuItemClick = (item) => {
+        if (item.id === 'edit') {
+            onEditPost(postId);
+        } else if (item.id === 'delete') {
+            onDeletePost(postId);
+        }
     };
 
     const renderSavedByInfo = () => {
@@ -38,8 +47,19 @@ function Post({ postId, authorId, username, caption, place, timeOpen, onPostClic
         <PostWrapper>
             <PostCard onClick={handleClick}>
                 <PostHeader>
-                    <Avatar displayName={username} variant="profile"/>
-                    <Username>{username}</Username>
+                    <PostHeaderLeft>
+                        <Avatar displayName={username} variant="profile"/>
+                        <Username>{username}</Username>
+                    </PostHeaderLeft>
+                    {isOwner && (
+                        <KebabMenu
+                            items={[
+                                { id: 'edit', label: 'Edit Post' },
+                                { id: 'delete', label: 'Delete Post' }
+                            ]}
+                            onItemClick={handleMenuItemClick}
+                        />
+                    )}
                 </PostHeader>
                 <PostCaption>{caption}</PostCaption>
                 <Place
@@ -66,7 +86,10 @@ Post.propTypes = {
     caption: PropTypes.string,
     timeOpen: PropTypes.object,
     place: PropTypes.object.isRequired,
-    onPostClick: PropTypes.func.isRequired
+    onPostClick: PropTypes.func.isRequired,
+    isOwner: PropTypes.bool,
+    onEditPost: PropTypes.func,
+    onDeletePost: PropTypes.func
 };
 
 export default Post;

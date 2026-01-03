@@ -22,10 +22,17 @@ export const PostCard = styled.div`
 export const PostHeader = styled.div`
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 12px;
     margin-bottom: 15px;
     padding-bottom: 12px;
     border-bottom: 1px solid #8B4513;
+`;
+
+export const PostHeaderLeft = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 12px;
 `;
 
 export const Username = styled.p`

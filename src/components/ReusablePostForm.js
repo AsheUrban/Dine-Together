@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { FormContainer, TextArea, Button, PostLabel } from '../styles';
+import { FormContainer, TextArea, Button, PostLabel, FormButtons } from '../styles';
 
 function ReusablePostForm(props) {
     const [errors, setErrors] = useState({});
@@ -19,7 +19,7 @@ function ReusablePostForm(props) {
     return (
         <React.Fragment>
             <FormContainer>
-                <form onSubmit={handleFormSubmit}>
+                <form id="postForm" onSubmit={handleFormSubmit}>
                     <PostLabel htmlFor='caption'>Caption (optional):</PostLabel>
                     <TextArea
                         id='caption'
@@ -28,10 +28,11 @@ function ReusablePostForm(props) {
                         maxLength='300' />
                     {errors?.caption && <p style={{color: 'red', fontSize: '12px'}}>{errors.caption}</p>}
                     <br />
-                    <Button type='submit'>{props.buttonText}</Button>
                 </form>
-                {props.cancelButton}
-                {props.deleteButton}
+                <FormButtons>
+                    <Button type='submit' form="postForm">{props.buttonText}</Button>
+                    {props.cancelButton}
+                </FormButtons>
             </FormContainer>
         </React.Fragment>
     );

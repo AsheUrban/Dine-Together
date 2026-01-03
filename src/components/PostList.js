@@ -25,6 +25,9 @@ function PostList(props){
                                 id: post.placeId
                             }}
                             onPostClick={props.onPostSelection}
+                            isOwner={post.isOwner}
+                            onEditPost={props.onEditPost}
+                            onDeletePost={props.onDeletePost}
                         />
                     )
                 ) : (
@@ -38,7 +41,8 @@ function PostList(props){
 PostList.propTypes = {
     postList: PropTypes.array,
     onPostSelection: PropTypes.func,
-    // timeOpen: PropTypes.object
+    onEditPost: PropTypes.func,
+    onDeletePost: PropTypes.func
 };
 
 export default PostList;

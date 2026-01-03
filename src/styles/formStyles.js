@@ -53,3 +53,10 @@ export const CharacterCounter = styled.p`
     color: #666;
     margin-top: 5px;
 `;
+
+export const FormButtons = styled.div`
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+`;

@@ -4,7 +4,8 @@ export {
     TextArea,
     BioLabel,
     PostLabel,
-    CharacterCounter
+    CharacterCounter,
+    FormButtons
 } from './formStyles';
 
 export {
@@ -76,6 +77,7 @@ export {
     PostWrapper,
     PostCard,
     PostHeader,
+    PostHeaderLeft,
     Username,
     PostCaption,
 } from './postStyles';
