@@ -19,7 +19,7 @@ function Feed () {
       postId: null
   });
 
-const handleChangingSelectedPlace = (postId, place, authorId) => {
+const selectPlaceFromPost = (postId, place, authorId) => {
   handleSelectPlace(place);
 };
 
@@ -43,7 +43,6 @@ const confirmDeletePost = async () => {
     postId: null
   });
 };
-
 
 const handleSaveEditPost = async (postData) => {
   await updatePostCaption(postData.id, postData.caption);
@@ -92,7 +91,7 @@ const handleSaveEditPost = async (postData) => {
   return (
     <React.Fragment>
         <PostList
-          onPostSelection={handleChangingSelectedPlace}
+          onPostSelection={selectPlaceFromPost}
           postList={postsWithOwnership}
           onEditPost={handleEditPost}
           onDeletePost={handleDeletePost}

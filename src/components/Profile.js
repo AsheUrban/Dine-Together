@@ -2,11 +2,12 @@ import PlaceDetail from './PlaceDetail';
 import PlaceGrid from './PlaceGrid';
 import PostList from './PostList';
 import ProfileDetails from './ProfileDetails';
+import EditPostForm from './EditPostForm.js';
+import ConfirmDialog from './ConfirmDialog.js';
 import React, { useEffect, useState } from 'react';
 import { auth } from './../firebase.js';
 import { useUser } from '../hooks/user.js';
-import { subscribeToUserPlaces, subscribeToUserPosts } from '../services/firebaseService.js';
-import { updateUserBio } from '../services/firebaseService.js';
+import { subscribeToUserPlaces, subscribeToUserPosts, updateUserBio, deletePost, updatePostCaption } from '../services/firebaseService.js';
 import { usePlaceSelection } from '../hooks/placeSelection';
 import { usePlaceUpdate } from '../hooks/placeUpdate.js';
 import { useEditMode } from '../hooks/editMode.js';
@@ -20,8 +21,14 @@ import {
 
 function Profile() {
     const [mainPlaceList, setMainPlaceList] = useState([]);
-    const [userPosts, setUserPosts] = useState([]);
+    const [posts, setUserPosts] = useState([]);
     const [activeTab, setActiveTab] = useState('places');
+    const [editingPostId, setEditingPostId] = useState(null);
+    const [deleteConfirmation, setDeleteConfirmation] = useState({
+        isOpen: false,
+        message: '',
+        postId: null
+    });
     const { username, userBio, loading, error } = useUser(auth.currentUser.uid);
     const { selectedPlace, handleSelectPlace, handleBackToList } = usePlaceSelection();
     const { isEditing, enterEditMode, exitEditMode } = useEditMode();
@@ -51,10 +58,40 @@ function Profile() {
         return () => unSubscribe();
     }, []);
 
-    const handleChangingSelectedPlace = (id) => {
+    const selectPlace = (id) => {
         const selection = mainPlaceList.filter(place => place.id === id)[0];
         handleSelectPlace(selection);
     }
+
+    const selectPlaceFromPost = (postId, place, authorId) => {
+        handleSelectPlace(place);
+    };
+
+    const handleEditPost = (postId) => {
+        setEditingPostId(postId);
+    };
+
+    const handleDeletePost = (postId) => {
+        setDeleteConfirmation({
+            isOpen: true,
+            message: 'Are you sure you want to delete this post?',
+            postId: postId
+        });
+    };
+
+    const confirmDeletePost = async () => {
+      await deletePost(deleteConfirmation.postId);
+      setDeleteConfirmation({
+        isOpen: false,
+        message: '',
+        postId: null
+      });
+    };
+    
+    const handleSaveEditPost = async (postData) => {
+      await updatePostCaption(postData.id, postData.caption);
+      setEditingPostId(null);
+    };
 
     if(loading) {
         return <div>Loading profile...</div>;
@@ -74,6 +111,22 @@ function Profile() {
      );
     }
 
+     if(editingPostId) {
+        return (
+          <EditPostForm
+              post={posts.find(p => p.id === editingPostId)}
+              onEditPost={handleSaveEditPost}
+              onBack={() => setEditingPostId(null)}
+              onDelete={handleDeletePost}
+            />
+        );
+      }
+    
+      const postsWithOwnership = posts.map(post => ({
+          ...post,
+          isOwner: post.userId === auth.currentUser.uid
+      }));
+
     return (
         <PageContainer>
            <ProfileDetails
@@ -91,13 +144,30 @@ function Profile() {
                     <TabButton active={activeTab === 'posts'} onClick={() => setActiveTab('posts')}>Posts</TabButton>
                 </TabContainer>
                 {activeTab === 'posts' ? (
-                    <PostList postList={userPosts} onPostSelection={() => {}} />
+                    <PostList 
+                        postList={postsWithOwnership}
+                        onPostSelection={selectPlaceFromPost} 
+                        onEditPost={handleEditPost}
+                        onDeletePost={handleDeletePost}
+                    />
                 ) : (
-                <PlaceGrid placeList={mainPlaceList} onPlaceSelection={handleChangingSelectedPlace} />
+                <PlaceGrid placeList={mainPlaceList} onPlaceSelection={selectPlace} />
                 )}
             </RestaurantSection>
-        </PageContainer>
-    );
-}
+            {deleteConfirmation.isOpen && (
+                    <ConfirmDialog
+                        isOpen={deleteConfirmation.isOpen}
+                        message={deleteConfirmation.message}
+                        onConfirm={confirmDeletePost}
+                        onCancel={() => setDeleteConfirmation({
+                            isOpen: false,
+                            message: '',
+                            postId: null
+                        })}
+                    />
+                )}
+                </PageContainer>
+            );
+        }
 
 export default Profile;
