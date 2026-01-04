@@ -10,13 +10,13 @@
 
 Dine-Together is a prototype React app designed with a single goal in mind: to make planning dinners with friends simple. No more back-and-forth, easily see which restaurants all parties are interested in going to, make a reservation in app, everyone gets notified. Done. While this goal was ambitious and not reached by this project, it continues to be an idea I have yet to see executed well and hope to return to one day!
 
-**Remodel branch** (this branch) is the active development branch where all new work happens. All features are implemented here first. Currently working on KebabMenu and ConfirmDialog integration for post edit/delete functionality.
+**Remodel branch** (this branch) is the active development branch where all new work happens. All features are implemented here first.
 
 **Main branch** is a functional snapshot synced with remodel on 2025-12-04. It represents the current state of work and runs without errors, though some features are pending implementation.
 
 | Branch | Status | Focus |
 |--------|--------|-------|
-| **remodel** | Active Development | All new work developed here. Next: KebabMenu and ConfirmDialog implementation for post edit/delete. |
+| **remodel** | Active Development | All new work developed here. |
 | **main** | Development Snapshot (2025-12-04) | Synced with remodel. Functional snapshot representing current state of active development. |
 
 ---
@@ -36,7 +36,7 @@ This project uses a **service-layer pattern** to separate concerns and keep comp
 
 - **Posts & Places Collections** — Posts (social wrappers with captions) reference Places (restaurant data) by ID. One Place can be referenced by multiple Posts, keeping data normalized and shareable.
 - **Service Layer** (`firebaseService.js`) — Centralizes all Firebase operations (auth, CRUD, subscriptions) and joins Post + Place data at the service level, so components receive complete data in props.
-- **Custom Hooks** — 11 reusable hooks manage component state (data subscriptions, form handling, edit modes, delete confirmations), promoting code reuse and testability.
+- **Custom Hooks** — 7 reusable hooks manage component state (data subscriptions, form handling, edit modes), promoting code reuse and testability.
 - **Styled Components** — Centralized styling system with 8 style files, maintaining consistent theme and visual language across the app.
 
 This architecture scales cleanly: adding Google Places API integration requires changes only to the service layer and firebaseService.js, not to component logic.
@@ -204,7 +204,6 @@ src/
 │   ├── ReusablePlaceForm.js   (Reusable form component for places)
 │   ├── Post.js                (Individual social post component with ownership)
 │   ├── PostList.js            (List display of posts)
-│   ├── PlaceList.js           (List display of places)
 │   ├── PlaceGrid.js           (Grid display of places)
 │   ├── ProfileDetails.js      (User bio section)
 │   ├── ProtectedRoute.js      (Auth-gated route wrapper)
@@ -212,15 +211,13 @@ src/
 │   ├── ConfirmDialog.js       (Modal confirmation for delete operations)
 │   └── ReusablePostForm.js    (Reusable form component for posts)
 ├── hooks/
-│   ├── useEditMode.js         (Toggle edit/view state)
-│   ├── useFormSubmit.js       (Form submission with loading/error states)
-│   ├── usePlaceSelection.js   (Track selected place)
-│   ├── useUserPosts.js        (Subscribe to current user's posts)
-│   ├── useUserPlaces.js       (Subscribe to current user's saved places)
-│   ├── useAllPosts.js         (Subscribe to all posts for Feed)
-│   ├── usePostUpdate.js       (Handle post update logic)
-│   ├── usePlaceUpdate.js      (Handle place update logic)
-│   └── usePlaceSaveState.js   (Manage saved place state & "saved by" display)
+│   ├── allPosts.js            (Subscribe to all posts for Feed)
+│   ├── editMode.js            (Toggle edit/view state)
+│   ├── formSubmit.js          (Form submission with loading/error states)
+│   ├── placeSaveState.js      (Manage saved place state & "saved by" display)
+│   ├── placeSelection.js      (Track selected place)
+│   ├── placeUpdate.js         (Handle place update logic)
+│   └── user.js                (Current user state with subscription pattern)
 ├── services/
 │   └── firebaseService.js     (Firebase CRUD and real-time subscriptions)
 ├── styles/
@@ -246,21 +243,17 @@ src/
 - Posts/Places architectural separation (two Firestore collections)
 - Profile page with tabbed interface (Posts | Restaurants)
 - Place edit/update and delete functionality
-- 11 custom hooks for scalable state management
+- 7 custom hooks for scalable state management
 - Vintage menu aesthetic with centralized styling
-
-**In Progress:**
-- KebabMenu component integration (menu built, wiring to Post.js and callbacks in progress)
-- ConfirmDialog component for delete confirmations (built, integration pending)
-- Post edit/delete functionality via KebabMenu and ConfirmDialog
-- Feed and Profile callback handling for post actions
-- Responsive design refinements
+- KebabMenu integration across Feed, Profile, and PlaceDetail
+- ConfirmDialog for delete confirmations
+- CircularBackButton for consistent back/cancel UX
+- Post edit/delete functionality
 
 **Pending Before API Integration:**
-- Complete KebabMenu wiring into Post.js, Feed.js, and Profile.js
-- Test end-to-end post edit/delete workflows
+- View other users' profiles
+- "Saved by" display on PlaceDetail and PlaceCard
 - Form validation and error handling
-- PlaceDetail refactor to use KebabMenu + ConfirmDialog for consistency
 - Responsive design polishing
 
 ### **Phase 2: Google Places API Integration**
@@ -285,29 +278,7 @@ After the JavaScript version is polished and deployed:
 
 ## **Development Process**
 
-This is an independent educational project owned and developed by Ashe Urban. Claude (Anthropic's AI assistant) is used as a development tool to provide guidance, suggestions, and explanations.
-
-**Ownership & Workflow:**
-- Ashe maintains full ownership of all code and makes all implementation decisions
-- All commits are authored by Ashe
-- Claude provides direction → Ashe implements → Review together
-- This ensures deep learning through hands-on problem-solving while leveraging AI assistance for guidance and architectural discussion
-
-**Collaboration Approach:**
-- Claude always reads code first before making recommendations
-- Architectural decisions are discussed before implementation
-- Code changes are explained with reasoning (the "why", not just the "what")
-- Each step is deliberate and traceable
-- Questions are treated as learning opportunities, not direction changes
-- Forward momentum is maintained with clear next steps
-
-**Code Presentation (Claude → Ashe):**
-- Changes are presented in diff format with color-coded additions/removals
-- Complete files are provided, never just snippets
-- Inline comments explain the "why" behind changes
-- Related changes are grouped together logically
-- Code is mentally tested for syntax and indentation before presentation
-
+This is an independent project owned and developed by Ashe Urban. Claude (Anthropic's AI assistant) is used as a development tool to provide guidance, suggestions, and explanations.
 ---
 
 ## **License**
