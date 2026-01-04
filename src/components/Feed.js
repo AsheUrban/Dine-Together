@@ -78,7 +78,6 @@ const handleSaveEditPost = async (postData) => {
           post={posts.find(p => p.id === editingPostId)}
           onEditPost={handleSaveEditPost}
           onBack={() => setEditingPostId(null)}
-          onDelete={handleDeletePost}
         />
     );
   }

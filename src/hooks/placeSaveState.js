@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { auth } from '../firebase.js';
-import { checkIfPlaceSaved, getPlaceSavedByUsers, getUsernamesFromIds, addToSavedPlaces, removeFromSavedPlaces } from '../services/firebaseService';
+import { checkIfPlaceSaved, getPlaceSavedByUsers, getUsernamesFromIds, addToSavedPlaces } from '../services/firebaseService';
 
 export const usePlaceSaveState = (placeId) => {
      const [isSaved, setIsSaved] = useState(null);
@@ -47,22 +47,5 @@ export const usePlaceSaveState = (placeId) => {
             }
         };
 
-        const removePlace = async () => {
-            const confirmed = window.confirm('Remove from saved places?');
-            if(confirmed) {
-                try {
-                    setIsLoading(true);
-                    await removeFromSavedPlaces(auth.currentUser.uid, placeId);
-                    setIsSaved(false);
-                    const userIds = await getPlaceSavedByUsers(placeId);
-                    setSavedByUsers(userIds);
-                    const usernames = await getUsernamesFromIds(userIds);
-                    setSavedByUsernames(usernames);
-                } finally {
-                    setIsLoading(false);
-                }
-            }
-        };
-
-        return { isSaved, savedByUsers, savedByUsernames, showAllSavedBy, setShowAllSavedBy, isLoading, savePlace, removePlace };
+        return { isSaved, savedByUsers, savedByUsernames, showAllSavedBy, setShowAllSavedBy, isLoading, savePlace };
 };

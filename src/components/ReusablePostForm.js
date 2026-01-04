@@ -42,7 +42,6 @@ ReusablePostForm.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     buttonText: PropTypes.string.isRequired,
     backButton: PropTypes.node,
-    deleteButton: PropTypes.node,
     caption: PropTypes.string
 };
 
