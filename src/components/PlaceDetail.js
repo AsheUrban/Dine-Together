@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import EditPlaceForm from './EditPlaceForm';
 import ConfirmDialog from './ConfirmDialog.js';
+import KebabMenu from './KebabMenu.js';
 import { auth } from '../firebase.js';
-import { PlaceContainer, H3Centered, H4, PlaceActionButton } from '../styles';
+import { PlaceContainer, H3Centered, H4, PlaceActionButton, PlaceMenuContainer, CircularBackButton } from '../styles';
 import { updatePlace, removeFromSavedPlaces } from '../services/firebaseService';
 import { useEditMode } from '../hooks/editMode';
 import { usePlaceSaveState } from '../hooks/placeSaveState';
@@ -42,6 +43,23 @@ function PlaceDetail(props){
         onBack();
     };
 
+        const handleKebabAction= (item) => {
+        if (item.id === 'edit') {
+            enterEditMode();
+        } else if (item.id === 'remove') {
+            handleRemove();
+        }
+    };
+
+    const buildMenuItems = () => {
+        const items = [];
+        if (onPlaceUpdate) {
+            items.push({ id: 'edit', label: 'Edit' });
+        }
+        items.push({ id: 'remove', label: 'Remove' });
+        return items;
+    };
+
     if(isEditing) {
         return (
                 <EditPlaceForm
@@ -57,18 +75,18 @@ function PlaceDetail(props){
     return (
         <React.Fragment>
             <PlaceContainer>
+                 {isSaved === true && (
+                    <PlaceMenuContainer>
+                        <KebabMenu items={buildMenuItems()} onItemClick={handleKebabAction} />
+                    </PlaceMenuContainer>
+                 )}
                 <H3Centered>{place.restaurantName}</H3Centered>
                 <H4>{place.restaurantAddress}</H4>
                 <p><em>{place.notes}</em></p>
-                {isSaved ? (
-                    <>
-                        {onPlaceUpdate && <PlaceActionButton onClick={enterEditMode}>Edit</PlaceActionButton>}
-                        <PlaceActionButton onClick={handleRemove} disabled={isLoading}>Remove</PlaceActionButton>
-                    </>
-                ) : (
+                {isSaved === false && (
                     <PlaceActionButton onClick={savePlace} disabled={isLoading}>Add</PlaceActionButton>
                 )}
-                <PlaceActionButton onClick={onBack}>Back</PlaceActionButton>
+                <CircularBackButton onClick={onBack}>↩</CircularBackButton>
             </PlaceContainer>
             {removeConfirmation.isOpen && (
                                 <ConfirmDialog

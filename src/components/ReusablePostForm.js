@@ -31,7 +31,7 @@ function ReusablePostForm(props) {
                 </form>
                 <FormButtons>
                     <Button type='submit' form="postForm">{props.buttonText}</Button>
-                    {props.cancelButton}
+                    {props.backButton}
                 </FormButtons>
             </FormContainer>
         </React.Fragment>
@@ -41,7 +41,7 @@ function ReusablePostForm(props) {
 ReusablePostForm.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     buttonText: PropTypes.string.isRequired,
-    cancelButton: PropTypes.node,
+    backButton: PropTypes.node,
     deleteButton: PropTypes.node,
     caption: PropTypes.string
 };

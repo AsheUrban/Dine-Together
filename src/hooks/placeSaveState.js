@@ -3,7 +3,7 @@ import { auth } from '../firebase.js';
 import { checkIfPlaceSaved, getPlaceSavedByUsers, getUsernamesFromIds, addToSavedPlaces, removeFromSavedPlaces } from '../services/firebaseService';
 
 export const usePlaceSaveState = (placeId) => {
-     const [isSaved, setIsSaved] = useState(false);
+     const [isSaved, setIsSaved] = useState(null);
         const [savedByUsers, setSavedByUsers] = useState([]);
         const [savedByUsernames, setSavedByUsernames] = useState({});
         const [showAllSavedBy, setShowAllSavedBy] = useState(false);

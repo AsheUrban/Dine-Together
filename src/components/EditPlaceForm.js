@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReusablePlaceForm from './ReusablePlaceForm';
-import { PlaceActionButton } from '../styles';
+import { CircularBackButton } from '../styles';
 
 //logic for handleEditingPlace is in PlaceDetail.js
 
 function EditPlaceForm (props) {
-  const { place, onBack, onDelete } = props;
+  const { place, onBack } = props;
 
   const handleSubmit = (placeData) => {
         props.onEditPlace({
@@ -22,8 +22,7 @@ function EditPlaceForm (props) {
         restaurantName={place.restaurantName}
         placeId={place.placeId}
         notes={place.notes}
-        cancelButton={<PlaceActionButton onClick={onBack}>Cancel</PlaceActionButton>}
-        deleteButton={<PlaceActionButton onClick={()=> onDelete(place.id)}>Delete</PlaceActionButton>}
+        backButton={<CircularBackButton onClick={onBack}>↩</CircularBackButton>}
       />
     );
 }
@@ -31,8 +30,7 @@ function EditPlaceForm (props) {
 EditPlaceForm.propTypes = {
   onEditPlace: PropTypes.func.isRequired,
   place: PropTypes.object.isRequired,
-  onBack: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired
+  onBack: PropTypes.func.isRequired
 };
 
 export default EditPlaceForm;

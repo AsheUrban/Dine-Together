@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { FormContainer, TextArea, Button, BioLabel, CharacterCounter, PlaceActionButton } from '../styles';
+import { FormContainer, TextArea, Button, BioLabel, CharacterCounter, CircularBackButton } from '../styles';
 
 const BEST_MEAL_LIMIT = 75;
 const GO_TO_MEALS_LIMIT = 75;
@@ -57,7 +57,7 @@ function ReusableProfileForm(props) {
                 <br/>
                 <Button type="submit" disabled={isLoading}>{isLoading ? 'Saving...' : buttonText}</Button>
             </form>
-            {onBack && <PlaceActionButton onClick={onBack}>Back</PlaceActionButton>}
+            {onBack && <CircularBackButton onClick={onBack}>↩</CircularBackButton>}
         </FormContainer>
     );
 }

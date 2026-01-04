@@ -13,7 +13,7 @@ function Post({ postId, authorId, username, caption, place, timeOpen, onPostClic
         onPostClick(postId, place, authorId);
     };
 
-    const handleMenuItemClick = (item) => {
+    const handleKebabAction= (item) => {
         if (item.id === 'edit') {
             onEditPost(postId);
         } else if (item.id === 'delete') {
@@ -57,7 +57,7 @@ function Post({ postId, authorId, username, caption, place, timeOpen, onPostClic
                                 { id: 'edit', label: 'Edit Post' },
                                 { id: 'delete', label: 'Delete Post' }
                             ]}
-                            onItemClick={handleMenuItemClick}
+                            onItemClick={handleKebabAction}
                         />
                     )}
                 </PostHeader>

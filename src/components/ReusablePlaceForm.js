@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { FormContainer, Input, TextArea, Button, PostLabel } from '../styles';
+import { FormContainer, Input, TextArea, Button, PostLabel, FormButtons } from '../styles';
 import { validatePlace } from '../utils/validators';
 
 function ReusablePlaceForm(props) {
@@ -31,8 +31,8 @@ function ReusablePlaceForm(props) {
 
     return (
         <React.Fragment>
-            <FormContainer>
-            <form onSubmit={handleFormSubmit}>
+          <FormContainer>
+            <form id="placeForm" onSubmit={handleFormSubmit}>
               <Input
                 type='hidden'
                 name='placeId'
@@ -53,11 +53,12 @@ function ReusablePlaceForm(props) {
                 maxLength='200' />
               {errors?.notes && <p style={{color: 'red', fontSize: '12px'}}>{errors.notes}</p>}
               <br />
-              <Button type='submit'>{props.buttonText}</Button>
             </form>
-            {props.cancelButton}
-            {props.deleteButton}
-            </FormContainer>
+            <FormButtons>
+              <Button type='submit' form="placeForm">{props.buttonText}</Button>
+              {props.backButton}
+            </FormButtons>
+          </FormContainer>
         </React.Fragment>
       );
   }
@@ -65,8 +66,7 @@ function ReusablePlaceForm(props) {
   ReusablePlaceForm.propTypes = {
       onSubmit: PropTypes.func.isRequired,
       buttonText: PropTypes.string.isRequired,
-      cancelButton: PropTypes.node,
-      deleteButton: PropTypes.node,
+      backButton: PropTypes.node,
       restaurantName: PropTypes.string,
       placeId: PropTypes.string,
       notes: PropTypes.string

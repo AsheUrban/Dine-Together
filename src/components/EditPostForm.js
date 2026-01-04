@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReusablePostForm from './ReusablePostForm';
-import { PlaceActionButton } from '../styles';
+import { CircularBackButton } from '../styles';
 
 function EditPostForm(props) {
     const { post, onBack } = props;
@@ -18,7 +18,7 @@ function EditPostForm(props) {
             onSubmit={handleSubmit}
             buttonText='Save'
             caption={post.caption}
-            cancelButton={<PlaceActionButton onClick={onBack}>Cancel</PlaceActionButton>}
+            backButton={<CircularBackButton onClick={onBack}>↩</CircularBackButton>}
         />
     );
 }

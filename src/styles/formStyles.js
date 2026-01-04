@@ -8,6 +8,7 @@ export const FormContainer = styled.div`
     padding: 60px;
     border: 2px solid #D4A574;
     text-align: center;
+    position: relative;
 `;
 
 export const Input = styled.input`

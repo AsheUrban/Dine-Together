@@ -39,7 +39,8 @@ export {
     KebabMenuButton,
     KebabMenuContainer,
     KebabMenuDropdown,
-    KebabMenuItem
+    KebabMenuItem,
+    CircularBackButton
 } from './globalStyles';
 
 export {
@@ -62,7 +63,8 @@ export {
     PlaceDetails,
     PlacedDate,
     PlaceActionButton,
-    PlaceGridStyles
+    PlaceGridStyles,
+    PlaceMenuContainer
 } from './placeStyles';
 
 export {
