@@ -6,34 +6,21 @@
 ---
 
 ## **Project Overview**
-**Ongoing Independent Project** — React-based web application using Firebase (Auth + Firestore) with a modern, scalable service-layer architecture.
+**Ongoing Independent Project** Dine Together is an active, full-stack React prototype exploring how social restaurant discovery and shared dining experiences can live in one place. The application allows users to create and share restaurant posts, save places they want to try, and explore dining recommendations through a community-driven feed.
 
-Dine-Together is a prototype React app designed with a single goal in mind: to make planning dinners with friends simple. No more back-and-forth, easily see which restaurants all parties are interested in going to, make a reservation in app, everyone gets notified. Done. While this goal was ambitious and not reached by this project, it continues to be an idea I have yet to see executed well and hope to return to one day!
+The current JavaScript MVP focuses on core social functionality and scalable architecture, including Firebase Authentication, Firestore data modeling, protected routes, and a service-layer approach that separates UI concerns from data access. As part of this phase, the application will integrate the Google Places API to support real restaurant search, autocomplete, and enriched place data within the app experience.
 
-**Main branch** is a functional snapshot of current development work, synced with remodel on 2025-12-04. The app runs without errors and represents active work in progress.
+Following MVP polish, the project is planned to be refactored to TypeScript with expanded tooling and libraries to support larger user bases and more advanced features. Future phases aim to introduce deeper social connections and explore APIs that enable in-app reservation workflows, building toward a more complete end-to-end dining coordination platform.
 
-**What's Working:**
-- User authentication (sign up, sign in, sign out)
-- Profile pages with tabbed interface (Posts | Restaurants)
-- Feed displaying all posts from all users
-- Place management (view, edit, save, remove saved places)
-- Real-time subscriptions to posts and places
-- Posts/Places architectural separation
+**Remodel branch** (this branch) is the active development branch where all new work happens. All features are implemented here first.
 
-**What's Pending Implementation:**
-- Post edit/delete functionality (KebabMenu component designed but not yet wired)
-- Delete confirmation dialogs (ConfirmDialog component built but not integrated)
-- Form validation and error handling
-- Google Places API integration
-
-**Remodel branch** is the active development branch where all new work happens. For the most current code, see remodel.
+**Main branch** is a functional snapshot synced with remodel on 2025-12-04. It represents the current state of work and runs without errors, though some features are pending implementation.
 
 | Branch | Status | Focus |
 |--------|--------|-------|
-| **remodel** | Active Development | All new features developed here. KebabMenu and ConfirmDialog implementation next. |
-| **main** | Development Snapshot (2025-12-04) | Functional snapshot synced with remodel. Runs without errors, some features pending implementation (see above). |
-
----
+| **remodel** | Active Development | All new work developed here. |
+| **main** | Development Snapshot (2025-12-04) | Synced with remodel. Functional snapshot representing current state of active development. |
+| **Legacy** | Early prototype, capstone project. For memories. |
 
 ## **Technologies Used**
 
@@ -115,17 +102,7 @@ The MVP goal was a React application with:
 - A wishlist/queue of places to eat
 - Browser-based API integration (Google Places)
 
-**Current Status:** The **remodel** branch features a complete architectural separation of Posts (social) and Places (restaurants) collections:
-- Posts as social wrappers with captions and timestamps
-- Places as restaurant data that can be referenced by multiple posts
-- Profile page with tabbed interface (Posts | Restaurants)
-- Feed displays all posts from all users with place data joined at service layer
-- Place edit/update and delete functionality
-- Protected routes with centralized authentication
-- Username-based user profiles with Firestore integration
-- Reusable styled components in a centralized styles directory
-- Firebase service layer for database operations
-- Ready for Google Places API integration
+**Current Status:** The **remodel** branch is the active development branch. Reference for most up-to-date version of the project. Remodel branch is periodically merged to main to ensure recent snapshot is maintained.
 
 ---
 
@@ -149,15 +126,12 @@ The inspiration for the aesthetic of this project is vintage menus. Colors were 
 ---
 
 ## **Challenges Encountered & Solutions**
-- **CORS Limitations:** Google Places API has browser-based CORS restrictions. Solution: Using `@react-google-maps/api` library which handles this properly.
-- **Architecture Scalability:** Original monolithic component structure made it difficult to add new features cleanly. Solution: Refactored to service-layer architecture with reusable styled components.
 - **State Machine Complexity:** Feed component had multiple overlapping states (form visibility, editing, selected post). Solution: Simplified to use custom hooks and moved form handling to appropriate components (Explore for add, PostDetail for edit).
 - **Post Author Data Fetching:** Displaying posts required fetching author usernames, creating potential N+1 request problem. Solution: Denormalized `authorUsername` into post documents for simplicity. Tradeoff: If username changes are implemented, will require batch migration of post documents. This pragmatic choice optimizes for current MVP scale; future TypeScript rebuild can use modern patterns (React Query, Suspense) if needed.
 ---
 
 ## **Known Bugs**
-- Google Places integration is **in progress** (ready for development).
----
+None at the time of this snapshot.
 
 ## **Setup / Installation (Main Branch)**
 > You need a Firebase project and a local environment file to run the app.
@@ -256,26 +230,8 @@ src/
 
 ### **Phase 1: JavaScript MVP (Current - Remodel Branch)**
 
-**✅ Completed:**
-- Posts/Places architectural separation (two Firestore collections)
-- Profile page with tabbed interface (Posts | Restaurants)
-- Place edit/update and delete functionality
-- 11 custom hooks for scalable state management
-- Vintage menu aesthetic with centralized styling
-
-**🚧 In Progress:**
-- KebabMenu component integration (menu built, wiring to Post.js and callbacks in progress)
-- ConfirmDialog component for delete confirmations (built, integration pending)
-- Post edit/delete functionality via KebabMenu and ConfirmDialog
-- Feed and Profile callback handling for post actions
-- Responsive design refinements
-
-**📋 Pending Before API Integration:**
-- Complete KebabMenu wiring into Post.js, Feed.js, and Profile.js
-- Test end-to-end post edit/delete workflows
-- Form validation and error handling
-- PlaceDetail refactor to use KebabMenu + ConfirmDialog for consistency
-- Responsive design polishing
+** Completed:**
+- See remodel branch
 
 ### **Phase 2: Google Places API Integration**
 
@@ -299,30 +255,7 @@ After the JavaScript version is polished and deployed:
 
 ## **Development Process**
 
-This is an independent educational project owned and developed by Ashe Urban. Claude (Anthropic's AI assistant) is used as a development tool to provide guidance, suggestions, and explanations.
-
-**Ownership & Workflow:**
-- Ashe maintains full ownership of all code and makes all implementation decisions
-- All commits are authored by Ashe
-- Claude provides direction → Ashe implements → Review together
-- This ensures deep learning through hands-on problem-solving while leveraging AI assistance for guidance and architectural discussion
-
-**Collaboration Approach:**
-- Claude always reads code first before making recommendations
-- Architectural decisions are discussed before implementation
-- Code changes are explained with reasoning (the "why", not just the "what")
-- Each step is deliberate and traceable
-- Questions are treated as learning opportunities, not direction changes
-- Forward momentum is maintained with clear next steps
-
-**Code Presentation (Claude → Ashe):**
-- Changes are presented in diff format with color-coded additions/removals
-- Complete files are provided, never just snippets
-- Inline comments explain the "why" behind changes
-- Related changes are grouped together logically
-- Code is mentally tested for syntax and indentation before presentation
-
----
+This is an independent project owned and developed by Ashe Urban. Claude (Anthropic's AI assistant) is used as a development tool to provide guidance, suggestions, and explanations.
 
 ## **License**
 
