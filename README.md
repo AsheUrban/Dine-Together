@@ -6,9 +6,13 @@
 ---
 
 ## **Project Overview**
-**Ongoing Independent Project** — React-based web application using Firebase (Auth + Firestore) with a modern, scalable service-layer architecture.
+**Ongoing Independent Project** 
 
-Dine-Together is a prototype React app designed with a single goal in mind: to make planning dinners with friends simple. No more back-and-forth, easily see which restaurants all parties are interested in going to, make a reservation in app, everyone gets notified. Done. While this goal was ambitious and not reached by this project, it continues to be an idea I have yet to see executed well and hope to return to one day!
+Dine Together is an active, full-stack React prototype exploring how social restaurant discovery and shared dining experiences can live in one place. The application allows users to create and share restaurant posts, save places they want to try, and explore dining recommendations through a community-driven feed.
+
+The current JavaScript MVP focuses on core social functionality and scalable architecture, including Firebase Authentication, Firestore data modeling, protected routes, and a service-layer approach that separates UI concerns from data access. As part of this phase, the application will integrate the Google Places API to support real restaurant search, autocomplete, and enriched place data within the app experience.
+
+Following MVP polish, the project is planned to be refactored to TypeScript with expanded tooling and libraries to support larger user bases and more advanced features. Future phases aim to introduce deeper social connections and explore APIs that enable in-app reservation workflows, building toward a more complete end-to-end dining coordination platform.
 
 **Remodel branch** (this branch) is the active development branch where all new work happens. All features are implemented here first.
 
@@ -18,6 +22,7 @@ Dine-Together is a prototype React app designed with a single goal in mind: to m
 |--------|--------|-------|
 | **remodel** | Active Development | All new work developed here. |
 | **main** | Development Snapshot (2025-12-04) | Synced with remodel. Functional snapshot representing current state of active development. |
+| **Legacy** | Early prototype, capstone project. For memories. |
 
 ---
 
