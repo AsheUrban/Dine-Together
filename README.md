@@ -137,17 +137,11 @@ The inspiration for the aesthetic of this project is vintage menus. Colors were 
 ![plot](src/img/vintageMenu2.png)
 ![plot](src/img/vintageMenu1.png)
 
----
 
-## **Challenges Encountered & Solutions**
-- **CORS Limitations:** Google Places API has browser-based CORS restrictions. Solution: Using `@react-google-maps/api` library which handles this properly.
-- **Architecture Scalability:** Original monolithic component structure made it difficult to add new features cleanly. Solution: Refactored to service-layer architecture with reusable styled components.
-- **State Machine Complexity:** Feed component had multiple overlapping states (form visibility, editing, selected post). Solution: Simplified to use custom hooks and moved form handling to appropriate components (Explore for add, PostDetail for edit).
-- **Post Author Data Fetching:** Displaying posts required fetching author usernames, creating potential N+1 request problem. Solution: Denormalized `authorUsername` into post documents for simplicity. Tradeoff: If username changes are implemented, will require batch migration of post documents. This pragmatic choice optimizes for current MVP scale; future TypeScript rebuild can use modern patterns (React Query, Suspense) if needed.
 ---
 
 ## **Known Bugs**
-- Google Places integration is **in progress** (ready for development).
+- No known bugs, app is currently WIP.
 ---
 
 ## **Setup / Installation (Main Branch)**
@@ -272,7 +266,7 @@ src/
 
 ### **Phase 3: TypeScript Refactor (Post-MVP)**
 
-After the JavaScript version is polished and deployed:
+After the JavaScript version is finalized:
 - Migrate codebase to TypeScript
 - Introduce React Query for advanced state management
 - Add Zod/Yup for schema validation
@@ -283,7 +277,8 @@ After the JavaScript version is polished and deployed:
 
 ## **Development Process**
 
-This is an independent project owned and developed by Ashe Urban. Claude (Anthropic's AI assistant) is used as a development tool to provide guidance, suggestions, and explanations.
+This is an independent project owned and developed by Ashe Urban. Claude (Anthropic's AI assistant) is used as a supporting tool, but is not authorized to make changes to this project.
+
 ---
 
 ## **License**
