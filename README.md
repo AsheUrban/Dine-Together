@@ -266,7 +266,7 @@ src/
 
 ### **Phase 3: TypeScript Refactor (Post-MVP)**
 
-After the JavaScript version is finalized:
+After the JavaScript version is finalizednpm run start:
 - Migrate codebase to TypeScript
 - Introduce React Query for advanced state management
 - Add Zod/Yup for schema validation
