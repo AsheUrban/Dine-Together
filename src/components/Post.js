@@ -7,13 +7,20 @@ import { formatDistanceToNow } from 'date-fns';
 import { PostCard, PostHeader, PostHeaderLeft, Username, PostCaption, PostWrapper, PlacedDate, LinkStyle } from '../styles';
 import { usePlaceSaveState } from '../hooks/placeSaveState';
 
-function Post({ postId, authorId, username, caption, place, timeOpen, onPostClick, isOwner, onEditPost, onDeletePost }) {
+function Post({ postId, authorId, username, caption, place, timeOpen, onPostClick, isOwner, onEditPost, onDeletePost, onUserClick }) {
     const { savedByUsers, savedByUsernames, showAllSavedBy, setShowAllSavedBy } = usePlaceSaveState(place.id);
     const handleClick = () => {
         onPostClick(postId, place, authorId);
     };
 
-    const handleKebabAction= (item) => {
+    const handleProfileClick = (event, userId) => {
+        event.stopPropagation();
+        if(onUserClick) {
+            onUserClick(userId);
+        }
+    };
+
+    const handleKebabAction = (item) => {
         if (item.id === 'edit') {
             onEditPost(postId);
         } else if (item.id === 'delete') {
@@ -26,19 +33,37 @@ function Post({ postId, authorId, username, caption, place, timeOpen, onPostClic
         
                 if (savedByUsers.length <= 3) {
                     return (
-                        <p> 
-                           Saved by: {savedByUsers.map(userId => savedByUsernames[userId]).join(', ')} 
-                        </p>
-                    );
+                        <p>
+                           Saved by: {savedByUsers.map((userId, index) => (
+                                <span key={userId}> 
+                                    <LinkStyle onClick={(e) => handleProfileClick(e, userId)}>
+                                        {savedByUsernames[userId]}
+                                    </LinkStyle>
+                                    {index < savedByUsers.length - 1 && ', '}
+                                </span>
+                            ))}
+                        </p>     
+                     );
                 }
         
                 return (
                     <p>
                         Saved by: {showAllSavedBy ?
-                            savedByUsers.map(userId => savedByUsernames[userId]).join(', ')
+                            savedByUsers.map((userId, index) => (
+                                <span key={userId}> 
+                                    <LinkStyle onClick={(e) => handleProfileClick(e, userId)}>
+                                        {savedByUsernames[userId]}
+                                    </LinkStyle>
+                                    {index < savedByUsers.length - 1 && ', '}
+                                </span>
+                            ))
                             : `${savedByUsers.length} people`
                         }
-                        {!showAllSavedBy && <LinkStyle onClick={() => setShowAllSavedBy(true)}>more</LinkStyle>}
+                        {!showAllSavedBy && (
+                            <LinkStyle onClick={(e) => { e.stopPropagation(); setShowAllSavedBy(true); }}>
+                                more
+                            </LinkStyle>
+                         )}
                     </p>
                 );
             };
@@ -47,7 +72,7 @@ function Post({ postId, authorId, username, caption, place, timeOpen, onPostClic
         <PostWrapper>
             <PostCard onClick={handleClick}>
                 <PostHeader>
-                    <PostHeaderLeft>
+                    <PostHeaderLeft onClick={(e) => handleProfileClick(e, authorId)} style={{ cursor: 'pointer' }}>
                         <Avatar displayName={username} variant="profile"/>
                         <Username>{username}</Username>
                     </PostHeaderLeft>
@@ -89,7 +114,8 @@ Post.propTypes = {
     onPostClick: PropTypes.func.isRequired,
     isOwner: PropTypes.bool,
     onEditPost: PropTypes.func,
-    onDeletePost: PropTypes.func
+    onDeletePost: PropTypes.func,
+    onUserClick: PropTypes.func
 };
 
 export default Post;
