@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PostList from './PostList';
 import PlaceDetail from './PlaceDetail';
 import EditPostForm from './EditPostForm.js';
@@ -10,6 +11,7 @@ import { usePlaceSelection } from '../hooks/placeSelection.js';
 import { deletePost, updatePostCaption } from '../services/firebaseService.js';
 
 function Feed () {
+  const navigate = useNavigate();
   const { posts, error } = useAllPosts();
   const { selectedPlace, handleSelectPlace, handleBackToList } = usePlaceSelection();
   const [editingPostId, setEditingPostId] = useState(null);
@@ -21,6 +23,10 @@ function Feed () {
 
 const selectPlaceFromPost = (postId, place, authorId) => {
   handleSelectPlace(place);
+};
+
+const handleUserClick = (userId) => {
+  navigate(`/profile/${userId}`);
 };
 
 const handleEditPost = (postId) => {
@@ -94,6 +100,7 @@ const handleSaveEditPost = async (postData) => {
           postList={postsWithOwnership}
           onEditPost={handleEditPost}
           onDeletePost={handleDeletePost}
+          onUserClick={handleUserClick}
         />
         {deleteConfirmation.isOpen && (
           <ConfirmDialog

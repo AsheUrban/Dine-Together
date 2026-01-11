@@ -13,7 +13,7 @@ import {
 
 
 function ProfileDetails(props) {
-    const { username, userBio, isEditing, enterEditMode, exitEditMode, onSave, isLoading } = props;
+    const { username, userBio, isEditing, enterEditMode, exitEditMode, onSave, isLoading, isOwnProfile } = props;
 
     if(isEditing) {
         return (
@@ -33,11 +33,13 @@ function ProfileDetails(props) {
 
             <Avatar displayName={username} variant="profile" />
             <H2>{username}</H2>
-            <EditProfileLink href="#edit" onClick={(e) => { 
-                e.preventDefault(); 
-                enterEditMode(); 
-                }}>edit profile
-            </EditProfileLink>
+            {isOwnProfile && (
+                <EditProfileLink href="#edit" onClick={(e) => { 
+                    e.preventDefault(); 
+                    enterEditMode(); 
+                    }}>edit profile
+                </EditProfileLink>
+            )}
             <BioSection>
                 {userBio.bestMeal && <BioText><BioLabel>Best Meal:</BioLabel>{userBio.bestMeal}</BioText>}
                 {userBio.goToMeals && <BioText><BioLabel>Repeat Restaurants:</BioLabel>{userBio.goToMeals}</BioText>}
@@ -54,7 +56,8 @@ ProfileDetails.propTypes = {
     enterEditMode: PropTypes.func.isRequired,
     exitEditMode: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool.isRequired
+    isLoading: PropTypes.bool.isRequired,
+    isOwnProfile: PropTypes.bool.isRequired
 };
 
 export default ProfileDetails;

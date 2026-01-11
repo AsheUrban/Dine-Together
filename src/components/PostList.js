@@ -28,6 +28,7 @@ function PostList(props){
                             isOwner={post.isOwner}
                             onEditPost={props.onEditPost}
                             onDeletePost={props.onDeletePost}
+                            onUserClick={props.onUserClick}
                         />
                     )
                 ) : (
@@ -42,7 +43,8 @@ PostList.propTypes = {
     postList: PropTypes.array,
     onPostSelection: PropTypes.func,
     onEditPost: PropTypes.func,
-    onDeletePost: PropTypes.func
+    onDeletePost: PropTypes.func,
+    onUserClick: PropTypes.func
 };
 
 export default PostList;

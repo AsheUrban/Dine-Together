@@ -5,6 +5,7 @@ import ProfileDetails from './ProfileDetails';
 import EditPostForm from './EditPostForm.js';
 import ConfirmDialog from './ConfirmDialog.js';
 import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { auth } from './../firebase.js';
 import { useUser } from '../hooks/user.js';
 import { subscribeToUserPlaces, subscribeToUserPosts, updateUserBio, deletePost, updatePostCaption } from '../services/firebaseService.js';
@@ -20,6 +21,10 @@ import {
 } from '../styles';
 
 function Profile() {
+    const { userId } = useParams();
+    const navigate = useNavigate();
+    const isOwnProfile = userId === auth.currentUser?.uid;
+
     const [mainPlaceList, setMainPlaceList] = useState([]);
     const [posts, setUserPosts] = useState([]);
     const [activeTab, setActiveTab] = useState('places');
@@ -29,12 +34,12 @@ function Profile() {
         message: '',
         postId: null
     });
-    const { username, userBio, loading, error } = useUser(auth.currentUser.uid);
+    const { username, userBio, loading, error } = useUser(userId);
     const { selectedPlace, handleSelectPlace, handleBackToList } = usePlaceSelection();
     const { isEditing, enterEditMode, exitEditMode } = useEditMode();
     const { isLoading, handleSubmit } = useFormSubmit(async (bioData) => {
         try {
-            await updateUserBio(auth.currentUser.uid, bioData);
+            await updateUserBio(userId, bioData);
             exitEditMode();
         } catch (err) {
             console.error('Error updating bio:', err);
@@ -44,19 +49,19 @@ function Profile() {
 
     useEffect(() => {
         const unSubscribe = subscribeToUserPosts(
-            auth.currentUser.uid,
+            userId,
             (posts) => setUserPosts(posts)
         );
         return () => unSubscribe();
-    }, []);
+    }, [userId]);
 
     useEffect(() => {
         const unSubscribe = subscribeToUserPlaces(
-            auth.currentUser.uid,
+            userId,
             (places) => setMainPlaceList(places)
         );
         return () => unSubscribe();
-    }, []);
+    }, [userId]);
 
     const selectPlace = (id) => {
         const selection = mainPlaceList.filter(place => place.id === id)[0];
@@ -65,6 +70,10 @@ function Profile() {
 
     const selectPlaceFromPost = (postId, place, authorId) => {
         handleSelectPlace(place);
+    };
+
+    const handleUserClick = (clickedUserId) => {
+        navigate(`/profile/${clickedUserId}`);
     };
 
     const handleEditPost = (postId) => {
@@ -97,8 +106,8 @@ function Profile() {
         return <div>Loading profile...</div>;
     }
 
-    if(error) {
-        return <div>{error}</div>;
+    if(error || (!loading && !username)) {
+        return <div>User not found</div>;
     }
 
     if(selectedPlace) {
@@ -106,12 +115,12 @@ function Profile() {
           <PlaceDetail
             place={selectedPlace}
             onBack={handleBackToList}
-            onPlaceUpdate={handlePlaceUpdate}
+            onPlaceUpdate={isOwnProfile ? handlePlaceUpdate : undefined}
         />
      );
     }
 
-     if(editingPostId) {
+     if(editingPostId && isOwnProfile) {
         return (
           <EditPostForm
               post={posts.find(p => p.id === editingPostId)}
@@ -124,7 +133,7 @@ function Profile() {
     
       const postsWithOwnership = posts.map(post => ({
           ...post,
-          isOwner: post.userId === auth.currentUser.uid
+          isOwner: isOwnProfile && post.userId === auth.currentUser.uid
       }));
 
     return (
@@ -137,6 +146,7 @@ function Profile() {
                 exitEditMode={exitEditMode}
                 onSave={handleSubmit}
                 isLoading={isLoading}
+                isOwnProfile={isOwnProfile}
             />
             <RestaurantSection>
                 <TabContainer>
@@ -147,8 +157,9 @@ function Profile() {
                     <PostList 
                         postList={postsWithOwnership}
                         onPostSelection={selectPlaceFromPost} 
-                        onEditPost={handleEditPost}
-                        onDeletePost={handleDeletePost}
+                        onEditPost={isOwnProfile ? handleEditPost : undefined}
+                        onDeletePost={isOwnProfile ? handleDeletePost : undefined}
+                        onUserClick={handleUserClick}
                     />
                 ) : (
                 <PlaceGrid placeList={mainPlaceList} onPlaceSelection={selectPlace} />
