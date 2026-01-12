@@ -5,6 +5,25 @@
 
 ---
 
+## Table of Contents
+
+- [Project Overview](#project-overview)
+- [Technologies Used](#technologies-used)
+- [Architecture](#architecture)
+  - [Service Layer Pattern](#service-layer-pattern)
+  - [Firestore Schema](#firestore-schema)
+- [Description](#description)
+- [Goals & Problems Solved](#goals--problems-solved)
+- [Diagrams & Design](#diagrams--design)
+- [Known Bugs](#known-bugs---updated-11126)
+- [Setup / Installation](#setup--installation-main-branch)
+- [Project Structure](#project-structure)
+- [Development Roadmap](#development-roadmap)
+- [Development Process Disclaimer](#development-process-disclaimer)
+- [License](#license)
+
+---
+
 ## **Project Overview**
 **Ongoing Independent Project** 
 
