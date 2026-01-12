@@ -22,7 +22,7 @@ Following MVP polish, the project is planned to be refactored to TypeScript with
 |--------|--------|-------|
 | **remodel** | Active Development | All new work developed here. |
 | **main** | Development Snapshot (2025-12-04) | Synced with remodel. Functional snapshot representing current state of active development. |
-| **Legacy** | Early prototype, capstone project. For memories. |
+| **Legacy** | Early prototype, capstone project | For memories. |
 
 ---
 
@@ -57,7 +57,7 @@ The **service layer** (`firebaseService.js`) sits between components and externa
 - **Flexibility** — Swapping Firebase for a different backend requires changes only in the service layer
 - **API Integration** — Adding Google Places API calls happens in the service layer without touching components
 
-**Example:** When Explore.js needs to search restaurants, it calls `firebaseService.searchRestaurants()` instead of directly calling Google Places API. The service layer handles the API call, error handling, and data transformation. Components receive clean data ready to display.
+**Example:** When Explore.js needs to search restaurants, it will call `firebaseService.searchRestaurants()` instead of directly calling Google Places API. The service layer handles the API call, error handling, and data transformation. Components receive clean data ready to display.
 
 ### **Firestore Schema**
 
@@ -75,11 +75,15 @@ firestore/
 │   └── {placeId}
 │       ├── restaurantName (string)
 │       ├── restaurantAddress (string)
-│       ├── notes (string) - User observations/details
+│       ├── notes (string) - User observations/details // will move to separate wrapper
 │       ├── priceLevel (number) - 1-4 price indicator
 │       ├── rating (number) - Google Places rating
 │       ├── userRatingsTotal (number) - Number of ratings
 │       └── createdAt (timestamp) - When place was added to system
+│
+├── placeSavedBy/{placeId}/
+│   └── users/{userId}
+│       └── timeAdded (timestamp) - When user saved this place
 │
 └── users/{userId}/
     ├── username (string)
@@ -96,7 +100,8 @@ firestore/
 **Key Points:**
 - Posts reference Places by ID (one Place can be referenced by multiple Posts)
 - userPlaces subcollection links users to their saved restaurants
-- Service layer joins Post + Place data when fetching (no N+1 queries)
+- Service layer joins Post + Place data when fetching (username denormalized to avoid N+1)
+- Place data fetched per-item (N+1 pattern, flagged for optimization in TypeScript refactor)
 
 ---
 
@@ -131,17 +136,20 @@ The MVP goal was a React application with:
 ---
 
 ## **Diagrams & Design**
-The inspiration for the aesthetic of this project is vintage menus. Colors were selected that provide a sense of nostalgia and warmth. Using this app should feel a bit like browswer an old menu for a favorite dish.
+The inspiration for the aesthetic of this project is vintage menus. Colors were selected that provide a sense of nostalgia and warmth. Using this app should feel a bit like browsing an old menu for a favorite dish.
 ![plot](src/img/colorPalette.png)
 ![plot](src/img/vintageMenu3.png)
 ![plot](src/img/vintageMenu2.png)
 ![plot](src/img/vintageMenu1.png)
 
-
 ---
 
-## **Known Bugs**
-- No known bugs, app is currently WIP.
+## **Known Bugs - Updated 1/11/26** 
+- PlaceDetail should not be editable, details will come from API (or manually added TBD).*
+- PlaceDetail should not contain user notes. Currently user notes on PlaceDetail is global, and when edited by a user is updated for all. Notes will be moved to a wrapper that is conditionally displayed around PlaceDetail.*
+
+*These bugs will be addressed in immediately planned PlaceDetail refactor.
+
 ---
 
 ## **Setup / Installation (Main Branch)**
@@ -203,7 +211,10 @@ src/
 │   ├── ReusablePlaceForm.js   (Reusable form component for places)
 │   ├── Post.js                (Individual social post component with ownership)
 │   ├── PostList.js            (List display of posts)
+│   ├── EditPostForm.js        (Edit post caption)
+│   ├── Place.js               (Individual place card component)
 │   ├── PlaceGrid.js           (Grid display of places)
+│   ├── Avatar.js              (User avatar component)
 │   ├── ProfileDetails.js      (User bio section)
 │   ├── ProtectedRoute.js      (Auth-gated route wrapper)
 │   ├── KebabMenu.js           (Reusable dropdown menu for Post/Place actions)
@@ -248,11 +259,12 @@ src/
 - ConfirmDialog for delete confirmations
 - CircularBackButton for consistent back/cancel UX
 - Post edit/delete functionality
+- View other users' profiles
 
 **Pending Before API Integration:**
-- View other users' profiles
+
+- PlaceDetail architecture (restaurant profile + per-user notes wrapper)
 - "Saved by" display on PlaceDetail and PlaceCard
-- Form validation and error handling
 - Responsive design polishing
 
 ### **Phase 2: Google Places API Integration**
@@ -264,20 +276,25 @@ src/
 5. Integrate API data into place creation flow
 6. Test end-to-end workflows and polish UX
 
-### **Phase 3: TypeScript Refactor (Post-MVP)**
+### **Phase 3: Outstanding Items** 
 
-After the JavaScript version is finalizednpm run start:
+- Form validation and error handling
+- Code cleanup, including 11 unused wrappers identified in internal documentation
+
+**TypeScript Refactor (Post-MVP)**
+
+After the JavaScript version is finalized:
 - Migrate codebase to TypeScript
 - Introduce React Query for advanced state management
-- Add Zod/Yup for schema validation
-- Implement Suspense for async boundaries
+- Add Zod/Yup (?) for schema validation
+- Implement Suspense (?) for async boundaries
 - Build foundation for social features (friends, connections, reservations)
 
 ---
 
-## **Development Process**
+## **Development Process Disclaimer**
 
-This is an independent project owned and developed by Ashe Urban. Claude (Anthropic's AI assistant) is used as a supporting tool, but is not authorized to make changes to this project.
+This project was designed and developed by Ashe Urban with the support of Claude AI.
 
 ---
 
@@ -289,7 +306,7 @@ Unauthorized use, reproduction, modification, or distribution is prohibited with
 
 For inquiries regarding licensing or commercial use, contact: [theasheurban@gmail.com](mailto:theasheurban@gmail.com)
 
-Copyright © 2025
+Copyright © 2026
 *Ashe Urban*
 
 > Reference: [Create React App docs](https://create-react-app.dev/)
