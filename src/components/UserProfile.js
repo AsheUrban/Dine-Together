@@ -1,7 +1,7 @@
 import PlaceDetail from './PlaceDetail';
 import PlaceGrid from './PlaceGrid';
 import PostList from './PostList';
-import ProfileDetails from './ProfileDetails';
+import UserDetails from './UserDetails.js';
 import EditPostForm from './EditPostForm.js';
 import ConfirmDialog from './ConfirmDialog.js';
 import React, { useEffect, useState } from 'react';
@@ -20,7 +20,7 @@ import {
     TabButton
 } from '../styles';
 
-function Profile() {
+function UserProfile() {
     const { userId } = useParams();
     const navigate = useNavigate();
     const isOwnProfile = userId === auth.currentUser?.uid;
@@ -138,7 +138,7 @@ function Profile() {
 
     return (
         <PageContainer>
-           <ProfileDetails
+           <UserDetails
                 username={username}
                 userBio={userBio}
                 isEditing={isEditing}
@@ -181,4 +181,4 @@ function Profile() {
             );
         }
 
-export default Profile;
+export default UserProfile;

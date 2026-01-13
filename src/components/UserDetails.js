@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Avatar from './Avatar';
-import EditProfileForm from './EditProfileForm';
+import EditProfileForm from './EditUserProfileForm';
 import {
     H2,
     BioText,
@@ -12,7 +12,7 @@ import {
 } from '../styles';
 
 
-function ProfileDetails(props) {
+function UserDetails(props) {
     const { username, userBio, isEditing, enterEditMode, exitEditMode, onSave, isLoading, isOwnProfile } = props;
 
     if(isEditing) {
@@ -49,7 +49,7 @@ function ProfileDetails(props) {
     );
 }
 
-ProfileDetails.propTypes = {
+UserDetails.propTypes = {
     username: PropTypes.string.isRequired,
     userBio: PropTypes.object.isRequired,
     isEditing: PropTypes.bool.isRequired,
@@ -60,4 +60,4 @@ ProfileDetails.propTypes = {
     isOwnProfile: PropTypes.bool.isRequired
 };
 
-export default ProfileDetails;
+export default UserDetails;

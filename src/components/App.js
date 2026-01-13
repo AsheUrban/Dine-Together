@@ -7,7 +7,7 @@ import Explore from './Explore';
 import ProtectedRoute from './ProtectedRoute';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { auth } from '../firebase.js';
-import Profile from './Profile';
+import UserProfile from './UserProfile';
 
 function App(){
   const [user, setUser] = useState(null);
@@ -32,7 +32,7 @@ function App(){
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/sign-in' element={<SignIn />} />
         <Route path='/' element={<ProtectedRoute element={<Feed />} />} />
-        <Route path='/profile/:userId' element={<ProtectedRoute element={<Profile />} />} />
+        <Route path='/profile/:userId' element={<ProtectedRoute element={<UserProfile />} />} />
         <Route path='/search' element={<ProtectedRoute element ={<Explore />} />} />
       </Routes>
     </Router>
