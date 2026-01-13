@@ -12,10 +12,9 @@
 - [Architecture](#architecture)
   - [Service Layer Pattern](#service-layer-pattern)
   - [Firestore Schema](#firestore-schema)
-- [Description](#description)
 - [Goals & Problems Solved](#goals--problems-solved)
 - [Diagrams & Design](#diagrams--design)
-- [Known Bugs](#known-bugs---updated-11126)
+- [Known Bugs](#known-bugs---updated-11226)
 - [Setup / Installation](#setup--installation-main-branch)
 - [Project Structure](#project-structure)
 - [Development Roadmap](#development-roadmap)
@@ -32,6 +31,12 @@ Dine Together is an active, full-stack React prototype exploring how social rest
 The current JavaScript MVP focuses on core social functionality and scalable architecture, including Firebase Authentication, Firestore data modeling, protected routes, and a service-layer approach that separates UI concerns from data access. As part of this phase, the application will integrate the Google Places API to support real restaurant search, autocomplete, and enriched place data within the app experience.
 
 Following MVP polish, the project is planned to be refactored to TypeScript with expanded tooling and libraries to support larger user bases and more advanced features. Future phases aim to introduce deeper social connections and explore APIs that enable in-app reservation workflows, building toward a more complete end-to-end dining coordination platform.
+
+---
+
+**Current Status:** Core social features complete - users can post restaurants, save places, view other profiles, and browse a shared feed. PlaceProfile architecture in place with presentational components. Next: "Saved by" display, then Google Places API integration.
+
+---
 
 **Remodel branch** (this branch) is the active development branch where all new work happens. All features are implemented here first.
 
@@ -124,26 +129,6 @@ firestore/
 
 ---
 
-## **Description**
-The MVP goal was a React application with:
-- User authentication and profile management
-- A wishlist/queue of places to eat
-- Browser-based API integration (Google Places)
-
-**Current Status:** The **remodel** branch features a complete architectural separation of Posts (social) and Places (restaurants) collections:
-- Posts as social wrappers with captions and timestamps
-- Places as restaurant data that can be referenced by multiple posts
-- Profile page with tabbed interface (Posts | Restaurants)
-- Feed displays all posts from all users with place data joined at service layer
-- Place edit/update and delete functionality
-- Protected routes with centralized authentication
-- Username-based user profiles with Firestore integration
-- Reusable styled components in a centralized styles directory
-- Firebase service layer for database operations
-- Ready for Google Places API integration
-
----
-
 ## **Goals & Problems Solved**
 
 | Goal | Problem Solved |
@@ -163,11 +148,9 @@ The inspiration for the aesthetic of this project is vintage menus. Colors were 
 
 ---
 
-## **Known Bugs - Updated 1/11/26** 
-- PlaceDetail should not be editable, details will come from API (or manually added TBD).*
-- PlaceDetail should not contain user notes. Currently user notes on PlaceDetail is global, and when edited by a user is updated for all. Notes will be moved to a wrapper that is conditionally displayed around PlaceDetail.*
-
-*These bugs will be addressed in immediately planned PlaceDetail refactor.
+## **Known Bugs - Updated 1/12/26**
+- **Loading Flash:** Feed and Profile briefly show "no restaurants" empty state before data loads. Will be addressed in later polish.
+- **Global Notes:** Notes are stored on global `places` collection. When any user edits notes, it changes for all users. Will be fixed with NotesSection architecture (per-user notes in userPlaces subcollection) after API integration.
 
 ---
 
@@ -217,28 +200,37 @@ The inspiration for the aesthetic of this project is vintage menus. Colors were 
 
 ```
 src/
-├── components/
+├── components/ (30 files)
+│   ├── ActionBar.js           (Fixed-bottom action container)
 │   ├── App.js                 (Main app with routing & auth state)
-│   ├── SignIn.js              (Sign in page)
-│   ├── SignUp.js              (Sign up page)
-│   ├── Header.js              (Navigation header with user info)
-│   ├── Feed.js                (Display all posts from all users)
-│   ├── Profile.js             (User profile with Posts and Restaurants tabs)
-│   ├── Explore.js             (Search restaurants & manual add - WIP)
-│   ├── PlaceDetail.js         (View/edit saved place details)
+│   ├── Avatar.js              (User avatar component)
+│   ├── Background.js          (Background styling component)
+│   ├── ConfirmDialog.js       (Modal confirmation for delete operations)
 │   ├── EditPlaceForm.js       (Edit place information)
-│   ├── ReusablePlaceForm.js   (Reusable form component for places)
+│   ├── EditPostForm.js        (Edit post caption)
+│   ├── EditUserProfileForm.js (Edit user profile bio)
+│   ├── Explore.js             (Search restaurants & manual add - WIP)
+│   ├── Feed.js                (Display all posts from all users)
+│   ├── Header.js              (Navigation header with user info)
+│   ├── KebabMenu.js           (Reusable dropdown menu for actions)
+│   ├── NewPlaceForm.js        (Create new place)
+│   ├── NewPostForm.js         (Create new post)
+│   ├── NewProfileForm.js      (New user profile setup)
+│   ├── Place.js               (Individual place card component)
+│   ├── PlaceDetail.js         (Restaurant info display - purely presentational)
+│   ├── PlaceGrid.js           (Grid display of places)
+│   ├── PlaceList.js           (List display of places)
+│   ├── PlaceProfile.js        (Feature container for viewing/interacting with a place)
 │   ├── Post.js                (Individual social post component with ownership)
 │   ├── PostList.js            (List display of posts)
-│   ├── EditPostForm.js        (Edit post caption)
-│   ├── Place.js               (Individual place card component)
-│   ├── PlaceGrid.js           (Grid display of places)
-│   ├── Avatar.js              (User avatar component)
-│   ├── ProfileDetails.js      (User bio section)
 │   ├── ProtectedRoute.js      (Auth-gated route wrapper)
-│   ├── KebabMenu.js           (Reusable dropdown menu for Post/Place actions)
-│   ├── ConfirmDialog.js       (Modal confirmation for delete operations)
-│   └── ReusablePostForm.js    (Reusable form component for posts)
+│   ├── ReusablePlaceForm.js   (Reusable form component for places)
+│   ├── ReusablePostForm.js    (Reusable form component for posts)
+│   ├── ReusableProfileForm.js (Reusable form component for profiles)
+│   ├── SignIn.js              (Sign in page)
+│   ├── SignUp.js              (Sign up page)
+│   ├── UserDetails.js         (User bio section)
+│   └── UserProfile.js         (User profile with Posts and Restaurants tabs)
 ├── hooks/
 │   ├── allPosts.js            (Subscribe to all posts for Feed)
 │   ├── editMode.js            (Toggle edit/view state)
@@ -274,39 +266,45 @@ src/
 - Place edit/update and delete functionality
 - 7 custom hooks for scalable state management
 - Vintage menu aesthetic with centralized styling
-- KebabMenu integration across Feed, Profile, and PlaceDetail
+- KebabMenu integration across Feed, Profile, and PlaceProfile
 - ConfirmDialog for delete confirmations
 - CircularBackButton for consistent back/cancel UX
 - Post edit/delete functionality
 - View other users' profiles
+- PlaceProfile architecture (PlaceDetail purely presentational, PlaceProfile as feature container)
+- ActionBar component for fixed-bottom actions
 
-**Pending Before API Integration:**
-
-- PlaceDetail architecture (restaurant profile + per-user notes wrapper)
-- "Saved by" display on PlaceDetail and PlaceCard
-- Responsive design polishing
+**Current Sprint:**
+- "Saved by" display in ActionBar and PlaceCard
+- ActionBar consistency across app
 
 ### **Phase 2: Google Places API Integration**
 
-1. Install `@react-google-maps/api` package
-2. Implement restaurant search in Explore component
-3. Add autocomplete functionality to forms
-4. Display real restaurant photos from API
-5. Integrate API data into place creation flow
-6. Test end-to-end workflows and polish UX
+1. Google Places Autocomplete in Explore
+2. Google Places Details API for full restaurant data
+3. Google Photos API for restaurant images
+4. Combined search (restaurants + people)
+5. Manual entry as fallback when API returns no results
 
-### **Phase 3: Outstanding Items** 
+### **Phase 3: Design with Real Data**
+
+- NotesSection component (design with actual photos/data)
+- Notes schema update (generalNote/privateNote in userPlaces)
+- "Create Post" button in PlaceProfile
+
+### **Phase 4: Polish**
 
 - Form validation and error handling
-- Code cleanup, including 11 unused wrappers identified in internal documentation
+- Loading state improvements (fix loading flash bug)
+- Code cleanup
 
 **TypeScript Refactor (Post-MVP)**
 
 After the JavaScript version is finalized:
 - Migrate codebase to TypeScript
 - Introduce React Query for advanced state management
-- Add Zod/Yup (?) for schema validation
-- Implement Suspense (?) for async boundaries
+- Add Zod/Yup for schema validation
+- Implement Suspense for async boundaries
 - Build foundation for social features (friends, connections, reservations)
 
 ---

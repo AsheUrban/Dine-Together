@@ -11,7 +11,6 @@ import {
     BioSection,
 } from '../styles';
 
-
 function UserDetails(props) {
     const { username, userBio, isEditing, enterEditMode, exitEditMode, onSave, isLoading, isOwnProfile } = props;
 
@@ -30,16 +29,15 @@ function UserDetails(props) {
 
     return (
         <InfoSection>
-
             <Avatar displayName={username} variant="profile" />
-            <H2>{username}</H2>
-            {isOwnProfile && (
-                <EditProfileLink href="#edit" onClick={(e) => { 
-                    e.preventDefault(); 
-                    enterEditMode(); 
-                    }}>edit profile
-                </EditProfileLink>
-            )}
+                <H2>{username}</H2>
+                {isOwnProfile && (
+                    <EditProfileLink href="#edit" onClick={(e) => { 
+                        e.preventDefault(); 
+                        enterEditMode(); 
+                        }}>edit profile
+                    </EditProfileLink>
+                )}
             <BioSection>
                 {userBio.bestMeal && <BioText><BioLabel>Best Meal:</BioLabel>{userBio.bestMeal}</BioText>}
                 {userBio.goToMeals && <BioText><BioLabel>Repeat Restaurants:</BioLabel>{userBio.goToMeals}</BioText>}
