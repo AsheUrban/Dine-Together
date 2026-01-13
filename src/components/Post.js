@@ -29,44 +29,44 @@ function Post({ postId, authorId, username, caption, place, timeOpen, onPostClic
     };
 
     const renderSavedByInfo = () => {
-                if (savedByUsers.length === 0) return null;
-        
-                if (savedByUsers.length <= 3) {
-                    return (
-                        <p>
-                           Saved by: {savedByUsers.map((userId, index) => (
-                                <span key={userId}> 
-                                    <LinkStyle onClick={(e) => handleProfileClick(e, userId)}>
-                                        {savedByUsernames[userId]}
-                                    </LinkStyle>
-                                    {index < savedByUsers.length - 1 && ', '}
-                                </span>
-                            ))}
-                        </p>     
-                     );
-                }
-        
-                return (
-                    <p>
-                        Saved by: {showAllSavedBy ?
-                            savedByUsers.map((userId, index) => (
-                                <span key={userId}> 
-                                    <LinkStyle onClick={(e) => handleProfileClick(e, userId)}>
-                                        {savedByUsernames[userId]}
-                                    </LinkStyle>
-                                    {index < savedByUsers.length - 1 && ', '}
-                                </span>
-                            ))
-                            : `${savedByUsers.length} people`
-                        }
-                        {!showAllSavedBy && (
-                            <LinkStyle onClick={(e) => { e.stopPropagation(); setShowAllSavedBy(true); }}>
-                                more
+        if (savedByUsers.length === 0) return null;
+
+        if (savedByUsers.length <= 3) {
+            return (
+                <p>
+                    Saved by: {savedByUsers.map((userId, index) => (
+                        <span key={userId}> 
+                            <LinkStyle onClick={(e) => handleProfileClick(e, userId)}>
+                                {savedByUsernames[userId]}
                             </LinkStyle>
-                         )}
-                    </p>
+                            {index < savedByUsers.length - 1 && ', '}
+                        </span>
+                    ))}
+                </p>     
                 );
-            };
+        }
+
+        return (
+            <p>
+                Saved by: {showAllSavedBy ?
+                    savedByUsers.map((userId, index) => (
+                        <span key={userId}> 
+                            <LinkStyle onClick={(e) => handleProfileClick(e, userId)}>
+                                {savedByUsernames[userId]}
+                            </LinkStyle>
+                            {index < savedByUsers.length - 1 && ', '}
+                        </span>
+                    ))
+                    : `${savedByUsers.length} people`
+                }
+                {!showAllSavedBy && (
+                    <LinkStyle onClick={(e) => { e.stopPropagation(); setShowAllSavedBy(true); }}>
+                        more
+                    </LinkStyle>
+                    )}
+            </p>
+        );
+    };
 
     return (
         <PostWrapper>
