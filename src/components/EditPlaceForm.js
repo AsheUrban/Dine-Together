@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import ReusablePlaceForm from './ReusablePlaceForm';
 import { CircularBackButton } from '../styles';
 
-//logic for handleEditingPlace is in PlaceDetail.js
-
 function EditPlaceForm (props) {
   const { place, onBack } = props;
 

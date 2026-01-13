@@ -3,6 +3,10 @@ import { GlobalContentWrapper } from './globalStyles';
 
 export const PlaceWrapper = GlobalContentWrapper;
 
+export const PlaceProfileContainer = styled.div`
+    position: relative;
+`;
+
 export const PlaceContainer = styled.div`
     background-color: #F5F1E8;
     width: 350px;

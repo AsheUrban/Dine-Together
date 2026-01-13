@@ -58,6 +58,7 @@ export {
 
 export {
     PlaceContainer,
+    PlaceProfileContainer,
     PlaceWrapper,
     PlaceItem,
     PlaceContent,

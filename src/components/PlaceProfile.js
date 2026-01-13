@@ -6,7 +6,7 @@ import EditPlaceForm from './EditPlaceForm';
 import ConfirmDialog from './ConfirmDialog';
 import KebabMenu from './KebabMenu';
 import { auth } from '../firebase.js';
-import { CircularButton, PlaceMenuContainer } from '../styles';
+import { CircularButton, PlaceMenuContainer, PlaceProfileContainer } from '../styles';
 import { updatePlace, removeFromSavedPlaces } from '../services/firebaseService';
 import { useEditMode } from '../hooks/editMode';
 
@@ -72,7 +72,7 @@ function PlaceProfile({ place, onBack, isSaved, isLoading, onAdd, onPlaceUpdate 
     }
 
     return (
-        <>
+        <PlaceProfileContainer>
             <PlaceDetail place={place} />
             {isSaved === true && ( 
                 <PlaceMenuContainer>
@@ -99,7 +99,7 @@ function PlaceProfile({ place, onBack, isSaved, isLoading, onAdd, onPlaceUpdate 
                     isLoading={isLoading}
                 />
             )}
-        </>
+        </PlaceProfileContainer>
     );
 }
 

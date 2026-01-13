@@ -1,18 +1,19 @@
-import PlaceDetail from './PlaceDetail';
+import PlaceProfile from './PlaceProfile';
 import PlaceGrid from './PlaceGrid';
 import PostList from './PostList';
-import UserDetails from './UserDetails.js';
-import EditPostForm from './EditPostForm.js';
-import ConfirmDialog from './ConfirmDialog.js';
+import UserDetails from './UserDetails';
+import EditPostForm from './EditPostForm';
+import ConfirmDialog from './ConfirmDialog';
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { auth } from './../firebase.js';
-import { useUser } from '../hooks/user.js';
+import { useUser } from '../hooks/user';
 import { subscribeToUserPlaces, subscribeToUserPosts, updateUserBio, deletePost, updatePostCaption } from '../services/firebaseService.js';
 import { usePlaceSelection } from '../hooks/placeSelection';
-import { usePlaceUpdate } from '../hooks/placeUpdate.js';
-import { useEditMode } from '../hooks/editMode.js';
-import { useFormSubmit } from '../hooks/formSubmit.js';
+import { usePlaceUpdate } from '../hooks/placeUpdate';
+import { usePlaceSaveState } from '../hooks/placeSaveState';
+import { useEditMode } from '../hooks/editMode';
+import { useFormSubmit } from '../hooks/formSubmit';
 import {
     PageContainer,
     RestaurantSection,
@@ -36,6 +37,7 @@ function UserProfile() {
     });
     const { username, userBio, loading, error } = useUser(userId);
     const { selectedPlace, handleSelectPlace, handleBackToList } = usePlaceSelection();
+    const { isSaved, isLoading: isSaveLoading, savePlace } = usePlaceSaveState(selectedPlace?.id);
     const { isEditing, enterEditMode, exitEditMode } = useEditMode();
     const { isLoading, handleSubmit } = useFormSubmit(async (bioData) => {
         try {
@@ -112,9 +114,12 @@ function UserProfile() {
 
     if(selectedPlace) {
         return (
-          <PlaceDetail
+          <PlaceProfile
             place={selectedPlace}
             onBack={handleBackToList}
+            isSaved={isSaved}
+            isLoading={isSaveLoading}
+            onAdd={savePlace}
             onPlaceUpdate={isOwnProfile ? handlePlaceUpdate : undefined}
         />
      );

@@ -43,7 +43,7 @@ function Post({ postId, authorId, username, caption, place, timeOpen, onPostClic
                         </span>
                     ))}
                 </p>     
-                );
+            );
         }
 
         return (
