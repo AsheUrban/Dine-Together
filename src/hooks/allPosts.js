@@ -4,10 +4,14 @@ import { subscribeToAllPosts, updateElapsedWaitTime } from '../services/firebase
 export const useAllPosts = () => {
     const [posts, setPosts]= useState([]);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
     const unSubscribe = subscribeToAllPosts(
-        (postData) => setPosts(postData),
+        (postData) => {
+            setPosts(postData);
+            setLoading(false);
+        },
         (errorMessage) => setError(errorMessage)
     );
     return () => unSubscribe();
@@ -31,6 +35,7 @@ export const useAllPosts = () => {
 
     return {
     posts,
-    error
+    error,
+    loading
     }
 }

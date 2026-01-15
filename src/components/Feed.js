@@ -12,7 +12,7 @@ import { deletePost, updatePostCaption } from '../services/firebaseService';
 
 function Feed () {
     const navigate = useNavigate();
-    const { posts, error } = useAllPosts();
+    const { posts, error, loading } = useAllPosts();
     const { selectedPlace, handleSelectPlace, handleBackToList } = usePlaceSelection();
     const [editingPostId, setEditingPostId] = useState(null);
     const [deleteConfirmation, setDeleteConfirmation] = useState({
@@ -63,6 +63,10 @@ function Feed () {
             </FormContainer>
         </React.Fragment>
         )
+    }
+
+    if (loading) {
+        return null;
     }
 
     if (error) {

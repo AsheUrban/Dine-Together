@@ -4,13 +4,14 @@ import PostList from './PostList';
 import UserDetails from './UserDetails';
 import EditPostForm from './EditPostForm';
 import ConfirmDialog from './ConfirmDialog';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { auth } from './../firebase.js';
 import { useUser } from '../hooks/user';
-import { subscribeToUserPlaces, subscribeToUserPosts, updateUserBio, deletePost, updatePostCaption } from '../services/firebaseService.js';
+import { updateUserBio, deletePost, updatePostCaption } from '../services/firebaseService.js';
+import { useUserPosts } from '../hooks/userPosts';
+import { useUserPlaces } from '../hooks/userPlaces';
 import { usePlaceSelection } from '../hooks/placeSelection';
-import { usePlaceUpdate } from '../hooks/placeUpdate';
 import { useEditMode } from '../hooks/editMode';
 import { useFormSubmit } from '../hooks/formSubmit';
 import {
@@ -24,9 +25,6 @@ function UserProfile() {
     const { userId } = useParams();
     const navigate = useNavigate();
     const isOwnProfile = userId === auth.currentUser?.uid;
-
-    const [mainPlaceList, setMainPlaceList] = useState([]);
-    const [posts, setUserPosts] = useState([]);
     const [activeTab, setActiveTab] = useState('places');
     const [editingPostId, setEditingPostId] = useState(null);
     const [deleteConfirmation, setDeleteConfirmation] = useState({
@@ -35,6 +33,8 @@ function UserProfile() {
         postId: null
     });
     const { username, userBio, loading, error } = useUser(userId);
+    const { posts, loading: postsLoading } = useUserPosts(userId);
+    const { places, loading: placesLoading } = useUserPlaces(userId);
     const { selectedPlace, handleSelectPlace, handleBackToList } = usePlaceSelection();
     const { isEditing, enterEditMode, exitEditMode } = useEditMode();
     const { isLoading, handleSubmit } = useFormSubmit(async (bioData) => {
@@ -45,26 +45,15 @@ function UserProfile() {
             console.error('Error updating bio:', err);
         }
     });
-    const handlePlaceUpdate = usePlaceUpdate(setMainPlaceList, selectedPlace, handleSelectPlace);
 
-    useEffect(() => {
-        const unSubscribe = subscribeToUserPosts(
-            userId,
-            (posts) => setUserPosts(posts)
-        );
-        return () => unSubscribe();
-    }, [userId]);
-
-    useEffect(() => {
-        const unSubscribe = subscribeToUserPlaces(
-            userId,
-            (places) => setMainPlaceList(places)
-        );
-        return () => unSubscribe();
-    }, [userId]);
+    const handlePlaceUpdate = (updatedPlace) => {
+        if (selectedPlace && selectedPlace.id === updatedPlace.id) {
+            handleSelectPlace({ ...selectedPlace, ...updatedPlace });
+        }
+    };
 
     const selectPlace = (id) => {
-        const selection = mainPlaceList.filter(place => place.id === id)[0];
+        const selection = places.find(place => place.id === id);
         handleSelectPlace(selection);
     }
 
@@ -102,8 +91,8 @@ function UserProfile() {
       setEditingPostId(null);
     };
 
-    if(loading) {
-        return <div>Loading profile...</div>;
+    if(loading || postsLoading || placesLoading) {
+        return null;
     }
 
     if(error || (!loading && !username)) {
@@ -163,7 +152,7 @@ function UserProfile() {
                         onUserClick={handleUserClick}
                     />
                 ) : (
-                <PlaceGrid placeList={mainPlaceList} onPlaceSelection={selectPlace} />
+                <PlaceGrid placeList={places} onPlaceSelection={selectPlace} />
                 )}
             </RestaurantSection>
             {deleteConfirmation.isOpen && (

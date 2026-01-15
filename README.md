@@ -65,7 +65,7 @@ This project uses a **service-layer pattern** to separate concerns and keep comp
 
 - **Posts & Places Collections** — Posts (social wrappers with captions) reference Places (restaurant data) by ID. One Place can be referenced by multiple Posts, keeping data normalized and shareable.
 - **Service Layer** (`firebaseService.js`) — Centralizes all Firebase operations (auth, CRUD, subscriptions) and joins Post + Place data at the service level, so components receive complete data in props.
-- **Custom Hooks** — 7 reusable hooks manage component state (data subscriptions, form handling, edit modes), promoting code reuse and testability.
+- **Custom Hooks** — 9 reusable hooks manage component state (data subscriptions, form handling, edit modes), promoting code reuse and testability.
 - **Styled Components** — Centralized styling system with 8 style files, maintaining consistent theme and visual language across the app.
 
 This architecture scales cleanly: adding Google Places API integration requires changes only to the service layer and firebaseService.js, not to component logic.

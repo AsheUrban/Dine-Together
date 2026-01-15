@@ -217,6 +217,7 @@ export const GlobalContentWrapper = styled.div`
     gap: 4px;
     height: fit-content;
     width: 100%;
+    padding-top: 20px;
 `;
 
 // ConfirmDialog Components
