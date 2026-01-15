@@ -8,14 +8,12 @@ import { auth } from '../firebase.js';
 import { FormContainer, H1 } from '../styles';
 import { useAllPosts } from '../hooks/allPosts';
 import { usePlaceSelection } from '../hooks/placeSelection';
-import { usePlaceSaveState } from '../hooks/placeSaveState';
 import { deletePost, updatePostCaption } from '../services/firebaseService';
 
 function Feed () {
     const navigate = useNavigate();
     const { posts, error } = useAllPosts();
     const { selectedPlace, handleSelectPlace, handleBackToList } = usePlaceSelection();
-    const { isSaved, isLoading, savePlace } = usePlaceSaveState(selectedPlace?.id);
     const [editingPostId, setEditingPostId] = useState(null);
     const [deleteConfirmation, setDeleteConfirmation] = useState({
         isOpen: false,
@@ -74,11 +72,9 @@ function Feed () {
     if (selectedPlace) {
         return (
         <PlaceProfile
-        place={selectedPlace}
-        onBack={handleBackToList}
-        isSaved={isSaved}
-        isLoading={isLoading}
-        onAdd={savePlace}
+            place={selectedPlace}
+            onBack={handleBackToList}
+            onUserClick={handleUserClick}
         />
         );
     }

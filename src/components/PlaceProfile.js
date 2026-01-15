@@ -6,12 +6,22 @@ import EditPlaceForm from './EditPlaceForm';
 import ConfirmDialog from './ConfirmDialog';
 import KebabMenu from './KebabMenu';
 import { auth } from '../firebase.js';
-import { CircularButton, PlaceMenuContainer, PlaceProfileContainer } from '../styles';
+import { CircularButton, PlaceMenuContainer, PlaceProfileContainer, LinkStyle } from '../styles';
 import { updatePlace, removeFromSavedPlaces } from '../services/firebaseService';
 import { useEditMode } from '../hooks/editMode';
+import { usePlaceSaveState } from '../hooks/placeSaveState';
 
-function PlaceProfile({ place, onBack, isSaved, isLoading, onAdd, onPlaceUpdate }) {
+function PlaceProfile({ place, onBack, onPlaceUpdate, onUserClick }) {
     const { isEditing, enterEditMode, exitEditMode } = useEditMode();
+        const {
+            isSaved,
+            isLoading,
+            savePlace,
+            savedByUsers,
+            savedByUsernames,
+            showAllSavedBy,
+            setShowAllSavedBy
+        } = usePlaceSaveState(place.id);
     const [removeConfirmation, setRemoveConfirmation] = useState({
         isOpen: false,
         message: '',
@@ -59,6 +69,53 @@ function PlaceProfile({ place, onBack, isSaved, isLoading, onAdd, onPlaceUpdate 
         return items;
     };
 
+     const handleProfileClick = ( userId) => {
+        if(onUserClick) {
+            onUserClick(userId);
+        }
+    };
+
+    const renderSavedByInfo = () => {
+        if (savedByUsers.length === 0) return null;
+
+        if (savedByUsers.length <= 3) {
+            return (
+                <p>
+                    Saved by: {savedByUsers.map((userId, index) => (
+                        <span key={userId}> 
+                            <LinkStyle onClick={() => handleProfileClick(userId)}>
+                                {savedByUsernames[userId]}
+                            </LinkStyle>
+                            {index < savedByUsers.length - 1 && ', '}
+                        </span>
+                    ))}
+                </p>     
+            );
+        }
+
+        return (
+            <p>
+                Saved By: {showAllSavedBy ?
+                    savedByUsers.map((userId, index) => (
+                        <span key={userId}> 
+                            <LinkStyle onClick={() => handleProfileClick(userId)}>
+                                {savedByUsernames[userId]}
+                            </LinkStyle>
+                            {index < savedByUsers.length - 1 && ', '}
+                        </span>
+                    ))
+                    : `${savedByUsers.length} people`
+                }
+                {!showAllSavedBy && (
+                    <LinkStyle onClick={() => setShowAllSavedBy(true)}>
+                        more
+                    </LinkStyle>
+                    )}
+            </p>
+        );
+    };
+
+
     if (isEditing) {
         return (
             <EditPlaceForm
@@ -82,10 +139,11 @@ function PlaceProfile({ place, onBack, isSaved, isLoading, onAdd, onPlaceUpdate 
             <ActionBar>
                 <CircularButton onClick={onBack}>↩</CircularButton>
                 {isSaved === false && (
-                    <CircularButton onClick={onAdd} disabled={isLoading}>
+                    <CircularButton onClick={savePlace} disabled={isLoading}>
                         +
                     </CircularButton>
                 )}
+                {renderSavedByInfo()}
             </ActionBar>
             {removeConfirmation.isOpen && (
                 <ConfirmDialog
@@ -106,10 +164,8 @@ function PlaceProfile({ place, onBack, isSaved, isLoading, onAdd, onPlaceUpdate 
 PlaceProfile.propTypes = {
     place: PropTypes.object.isRequired,
     onBack: PropTypes.func.isRequired,
-    isSaved: PropTypes.bool,
-    isLoading: PropTypes.bool,
-    onAdd: PropTypes.func,
-    onPlaceUpdate: PropTypes.func
+    onPlaceUpdate: PropTypes.func,
+    onUserClick: PropTypes.func
 };
 
 export default PlaceProfile;

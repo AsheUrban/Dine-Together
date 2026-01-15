@@ -11,7 +11,6 @@ import { useUser } from '../hooks/user';
 import { subscribeToUserPlaces, subscribeToUserPosts, updateUserBio, deletePost, updatePostCaption } from '../services/firebaseService.js';
 import { usePlaceSelection } from '../hooks/placeSelection';
 import { usePlaceUpdate } from '../hooks/placeUpdate';
-import { usePlaceSaveState } from '../hooks/placeSaveState';
 import { useEditMode } from '../hooks/editMode';
 import { useFormSubmit } from '../hooks/formSubmit';
 import {
@@ -37,7 +36,6 @@ function UserProfile() {
     });
     const { username, userBio, loading, error } = useUser(userId);
     const { selectedPlace, handleSelectPlace, handleBackToList } = usePlaceSelection();
-    const { isSaved, isLoading: isSaveLoading, savePlace } = usePlaceSaveState(selectedPlace?.id);
     const { isEditing, enterEditMode, exitEditMode } = useEditMode();
     const { isLoading, handleSubmit } = useFormSubmit(async (bioData) => {
         try {
@@ -117,9 +115,7 @@ function UserProfile() {
           <PlaceProfile
             place={selectedPlace}
             onBack={handleBackToList}
-            isSaved={isSaved}
-            isLoading={isSaveLoading}
-            onAdd={savePlace}
+            onUserClick={handleUserClick}
             onPlaceUpdate={isOwnProfile ? handlePlaceUpdate : undefined}
         />
      );

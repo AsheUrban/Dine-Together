@@ -17,10 +17,11 @@ export const usePlaceSaveState = (placeId) => {
                     setIsSaved(saved);
     
                     const userIds = await getPlaceSavedByUsers(placeId);
-                    setSavedByUsers(userIds);
+                    const otherUserIds = userIds.filter(id => id !== auth.currentUser.uid);
+                    setSavedByUsers(otherUserIds);
     
-                    if (userIds.length > 0) {
-                        const usernames = await getUsernamesFromIds(userIds);
+                    if (otherUserIds.length > 0) {
+                        const usernames = await getUsernamesFromIds(otherUserIds);
                         setSavedByUsernames(usernames);
                     }
                 } finally {
@@ -39,9 +40,12 @@ export const usePlaceSaveState = (placeId) => {
                 await addToSavedPlaces(auth.currentUser.uid, placeId);
                 setIsSaved(true);
                 const userIds = await getPlaceSavedByUsers(placeId);
-                setSavedByUsers(userIds);
-                const usernames = await getUsernamesFromIds(userIds);
-                setSavedByUsernames(usernames);
+                const otherUserIds = userIds.filter(id => id !== auth.currentUser.uid);
+                setSavedByUsers(otherUserIds);
+                if(otherUserIds.length > 0) {
+                    const usernames = await getUsernamesFromIds(otherUserIds);
+                    setSavedByUsernames(usernames);
+                }
             } finally {
                 setIsLoading(false);
             }

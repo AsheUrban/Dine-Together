@@ -32,7 +32,6 @@ export const PlaceItem = styled.div`
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
     box-sizing: border-box;
-    margin-top: 20px;
     cursor: pointer;
     transition: opacity 0.2s ease;
 
@@ -97,14 +96,7 @@ export const PlaceActionButton = styled.button`
 export const PlaceGridStyles = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    margin-top: 20px;
     gap: 20px;
     width: 100%;
-
-    // @media (max-width: 1024px) {
-    //     grid-template-columns: repeat(2, 1fr);
-    // }
-
-    // @media (max-width: 640px) {
-    //     grid-template-columns: 1fr;
-    // }
 `;
