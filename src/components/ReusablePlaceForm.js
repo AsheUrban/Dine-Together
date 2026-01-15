@@ -55,8 +55,8 @@ function ReusablePlaceForm(props) {
             <br />
             </form>
             <FormButtons>
-            <Button type='submit' form="placeForm">{props.buttonText}</Button>
-            {props.backButton}
+                {props.backButton}
+                <Button type='submit' form="placeForm">{props.buttonText}</Button>
             </FormButtons>
         </FormContainer>
         </React.Fragment>

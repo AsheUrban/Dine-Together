@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReusableProfileForm from './ReusableProfileForm';
+import { CircularButton } from '../styles';
 
 function EditProfileForm(props) {
     const { userBio, onSave, onBack, isLoading } = props;
@@ -9,7 +10,7 @@ function EditProfileForm(props) {
         <ReusableProfileForm
             userBio={userBio}
             onSave={onSave}
-            onBack={onBack}
+            backButton={<CircularButton onClick={onBack}>↩</CircularButton>}
             isLoading={isLoading}
             buttonText="Save"
         />

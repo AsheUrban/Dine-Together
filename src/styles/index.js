@@ -5,7 +5,8 @@ export {
     BioLabel,
     PostLabel,
     CharacterCounter,
-    FormButtons
+    FormButtons,
+    InlineFormWrapper
 } from './formStyles';
 
 export {

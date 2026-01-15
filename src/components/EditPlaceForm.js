@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReusablePlaceForm from './ReusablePlaceForm';
-import { CircularBackButton } from '../styles';
+import { CircularButton } from '../styles';
 
 function EditPlaceForm (props) {
   const { place, onBack } = props;
@@ -20,7 +20,7 @@ function EditPlaceForm (props) {
         restaurantName={place.restaurantName}
         placeId={place.placeId}
         notes={place.notes}
-        backButton={<CircularBackButton onClick={onBack}>↩</CircularBackButton>}
+        backButton={<CircularButton onClick={onBack}>↩</CircularButton>}
       />
     );
 }

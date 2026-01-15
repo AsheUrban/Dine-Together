@@ -30,8 +30,8 @@ function ReusablePostForm(props) {
                     <br />
                 </form>
                 <FormButtons>
-                    <Button type='submit' form="postForm">{props.buttonText}</Button>
                     {props.backButton}
+                    <Button type='submit' form="postForm">{props.buttonText}</Button>
                 </FormButtons>
             </FormContainer>
         </React.Fragment>

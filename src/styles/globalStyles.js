@@ -150,13 +150,13 @@ export const SignOutButton = styled.button`
 export const Button = styled.button`
     background-color: #8B4513;
     border: 2px solid #D98560;
-    margin: 10px;
+    margin: 0;
     color: #F5F1E8;
-    padding: 15px 32px;
+    padding: 8px 20px;
     text-align: center;
     text-decoration: none;
     display: inline;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
     font-family: 'Lato', sans-serif;
     transition: all 0.2s ease;
