@@ -33,7 +33,7 @@ export const RestaurantSection = styled.div`
 `;
 
 export const BioText = styled.p`
-    font-family: 'Inter', sans-serif;
+    font-family: 'Lato', sans-serif;
     font-size: 14px;
     color: #2C2C2C;
     margin: 12px 0;
