@@ -40,16 +40,15 @@ Following MVP polish, the project is planned to be refactored to TypeScript with
 
 **Remodel branch** (this branch) is the active development branch where all new work happens. All features are implemented here first.
 
-**Main branch** is a functional snapshot synced with remodel on 2025-12-04. It represents the current state of work and runs without errors, though some features are pending implementation.
+**Main branch** is a functional snapshot synced with remodel on 2026-01-15. It represents the current state of work and runs without errors, though some features are pending implementation.
 
 | Branch | Status | Focus |
 |--------|--------|-------|
 | **remodel** | Active Development | All new work developed here. |
-| **main** | Development Snapshot (2025-12-04) | Synced with remodel. Functional snapshot representing current state of active development. |
+| **main** | Development Snapshot (2026-01-15) | Synced with remodel. Functional snapshot representing current state of active development. |
 | **Legacy** | Early prototype, capstone project | For memories. |
 
 ---
->>>>>>> remodel
 
 ## **Technologies Used**
 
@@ -126,7 +125,7 @@ firestore/
 - Posts reference Places by ID (one Place can be referenced by multiple Posts)
 - userPlaces subcollection links users to their saved restaurants
 - Service layer joins Post + Place data when fetching (username denormalized to avoid N+1)
-- Place data fetched per-item (N+1 pattern, flagged for optimization in TypeScript refactor)
+- Place data fetched in parallel with Promise.all
 
 ---
 
@@ -238,7 +237,9 @@ src/
 │   ├── placeSaveState.js      (Manage saved place state & "saved by" display)
 │   ├── placeSelection.js      (Track selected place)
 │   ├── placeUpdate.js         (Handle place update logic)
-│   └── user.js                (Current user state with subscription pattern)
+│   ├── user.js                (Current user state with subscription pattern)
+│   ├── userPosts.js           (Subscribe to user's posts)
+│   └── userPlaces.js          (Subscribe to user's saved places)
 ├── services/
 │   └── firebaseService.js     (Firebase CRUD and real-time subscriptions)
 ├── styles/
@@ -264,7 +265,7 @@ src/
 - Posts/Places architectural separation (two Firestore collections)
 - Profile page with tabbed interface (Posts | Restaurants)
 - Place edit/update and delete functionality
-- 7 custom hooks for scalable state management
+- 9 custom hooks for scalable state management
 - Vintage menu aesthetic with centralized styling
 - KebabMenu integration across Feed, Profile, and PlaceProfile
 - ConfirmDialog for delete confirmations
@@ -295,7 +296,7 @@ src/
 ### **Phase 4: Polish**
 
 - Form validation and error handling
-- Loading state improvements (fix loading flash bug)
+- Loading state improvements (loading flash bug fixed)
 - Code cleanup
 
 **TypeScript Refactor (Post-MVP)**
