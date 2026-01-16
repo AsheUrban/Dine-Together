@@ -1,7 +1,7 @@
 # Dine-Together Design Document
 
-**Last Updated:** 2026-01-12
-**Status:** ACTIVE - PlaceProfile architecture solidified, ActionBar component added
+**Last Updated:** 2026-01-16
+**Status:** ACTIVE - Google Places API integration in progress (Chunk 1 complete)
 
 ---
 
@@ -33,7 +33,7 @@ Feed.js / UserProfile.js (Route-level containers - manage state, hooks, navigati
     │   └── KebabMenu (Edit Notes, Remove)
     └── ActionBar (fixed bottom)
         ├── Back button (left)
-        ├── "Saved by" info (center) - IN PROGRESS
+        ├── "Saved by" info (center) - DONE
         └── Add (+) button (right, when not saved)
 ```
 
@@ -1084,26 +1084,22 @@ UserProfile re-renders → PlaceGrid shows updated list without removed place
    - ActionBar component created (fixed bottom positioning)
    - Feed.js and UserProfile.js render PlaceProfile when place selected
 
-### Current Sprint
-
-3. **"Saved by" Info Display** - IN PROGRESS
-   - Add "Saved by" to ActionBar in PlaceProfile
-   - Consider adding to PlaceCard (Place.js) for grid view
-   - Same pattern as Post.js (3 or fewer names, 4+ shows count with toggle)
+3. **"Saved by" Info Display** - DONE (2026-01-15)
+   - "Saved by" renders in ActionBar in PlaceProfile
    - Clickable usernames → navigate to user profile
 
-4. **ActionBar Consistency**
-   - Ensure back button uses ActionBar pattern across all relevant views
-   - Consistent fixed-bottom positioning
+4. **ActionBar Consistency** - DONE
+   - Back button uses ActionBar pattern
+   - Fixed-bottom positioning consistent
 
-### Next (After ActionBar/Saved By Complete)
+### Current Sprint
 
-5. **Google Places API Integration** (CORE MVP FEATURE)
-   - Google Places Autocomplete in Explore
-   - Google Places Details API for full restaurant data
-   - Google Photos API for restaurant images
-   - Store photo references in Firestore (not URLs - they expire)
-   - Real data enables proper PlaceDetail/PlaceProfile design
+5. **Google Places API Integration** - IN PROGRESS
+   - COMPLETE | Chunk 1: Autocomplete search (Places API New via REST) 
+   - WIP | Chunk 2: Place details fetch, save to Firestore
+   - See API_DESIGN.md for full implementation details
+
+### Next (After API Integration)
 
 6. **Combined Search: Restaurants + People**
    - Single search bar queries both sources

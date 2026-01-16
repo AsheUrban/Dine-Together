@@ -56,17 +56,25 @@ Create `src/services/googlePlacesService.js` alongside `firebaseService.js`. Ser
 - Natural separation: Firebase = persistence, Google = external data
 - Sets up cleanly for TypeScript modular structure
 
-### Decision 2: Hook-Based React Integration
+### Decision 2: Direct REST API (Places API New)
 
-**Library Choice:** `react-google-autocomplete` with `usePlacesAutocompleteService` hook
+**Original Plan:** `react-google-autocomplete` library with `usePlacesAutocompleteService` hook
 
-**Why this library:**
-- Hook-based API aligns with codebase patterns (9 custom hooks)
-- Full control over UI (matches vintage aesthetic)
-- Built-in debouncing reduces API calls
-- Returns `place_id` for subsequent details fetch
+**What Happened:** Google deprecated `AutocompleteService` for new customers (March 2025). The library relies on the legacy JavaScript SDK which is unavailable to new Google Cloud projects.
 
-**Alternative considered:** `react-google-places-autocomplete` - simpler but less UI control.
+**Pivot Decision:** Use Places API (New) directly via REST calls.
+
+**Implementation:**
+- `googlePlacesService.js` makes fetch calls to `https://places.googleapis.com/v1/places:autocomplete`
+- `useExploreSearch` hook handles debouncing, geolocation, and state management
+- No external library dependencies - cleaner and more maintainable
+
+**Benefits of REST approach:**
+- No heavy Google Maps JavaScript SDK to load
+- Full control over request/response handling
+- Works with Places API (New) which is available to all customers
+- Aligns with codebase patterns (custom hooks)
+- Easier to test (mock fetch vs mock Google SDK)
 
 ### Decision 3: Manual Entry in MVP
 
@@ -855,24 +863,25 @@ function PlaceProfile({ place }) {
 
 ## Implementation Phases
 
-### Phase 1: Setup & Autocomplete
+### Phase 1: Setup & Autocomplete | COMPLETE (2026-01-16)
 1. Google Cloud Console setup (enable APIs, create key, set restrictions)
-2. Install `react-google-autocomplete`
-3. Create `googlePlacesService.js` with autocomplete function
-4. Create `useRestaurantSearch` hook
+2. Pivoted from library to REST API (see Decision 2)
+3. Create `googlePlacesService.js` with `searchPlaces()` and transform functions
+4. Create `useExploreSearch` hook with geolocation and debouncing
 5. Update Explore.js with autocomplete UI
 
-### Phase 2: Place Details
-1. Add place details fetch to googlePlacesService.js
+### Phase 2: Place Details (Next)
+1. Add `fetchPlaceDetails()` to googlePlacesService.js
 2. Implement `getOrCreatePlace` with deduplication
 3. Add `findPlaceByGoogleId` to firebaseService.js
 4. Update schema (add new fields)
-5. Wire selection flow in Explore.js
+5. Wire selection flow in Explore.js → save to Firestore → navigate to PlaceProfile
 
-### Phase 3: Photos
-1. Add photo URL construction
-2. Update PlaceDetail to show Google photos
-3. Add fallback for places without photos
+### Phase 3: Save Flow & Post Creation
+1. Save place to user's saved places
+2. Navigate to PlaceProfile after save
+3. Add "Create Post" button in PlaceProfile
+4. Wire post creation flow
 
 ### Phase 4: Manual Fallback
 1. Add "Can't find it?" link to Explore.js
@@ -880,8 +889,8 @@ function PlaceProfile({ place }) {
 3. Ensure `source: 'manual'` is set
 
 ### Phase 5: Polish
-1. Session token optimization
-2. Error handling (API failures, rate limits)
-3. Loading states and UX refinements
+1. Error handling (API failures, rate limits)
+2. Loading states and UX refinements
+3. Combined search (restaurants + people)
 
 ---
