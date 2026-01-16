@@ -16,29 +16,35 @@ export const subscribeToUserPosts = (userId, onPostsUpdate, onError) => {
     const unSubscribe = onSnapshot (
         queryByTimestamp,
         async (querySnapshot) => {
-            const posts = [];
-            for(const docSnapShot of querySnapshot.docs) {
-                const timeOpen = docSnapShot.get('timeOpen', {serverTimestamps: "estimate"}).toDate();
-                const jsDate = new Date(timeOpen);
-                const placeDoc = await getDoc(doc(db, 'places', docSnapShot.data().placeId));
-                if(placeDoc.exists()) {
-                    posts.push({
-                        userId: docSnapShot.data().userId,
-                        authorUsername: docSnapShot.data().authorUsername,
-                        caption: docSnapShot.data().caption,
-                        placeId: docSnapShot.data().placeId,
-                        timeOpen: jsDate,
-                        formattedWaitTime: formatDistanceToNow(jsDate),
-                        id: docSnapShot.id,
-                        restaurantName: placeDoc.data().restaurantName,
-                        restaurantAddress: placeDoc.data().restaurantAddress,
-                        notes: placeDoc.data().notes,
-                        priceLevel: placeDoc.data().priceLevel,
-                        rating: placeDoc.data().rating,
-                        userRatingsTotal: placeDoc.data().userRatingsTotal
-                    });
-                }
-            }
+            const postPromises = querySnapshot.docs.map(docSnapshot => {
+                const postData = docSnapshot.data();
+                const timeOpen = docSnapshot.get('timeOpen', {serverTimestamps: "estimate"}).toDate();
+                return getDoc(doc(db, 'places', postData.placeId)).then(placeDoc => ({
+                    postData,
+                    postId: docSnapshot.id,
+                    timeOpen: new Date(timeOpen),
+                    placeDoc
+                }));
+            });
+
+            const results = await Promise.all(postPromises);
+            const posts = results
+                .filter(({ placeDoc }) => placeDoc.exists())
+                .map(({ postData, postId, timeOpen, placeDoc }) => ({
+                    userId: postData.userId,
+                    authorUsername: postData.authorUsername,
+                    caption: postData.caption,
+                    placeId: postData.placeId,
+                    timeOpen: timeOpen,
+                    formattedWaitTime: formatDistanceToNow(timeOpen),
+                    id: postId,
+                    restaurantName: placeDoc.data().restaurantName,
+                    restaurantAddress: placeDoc.data().restaurantAddress,
+                    notes: placeDoc.data().notes,
+                    priceLevel: placeDoc.data().priceLevel,
+                    rating: placeDoc.data().rating,
+                    userRatingsTotal: placeDoc.data().userRatingsTotal
+                }));
             onPostsUpdate(posts);
         },
         (error) => {
@@ -58,29 +64,35 @@ export const subscribeToAllPosts = (onPostsUpdate, onError) => {
     const unSubscribe = onSnapshot (
         queryAllPosts,
         async (querySnapshot) => {
-            const posts = [];
-            for (const docSnapshot of querySnapshot.docs) {
+           const postPromises = querySnapshot.docs.map(docSnapshot => {
+                const postData = docSnapshot.data();
                 const timeOpen = docSnapshot.get('timeOpen', {serverTimestamps: "estimate"}).toDate();
-                const jsDate = new Date(timeOpen);
-                const placeDoc = await getDoc(doc(db, 'places', docSnapshot.data().placeId));
-                if(placeDoc.exists()) {
-                    posts.push({
-                        userId: docSnapshot.data().userId,
-                        authorUsername: docSnapshot.data().authorUsername,
-                        caption: docSnapshot.data().caption,
-                        placeId: docSnapshot.data().placeId,
-                        timeOpen: jsDate,
-                        formattedWaitTime: formatDistanceToNow(jsDate),
-                        id: docSnapshot.id,
-                        restaurantName: placeDoc.data().restaurantName,
-                        restaurantAddress: placeDoc.data().restaurantAddress,
-                        notes: placeDoc.data().notes,
-                        priceLevel: placeDoc.data().priceLevel,
-                        rating: placeDoc.data().rating,
-                        userRatingsTotal: placeDoc.data().userRatingsTotal
-                    });
-                }
-            }
+                return getDoc(doc(db, 'places', postData.placeId)).then(placeDoc => ({
+                    postData,
+                    postId: docSnapshot.id,
+                    timeOpen: new Date(timeOpen),
+                    placeDoc
+                }));
+            });
+
+            const results = await Promise.all(postPromises);
+            const posts = results
+                .filter(({ placeDoc }) => placeDoc.exists())
+                .map(({ postData, postId, timeOpen, placeDoc }) => ({
+                    userId: postData.userId,
+                    authorUsername: postData.authorUsername,
+                    caption: postData.caption,
+                    placeId: postData.placeId,
+                    timeOpen: timeOpen,
+                    formattedWaitTime: formatDistanceToNow(timeOpen),
+                    id: postId,
+                    restaurantName: placeDoc.data().restaurantName,
+                    restaurantAddress: placeDoc.data().restaurantAddress,
+                    notes: placeDoc.data().notes,
+                    priceLevel: placeDoc.data().priceLevel,
+                    rating: placeDoc.data().rating,
+                    userRatingsTotal: placeDoc.data().userRatingsTotal
+                }));
             onPostsUpdate(posts);
         },
         (error) => {
@@ -102,20 +114,23 @@ export const subscribeToUserPlaces = (userId, onPlacesUpdate, onError) => {
     const unSubscribe = onSnapshot (
         queryUserPlaces,
         async (querySnapshot) => {
-            const places = [];
-            for (const docSnapshot of querySnapshot.docs) {
+            const placePromises = querySnapshot.docs.map(docSnapshot => {
                 const placeId = docSnapshot.id;
                 const timeAdded = docSnapshot.get('timeAdded', {serverTimestamps: "estimate"}).toDate();
-                const jsDate = new Date(timeAdded);
-                const placeDoc = await getDoc(doc(db, 'places', placeId));
-                if(placeDoc.exists()) {
-                    places.push({
+                return getDoc(doc(db, 'places', placeId)).then(placeDoc => ({
+                    placeDoc,
+                    timeAdded: new Date(timeAdded)
+                }));
+            });
+
+            const results = await Promise.all(placePromises);
+            const places = results
+                .filter(({ placeDoc }) => placeDoc.exists())
+                .map(({ placeDoc, timeAdded }) => ({
                         ...placeDoc.data(),
                         id: placeDoc.id,
-                        timeOpen: jsDate
-                    });
-                }
-            }
+                        timeOpen: timeAdded
+                    }));
             onPlacesUpdate(places);
         },
         (error) => {
