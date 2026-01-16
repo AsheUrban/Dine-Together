@@ -34,18 +34,18 @@ Following MVP polish, the project is planned to be refactored to TypeScript with
 
 ---
 
-**Current Status:** Core social features complete - users can post restaurants, save places, view other profiles, and browse a shared feed. PlaceProfile architecture in place with presentational components. Next: "Saved by" display, then Google Places API integration.
+**Current Status:** Core social features complete - users can post restaurants, save places, view other profiles, and browse a shared feed. PlaceProfile architecture in place with presentational components. "Saved by" display complete. Next: Google Places API integration.
 
 ---
 
-**Remodel branch** (this branch) is the active development branch where all new work happens. All features are implemented here first.
+**Remodel branch** is the active development branch where all new work happens. All features are implemented here first.
 
-**Main branch** is a functional snapshot synced with remodel on 2026-01-15. It represents the current state of work and runs without errors, though some features are pending implementation.
+**Main branch** (this branch) is a functional snapshot synced with remodel on 2026-01-16. It represents the current state of work and runs without errors, though some features are pending implementation.
 
 | Branch | Status | Focus |
 |--------|--------|-------|
 | **remodel** | Active Development | All new work developed here. |
-| **main** | Development Snapshot (2026-01-15) | Synced with remodel. Functional snapshot representing current state of active development. |
+| **main** | Development Snapshot (2026-01-16) | Synced with remodel. Functional snapshot representing current state of active development. |
 | **Legacy** | Early prototype, capstone project | For memories. |
 
 ---
@@ -269,15 +269,14 @@ src/
 - Vintage menu aesthetic with centralized styling
 - KebabMenu integration across Feed, Profile, and PlaceProfile
 - ConfirmDialog for delete confirmations
-- CircularBackButton for consistent back/cancel UX
 - Post edit/delete functionality
 - View other users' profiles
 - PlaceProfile architecture (PlaceDetail purely presentational, PlaceProfile as feature container)
 - ActionBar component for fixed-bottom actions
+- "Saved by" display in ActionBar and Post cards
 
 **Current Sprint:**
-- "Saved by" display in ActionBar and PlaceCard
-- ActionBar consistency across app
+- Google Places API integration
 
 ### **Phase 2: Google Places API Integration**
 
