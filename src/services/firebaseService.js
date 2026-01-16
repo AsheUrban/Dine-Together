@@ -1,6 +1,6 @@
 import { auth } from '../firebase.js';
 import { db } from '../firebase.js';
-import { collection, doc, updateDoc, query, orderBy, where, onSnapshot, getDoc, writeBatch, serverTimestamp, getDocs } from 'firebase/firestore';
+import { collection, doc, updateDoc, query, orderBy, where, onSnapshot, getDoc, writeBatch, serverTimestamp, getDocs, setDoc } from 'firebase/firestore';
 import { formatDistanceToNow } from 'date-fns';
 
 
@@ -310,4 +310,12 @@ export const updateElapsedWaitTime = (timestamps) => {
 export const updateUserBio = async (userId, bioData) => {
     const userRef = doc(db, 'users', userId);
     return await updateDoc(userRef, bioData);
+};
+
+export const createUserProfile = async (userId, profileData) => {
+    const userRef = doc(db, 'users', userId);
+    return await setDoc(userRef, {
+        ...profileData,
+        createdAt: serverTimestamp()
+    });
 };

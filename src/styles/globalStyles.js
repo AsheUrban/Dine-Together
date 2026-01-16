@@ -359,33 +359,6 @@ export const CircularButton = styled.button`
     }
 `;
 
-// Circular Back Button (legacy - to be deleted after migration)
-export const CircularBackButton = styled.button`
-    position: absolute;
-    bottom: 15px;
-    left: 15px;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background-color: #F5F1E8;
-    border: 2px solid #D98560;
-    color: #D98560;
-    font-size: 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-    &:hover {
-        background-color: #D98560;
-        border-color: #D98560;
-        color: #F5F1E8;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-    }
-`;
-
 // ActionBar Container
 export const ActionBarContainer = styled.div`
     position: fixed;
