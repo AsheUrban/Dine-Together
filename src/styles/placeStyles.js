@@ -95,7 +95,8 @@ export const PlaceActionButton = styled.button`
 
 export const PlaceGridStyles = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, 310px);
     gap: 20px;
     width: 100%;
+    justify-content: center;
 `;

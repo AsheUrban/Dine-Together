@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { H6Centered, PlaceWrapper, PlaceItem, PlaceContent, PlaceImage, PlaceDetails, H3Centered } from '../styles';
+import { H6Centered, PlaceWrapper, PlaceItem, PlaceContent, PlaceImage, PlaceDetails, H4Centered } from '../styles';
 
 function Place(props){
     return (
         <PlaceWrapper>
             <PlaceItem onClick = {() => props.whenPlaceClicked(props.id)}>
-                <H3Centered>{props.restaurantName}</H3Centered>
+                <H4Centered>{props.restaurantName}</H4Centered>
                 <H6Centered>{props.restaurantAddress}</H6Centered>
                 <PlaceContent>
                     <PlaceImage />

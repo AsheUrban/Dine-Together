@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 // Typography
 export const H1 = styled.h1`
-    font-size: 59px;
+    font-size: 48px;
     color: #F5F1E8;
     margin: 0;
     font-family: 'Rosaline', serif;
@@ -43,7 +43,7 @@ export const H3Centered = styled.h3`
 `;
 
 export const H4 = styled.h4`
-    font-size: 18px;
+    font-size: 24px;
     color: #8B4513;
     font-family: 'Lato', sans-serif;
     font-weight: 700;
@@ -51,7 +51,7 @@ export const H4 = styled.h4`
 `;
 
 export const H4Centered = styled.h4`
-    font-size: 18px;
+    font-size: 24px;
     text-align: center;
     color: #8B4513;
     font-family: 'Lato', sans-serif;
@@ -68,7 +68,7 @@ export const H5 = styled.h5`
 `;
 
 export const H6 = styled.h6`
-    font-size: 14px;
+    font-size: 12px;
     color: #2C2C2C;
     font-family: 'Lato', sans-serif;
     font-style: italic;
@@ -78,7 +78,7 @@ export const H6 = styled.h6`
 `;
 
 export const H6Centered = styled.h6`
-    font-size: 14px;
+    font-size: 12px;
     text-align: center;
     color: #2C2C2C;
     font-family: 'Lato', sans-serif;
