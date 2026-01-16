@@ -1,41 +1,21 @@
 import React, { useState } from 'react';
-// import NewPlaceForm from './NewPlaceForm.js';
-import { FormContainer, H3, Input, 
-    // Button, Center 
-} from '../styles';
-// import { addNewPlace } from '../services/firebaseService.js';
-// import { auth } from '../firebase.js';
+import { FormContainer, H3, Input, } from '../styles';
+import { useExploreSearch } from '../hooks/exploreSearch';
+
 
 function Explore() {
     const [searchQuery, setSearchQuery] = useState('');
-    // const [showAddForm, SetShowAddForm] = useState(false);
+    const { places, loading, error } = useExploreSearch(searchQuery);
+   
 
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
     };
 
-    // const handleAddingNewPlace = async (newPlaceData) => {
-    //     await addNewPlace(newPlaceData);
-    //     SetShowAddForm(false);
-    // }
+    const handlePlaceSelect = (prediction) => {
+        console.log('Selected place:', prediction);
+    };
 
-    // const handleToggleForm = () => {
-    //     SetShowAddForm(!showAddForm);
-    // }
-
-    // if(showAddForm) {
-    //     return (
-    //         <>
-    //             <NewPlaceForm
-    //                 onNewPlaceCreation={handleAddingNewPlace}
-    //                 userId={auth.currentUser.uid}
-    //         />
-    //         <center>
-    //             <Button onClick={handleToggleForm}>Back to Search</Button>
-    //         </center>
-    //         </>
-    //     );
-    // }
      return (
         <React.Fragment>
             <FormContainer>
@@ -46,11 +26,30 @@ function Explore() {
                     value={searchQuery}
                     onChange={handleSearchChange}
                 />
-                <p>Coming Soon - Google Places API Integration!</p>
+                {loading && <p>Searching...</p>}
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+                {places.length > 0 && (
+                    <div style={{ textAlign: 'left', marginTop: '10px' }}>
+                        {places.map((place) => (
+                            <div
+                                key={place.googlePlaceId}
+                                onClick={() => handlePlaceSelect(place)}
+                                style={{
+                                    padding: '10px',
+                                    borderBottom: '1px solid #D4A574',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                <strong>{place.name}</strong>
+                                <br/>
+                                <span style={{ fontSize: '12px', color: '#666' }}>
+                                    {place.address}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </FormContainer>
-            {/* <Center>
-                <Button onClick={handleToggleForm}>Add Restaurant</Button>
-            </Center> */}
         </React.Fragment>
     );
 }
