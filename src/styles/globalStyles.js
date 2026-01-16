@@ -52,6 +52,7 @@ export const H4 = styled.h4`
 
 export const H4Centered = styled.h4`
     font-size: 18px;
+    text-align: center;
     color: #8B4513;
     font-family: 'Lato', sans-serif;
     font-weight: 700;
@@ -63,6 +64,27 @@ export const H5 = styled.h5`
     color: #D98560;
     font-family: 'Lato', sans-serif;
     font-weight: 700;
+    margin: 5px 0;
+`;
+
+export const H6 = styled.h6`
+    font-size: 14px;
+    color: #2C2C2C;
+    font-family: 'Lato', sans-serif;
+    font-style: italic;
+    font-weight: 300;
+    text-decoration: underline;
+    margin: 5px 0;
+`;
+
+export const H6Centered = styled.h6`
+    font-size: 14px;
+    text-align: center;
+    color: #2C2C2C;
+    font-family: 'Lato', sans-serif;
+    font-style: italic;
+    font-weight: 300;
+    text-decoration: underline;
     margin: 5px 0;
 `;
 
@@ -128,14 +150,13 @@ export const SignOutButton = styled.button`
 export const Button = styled.button`
     background-color: #8B4513;
     border: 2px solid #D98560;
-    margin: 10px;
+    margin: 0;
     color: #F5F1E8;
-    padding: 15px 32px;
+    padding: 8px 20px;
     text-align: center;
     text-decoration: none;
     display: inline;
-    font-size: 16px;
-    border-radius: 10px;
+    font-size: 14px;
     cursor: pointer;
     font-family: 'Lato', sans-serif;
     transition: all 0.2s ease;
@@ -196,6 +217,7 @@ export const GlobalContentWrapper = styled.div`
     gap: 4px;
     height: fit-content;
     width: 100%;
+    padding-top: 20px;
 `;
 
 // ConfirmDialog Components
@@ -215,7 +237,6 @@ export const ConfirmDialogOverlay = styled.div`
 export const ConfirmDialogContainer = styled.div`
     background-color: #F5F1E8;
     border: 2px solid #8B4513;
-    border-radius: 10px;
     padding: 40px;
     max-width: 400px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
@@ -241,7 +262,6 @@ export const ConfirmDialogButton = styled.button`
     border: 2px solid ${props => props.danger ? '#D98560' : '#8B4513'};
     color: ${props => props.danger ? '#F5F1E8' : '#2C2C2C'};
     padding: 12px 28px;
-    border-radius: 8px;
     font-family: 'Lato', sans-serif;
     font-size: 14px;
     font-weight: 600;
@@ -262,7 +282,7 @@ export const KebabMenuButton = styled.button`
     border: none;
     font-size: 20px;
     cursor: pointer;
-    color: #8B4513;
+    color: #D98560;
     padding: 4px 8px;
     display: flex;
     align-items: center;
@@ -271,7 +291,7 @@ export const KebabMenuButton = styled.button`
     position: relative;
 
     &:hover {
-        color: #D98560;
+        color: #8B4513;
     }
 `;
 
@@ -284,8 +304,7 @@ export const KebabMenuDropdown = styled.div`
     top: 100%;
     right: 0;
     background-color: #F5F1E8;
-    border: 2px solid #8B4513;
-    border-radius: 8px;
+    border: 2px solid #D98560;
     min-width: 150px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 100;
@@ -308,12 +327,76 @@ export const KebabMenuItem = styled.button`
         background-color: #D98560;
         color: #F5F1E8;
     }
+`;
 
-    &:first-child {
-        border-radius: 6px 6px 0 0;
+// Circular Button (base - no positioning)
+export const CircularButton = styled.button`
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: #F5F1E8;
+    border: 2px solid #D98560;
+    color: #D98560;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+        background-color: #D98560;
+        border-color: #D98560;
+        color: #F5F1E8;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
     }
 
-    &:last-child {
-        border-radius: 0 0 6px 6px;
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
     }
+`;
+
+// Circular Back Button (legacy - to be deleted after migration)
+export const CircularBackButton = styled.button`
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: #F5F1E8;
+    border: 2px solid #D98560;
+    color: #D98560;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+        background-color: #D98560;
+        border-color: #D98560;
+        color: #F5F1E8;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    }
+`;
+
+// ActionBar Container
+export const ActionBarContainer = styled.div`
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #F5F1E8;
+    border-top: 2px solid #8B4513;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    z-index: 100;
 `;

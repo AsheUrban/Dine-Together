@@ -1,22 +1,32 @@
 import { useState, useEffect } from 'react';
-import { auth } from './../firebase.js';
-import { subscribeToUserPlaces } from '../services/firebaseService.js';
+import { subscribeToUserPlaces } from '../services/firebaseService';
 
-export const useUserPlaces = () => {
+export const useUserPlaces = (userId) => {
     const [places, setPlaces] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-    const unSubscribe = subscribeToUserPlaces(
-        auth.currentUser.uid,
-        (placesData) => setPlaces(placesData),
-        (errorMessage) => setError(errorMessage)
-    );
-    return () => unSubscribe();
-    }, []);
+        if(!userId) {
+            setLoading(false);
+            return;
+        }
 
-    return {
-    places,
-    error
-    }
-}
+        setLoading(true);
+        const unSubscribe = subscribeToUserPlaces(
+            userId,
+            (placesData) => {
+                setPlaces(placesData);
+                setLoading(false);
+            },
+            (errorMessage) => {
+                setError(errorMessage);
+                setLoading(false);
+            }
+        );
+
+        return () => unSubscribe();
+    }, [userId]);
+
+    return { places, loading, error };
+    };

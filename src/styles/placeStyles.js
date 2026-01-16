@@ -3,6 +3,10 @@ import { GlobalContentWrapper } from './globalStyles';
 
 export const PlaceWrapper = GlobalContentWrapper;
 
+export const PlaceProfileContainer = styled.div`
+    position: relative;
+`;
+
 export const PlaceContainer = styled.div`
     background-color: #F5F1E8;
     width: 350px;
@@ -11,19 +15,23 @@ export const PlaceContainer = styled.div`
     padding: 45px;
     border: 2px solid #D4A574;
     text-align: center;
-    border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+`;
+
+export const PlaceMenuContainer = styled.div`
+    position: absolute;
+    top: 15px;
+    right: 15px;
 `;
 
 export const PlaceItem = styled.div`
     background-color: #F5F1E8;
     border: 2px solid #D98560;
     padding: 20px;
-    border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
     box-sizing: border-box;
-    margin-top: 20px;
     cursor: pointer;
     transition: opacity 0.2s ease;
 
@@ -43,7 +51,6 @@ export const PlaceImage = styled.div`
     height: 100px;
     min-width: 100px;
     background-color: #D4A574;
-    border-radius: 8px;
     flex-shrink: 0;
 `;
 
@@ -75,7 +82,6 @@ export const PlaceActionButton = styled.button`
     text-decoration: none;
     display: inline;
     font-size: 16px;
-    border-radius: 10px;
     cursor: pointer;
     font-family: 'Lato', sans-serif;
     transition: all 0.2s ease;
@@ -89,15 +95,8 @@ export const PlaceActionButton = styled.button`
 
 export const PlaceGridStyles = styled.div`
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    margin-top: 20px;
     gap: 20px;
     width: 100%;
-
-    @media (max-width: 1024px) {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media (max-width: 640px) {
-        grid-template-columns: 1fr;
-    }
 `;

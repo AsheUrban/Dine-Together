@@ -4,7 +4,9 @@ export {
     TextArea,
     BioLabel,
     PostLabel,
-    CharacterCounter
+    CharacterCounter,
+    FormButtons,
+    InlineFormWrapper
 } from './formStyles';
 
 export {
@@ -16,6 +18,8 @@ export {
     H4,
     H4Centered,
     H5,
+    H6,
+    H6Centered,
     HeaderContainer,
     HeaderLogo,
     HeaderNav,
@@ -36,7 +40,10 @@ export {
     KebabMenuButton,
     KebabMenuContainer,
     KebabMenuDropdown,
-    KebabMenuItem
+    KebabMenuItem,
+    CircularButton,
+    CircularBackButton,
+    ActionBarContainer
 } from './globalStyles';
 
 export {
@@ -52,6 +59,7 @@ export {
 
 export {
     PlaceContainer,
+    PlaceProfileContainer,
     PlaceWrapper,
     PlaceItem,
     PlaceContent,
@@ -59,7 +67,8 @@ export {
     PlaceDetails,
     PlacedDate,
     PlaceActionButton,
-    PlaceGridStyles
+    PlaceGridStyles,
+    PlaceMenuContainer
 } from './placeStyles';
 
 export {
@@ -74,6 +83,7 @@ export {
     PostWrapper,
     PostCard,
     PostHeader,
+    PostHeaderLeft,
     Username,
     PostCaption,
 } from './postStyles';

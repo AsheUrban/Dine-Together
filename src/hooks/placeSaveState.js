@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { auth } from '../firebase.js';
-import { checkIfPlaceSaved, getPlaceSavedByUsers, getUsernamesFromIds, addToSavedPlaces, removeFromSavedPlaces } from '../services/firebaseService';
+import { checkIfPlaceSaved, getPlaceSavedByUsers, getUsernamesFromIds, addToSavedPlaces } from '../services/firebaseService';
 
 export const usePlaceSaveState = (placeId) => {
-     const [isSaved, setIsSaved] = useState(false);
+     const [isSaved, setIsSaved] = useState(null);
         const [savedByUsers, setSavedByUsers] = useState([]);
         const [savedByUsernames, setSavedByUsernames] = useState({});
         const [showAllSavedBy, setShowAllSavedBy] = useState(false);
@@ -17,10 +17,11 @@ export const usePlaceSaveState = (placeId) => {
                     setIsSaved(saved);
     
                     const userIds = await getPlaceSavedByUsers(placeId);
-                    setSavedByUsers(userIds);
+                    const otherUserIds = userIds.filter(id => id !== auth.currentUser.uid);
+                    setSavedByUsers(otherUserIds);
     
-                    if (userIds.length > 0) {
-                        const usernames = await getUsernamesFromIds(userIds);
+                    if (otherUserIds.length > 0) {
+                        const usernames = await getUsernamesFromIds(otherUserIds);
                         setSavedByUsernames(usernames);
                     }
                 } finally {
@@ -39,30 +40,16 @@ export const usePlaceSaveState = (placeId) => {
                 await addToSavedPlaces(auth.currentUser.uid, placeId);
                 setIsSaved(true);
                 const userIds = await getPlaceSavedByUsers(placeId);
-                setSavedByUsers(userIds);
-                const usernames = await getUsernamesFromIds(userIds);
-                setSavedByUsernames(usernames);
+                const otherUserIds = userIds.filter(id => id !== auth.currentUser.uid);
+                setSavedByUsers(otherUserIds);
+                if(otherUserIds.length > 0) {
+                    const usernames = await getUsernamesFromIds(otherUserIds);
+                    setSavedByUsernames(usernames);
+                }
             } finally {
                 setIsLoading(false);
             }
         };
 
-        const removePlace = async () => {
-            const confirmed = window.confirm('Remove from saved places?');
-            if(confirmed) {
-                try {
-                    setIsLoading(true);
-                    await removeFromSavedPlaces(auth.currentUser.uid, placeId);
-                    setIsSaved(false);
-                    const userIds = await getPlaceSavedByUsers(placeId);
-                    setSavedByUsers(userIds);
-                    const usernames = await getUsernamesFromIds(userIds);
-                    setSavedByUsernames(usernames);
-                } finally {
-                    setIsLoading(false);
-                }
-            }
-        };
-
-        return { isSaved, savedByUsers, savedByUsernames, showAllSavedBy, setShowAllSavedBy, isLoading, savePlace, removePlace };
+        return { isSaved, savedByUsers, savedByUsernames, showAllSavedBy, setShowAllSavedBy, isLoading, savePlace };
 };

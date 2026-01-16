@@ -22,7 +22,7 @@ function KebabMenu({  items, onItemClick }) {
 
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [isOpen, handleClickOutside]);
+    }, [isOpen]);
 
     const handleItemClick = (item) => {
         onItemClick(item);
@@ -31,7 +31,10 @@ function KebabMenu({  items, onItemClick }) {
 
     return (
         <KebabMenuContainer ref={containerRef}>
-            <KebabMenuButton onClick={() => setIsOpen(!isOpen)}>
+            <KebabMenuButton onClick={(e) =>  {
+                e.stopPropagation();
+                setIsOpen(!isOpen);
+            }}>
                 ⋮
             </KebabMenuButton>
             {isOpen && (
@@ -39,7 +42,10 @@ function KebabMenu({  items, onItemClick }) {
                     {items.map((item) => (
                         <KebabMenuItem
                         key={item.id}
-                        onClick={() => handleItemClick(item)}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleItemClick(item);
+                        }}
                         >
                             {item.label}
                         </KebabMenuItem>

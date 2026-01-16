@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from './../firebase.js';
 
 export const useUser = (userId) => {
@@ -14,23 +14,26 @@ export const useUser = (userId) => {
             return;
         }
 
-        const fetchUser = async () => {
-            try {
-                const userDoc = await getDoc(doc(db, 'users', userId));
-                if (userDoc.exists()) {
-                    setUsername(userDoc.data().username);
-                    setUserBio(userDoc.data());
-                } else {
-                    setError('User not found');
+        setLoading(true);
+            const unsubscribe = onSnapshot(
+                doc(db, 'users', userId),
+                (snapshot) => {
+                    if (snapshot.exists()) {
+                        setUsername(snapshot.data().username);
+                        setUserBio(snapshot.data());
+                        setError(null);
+                    } else {
+                        setError('User not found');
+                    }
+                    setLoading(false);   
+                },
+                (err) => {
+                    setError('Error loading profile');
+                    setLoading(false);  
                 }
-            } catch (err) {
-                setError('Error loading profile');
-            } finally {
-                setLoading(false);
-            }
-        };
-    
-        fetchUser();
+        );
+
+        return () => unsubscribe();
     }, [userId]);
 
     return {

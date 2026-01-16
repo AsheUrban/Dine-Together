@@ -23,7 +23,7 @@ function Avatar({ displayName, size = '48px', variant = 'header' }) {
     };
     
     const scheme = colorSchemes[variant] || colorSchemes.header;
-
+    
     const sizeMap = {
         '48px': '24px',
         '50px': '30px',

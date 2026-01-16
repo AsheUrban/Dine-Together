@@ -13,7 +13,6 @@ export const InfoSection = styled.div`
     flex: 0 0 300px;
     background-color: #D98560;
     padding: 40px;
-    border-radius: 10px;
     height: fit-content;
     display: flex;
     flex-direction: column;
@@ -21,7 +20,6 @@ export const InfoSection = styled.div`
 `;
 
 export const BioSection = styled.div`
-    border-radius: 10px;
     border: 2px solid #8B4513;
     width: 100%;
     padding: 10px;
@@ -50,6 +48,7 @@ export const EditProfileLink = styled.a`
     cursor: pointer;
     font-size: 10px;
     font-family: 'Inter', sans-serif;
+    font-style: italic;
     font-weight: 500;
     transition: opacity 0.2s ease;
 
@@ -62,7 +61,7 @@ export const TabContainer = styled.div`
     display: flex;
     gap: 20px;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 `;
 
 export const TabButton = styled.button`

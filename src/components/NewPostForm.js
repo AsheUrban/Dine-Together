@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import ReusablePostForm from './ReusablePostForm';
-import { serverTimestamp } from "firebase/firestore";
+import PropTypes from 'prop-types';
 
 function NewPostForm(props) {
     const handleSubmit = (postData) => {

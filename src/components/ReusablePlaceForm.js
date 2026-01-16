@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { FormContainer, Input, TextArea, Button, PostLabel } from '../styles';
+import { FormContainer, Input, TextArea, Button, PostLabel, FormButtons } from '../styles';
 import { validatePlace } from '../utils/validators';
 
 function ReusablePlaceForm(props) {
@@ -15,15 +15,15 @@ function ReusablePlaceForm(props) {
         const validationErrors = validatePlace(placeId, restaurantName, notes);
 
         if(validationErrors) {
-          setErrors(validationErrors);
-          return;
+        setErrors(validationErrors);
+            return;
         }
 
         setErrors({});
         const placeData = {
-          placeId,
-          restaurantName,
-          notes
+            placeId,
+            restaurantName,
+            notes
         };
         props.onSubmit(placeData);
 
@@ -31,45 +31,45 @@ function ReusablePlaceForm(props) {
 
     return (
         <React.Fragment>
-            <FormContainer>
-            <form onSubmit={handleFormSubmit}>
-              <Input
+        <FormContainer>
+            <form id="placeForm" onSubmit={handleFormSubmit}>
+            <Input
                 type='hidden'
                 name='placeId'
                 defaultValue={props.placeId || ''} />
-              <PostLabel htmlFor='restaurantName'>Restaurant Name:</PostLabel>
-              <Input
+            <PostLabel htmlFor='restaurantName'>Restaurant Name:</PostLabel>
+            <Input
                 id='restaurantName'
                 type='text'
                 name='restaurantName'
                 defaultValue={props.restaurantName || ''} />
-              {errors?.restaurantName && <p style={{color: 'red', fontSize: '12px'}}>{errors.restaurantName}</p>}
-              <br />
-              <PostLabel htmlFor='notes'>Notes:</PostLabel>
-              <TextArea
+            {errors?.restaurantName && <p style={{color: 'red', fontSize: '12px'}}>{errors.restaurantName}</p>}
+            <br />
+            <PostLabel htmlFor='notes'>Notes:</PostLabel>
+            <TextArea
                 id='notes'
                 name='notes'
                 defaultValue={props.notes || ''}
                 maxLength='200' />
-              {errors?.notes && <p style={{color: 'red', fontSize: '12px'}}>{errors.notes}</p>}
-              <br />
-              <Button type='submit'>{props.buttonText}</Button>
+            {errors?.notes && <p style={{color: 'red', fontSize: '12px'}}>{errors.notes}</p>}
+            <br />
             </form>
-            {props.cancelButton}
-            {props.deleteButton}
-            </FormContainer>
+            <FormButtons>
+                {props.backButton}
+                <Button type='submit' form="placeForm">{props.buttonText}</Button>
+            </FormButtons>
+        </FormContainer>
         </React.Fragment>
-      );
-  }
+    );
+}
 
-  ReusablePlaceForm.propTypes = {
-      onSubmit: PropTypes.func.isRequired,
-      buttonText: PropTypes.string.isRequired,
-      cancelButton: PropTypes.node,
-      deleteButton: PropTypes.node,
-      restaurantName: PropTypes.string,
-      placeId: PropTypes.string,
-      notes: PropTypes.string
-  };
+ReusablePlaceForm.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+    buttonText: PropTypes.string.isRequired,
+    backButton: PropTypes.node,
+    restaurantName: PropTypes.string,
+    placeId: PropTypes.string,
+    notes: PropTypes.string
+};
 
-  export default ReusablePlaceForm;
+export default ReusablePlaceForm;

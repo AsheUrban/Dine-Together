@@ -5,14 +5,13 @@ export const FormContainer = styled.div`
     width: 350px;
     margin: auto;
     margin-top: 50px;
-    padding: 60px;
+    padding: 40px 60px 80px 60px;
     border: 2px solid #D4A574;
     text-align: center;
-    border-radius: 10px;
+    position: relative;
 `;
 
 export const Input = styled.input`
-    border-radius: 5px;
     border: 1px solid #2C2C2C;
     margin: auto;
     margin-bottom: 10px;
@@ -22,7 +21,6 @@ export const Input = styled.input`
 `;
 
 export const TextArea = styled.textarea`
-    border-radius: 5px;
     border: 1px solid #2C2C2C;
     margin: auto;
     width: 100%;
@@ -30,6 +28,7 @@ export const TextArea = styled.textarea`
     padding: 8px;
     font-family: 'Lato', sans-serif;
     color: #2C2C2C;
+    resize: vertical;
 `;
 
 export const BioLabel = styled.label`
@@ -55,4 +54,20 @@ export const CharacterCounter = styled.p`
     font-size: 12px;
     color: #666;
     margin-top: 5px;
+`;
+
+export const FormButtons = styled.div`
+    position: absolute;
+    bottom: 10px;
+    left: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    
+`;
+
+export const InlineFormWrapper = styled.div`
+    position: relative;
+    width: 100%;
+    padding-bottom: 60px;
 `;

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { FormContainer, TextArea, Button, BioLabel, CharacterCounter, PlaceActionButton } from '../styles';
+import { InlineFormWrapper, TextArea, Button, BioLabel, CharacterCounter, FormButtons } from '../styles';
 
 const BEST_MEAL_LIMIT = 75;
 const GO_TO_MEALS_LIMIT = 75;
 const ABOUT_ME_LIMIT = 150;
 
 function ReusableProfileForm(props) {
-    const { userBio, onSave, onBack, isLoading, buttonText } = props;
+    const { userBio, onSave, isLoading, buttonText, backButton } = props;
     const [bestMeal, setBestMeal] = useState(userBio?.bestMeal || '');
     const [goToMeals, setGoToMeals] = useState(userBio?.goToMeals || '');
     const [aboutMe, setAboutMe] = useState(userBio?.aboutMe || '');
@@ -22,8 +22,8 @@ function ReusableProfileForm(props) {
     };
 
     return (
-        <FormContainer>
-            <form onSubmit={handleSubmit}>
+        <InlineFormWrapper>
+            <form id="profileForm" onSubmit={handleSubmit}>
                 <BioLabel htmlFor="bestMeal">Best meal of your life: </BioLabel>
                 <TextArea
                     id="bestMeal"
@@ -53,12 +53,12 @@ function ReusableProfileForm(props) {
                     maxLength={ABOUT_ME_LIMIT}
                 />
                 <CharacterCounter>{aboutMe.length}/{ABOUT_ME_LIMIT}</CharacterCounter>
-                
-                <br/>
-                <Button type="submit" disabled={isLoading}>{isLoading ? 'Saving...' : buttonText}</Button>
-            </form>
-            {onBack && <PlaceActionButton onClick={onBack}>Back</PlaceActionButton>}
-        </FormContainer>
+                </form>
+                <FormButtons>
+                    {backButton}
+                    <Button type="submit" form="profileForm" disabled={isLoading}>{isLoading ? 'Saving...' : buttonText}</Button>
+            </FormButtons>
+        </InlineFormWrapper>
     );
 }
 

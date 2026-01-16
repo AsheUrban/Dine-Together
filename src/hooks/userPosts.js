@@ -1,22 +1,32 @@
-import { auth } from './../firebase.js';
 import { useState, useEffect } from 'react';
-import { subscribeToUserPosts } from '../services/firebaseService.js';
+import { subscribeToUserPosts } from '../services/firebaseService';
 
-export const useUserPosts = () => {
+export const useUserPosts = (userId) => {
     const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-    const unSubscribe = subscribeToUserPosts(
-        auth.currentUser.uid,
-        (postsData) => setPosts(postsData),
-        (errorMessage) => setError(errorMessage)
-    );
-    return () => unSubscribe();
-    }, []);
+        if(!userId) {
+            setLoading(false);
+            return;
+        }
 
-    return {
-    posts,
-    error
-    }
-}
+        setLoading(true);
+        const unSubscribe = subscribeToUserPosts(
+            userId,
+            (postData) => {
+                setPosts(postData);
+                setLoading(false);
+            },
+            (errorMessage) => {
+                setError(errorMessage);
+                setLoading(false);
+            }
+        );
+
+        return () => unSubscribe();
+    }, [userId]);
+
+    return { posts, loading, error };
+};

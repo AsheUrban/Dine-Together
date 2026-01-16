@@ -7,37 +7,36 @@ import Explore from './Explore';
 import ProtectedRoute from './ProtectedRoute';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { auth } from '../firebase.js';
-import Profile from './Profile';
-import Footer from './Footer';
+import UserProfile from './UserProfile';
 
 function App(){
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+    useEffect(() => {
     const unSubscribe = auth.onAuthStateChanged((currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
+        setUser(currentUser);
+        setLoading(false);
     });
-    return () => unSubscribe();
-  }, []);
+        return () => unSubscribe();
+    }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
-  return (
-    <Router>
-      <Header user={user} />
-      <Routes>
-        <Route path='/sign-up' element={<SignUp />} />
-        <Route path='/sign-in' element={<SignIn />} />
-        <Route path='/' element={<ProtectedRoute element={<Feed />} />} />
-        <Route path='/profile/:userId' element={<ProtectedRoute element={<Profile />} />} />
-        <Route path='/search' element={<ProtectedRoute element ={<Explore />} />} />
-      </Routes>
-      <Footer />
-    </Router>
-  );
+    return (
+        <Router>
+            <Header user={user} />
+            <Routes>
+            <Route path='/sign-up' element={<SignUp />} />
+            <Route path='/sign-in' element={<SignIn />} />
+            <Route path='/' element={<ProtectedRoute element={<Feed />} />} />
+            <Route path='/profile/:userId' element={<ProtectedRoute element={<UserProfile />} />} />
+            <Route path='/search' element={<ProtectedRoute element ={<Explore />} />} />
+            </Routes>
+        </Router>
+    );
 }
+
 export default App;
