@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { auth } from './../firebase.js';
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
-import { doc, setDoc } from "firebase/firestore";
-import { db } from './../firebase.js';
 import { FormContainer, Input, H2, Button, SignUpLink } from '../styles';
 import { validateSignUp } from '../utils/validators';
+import { createUserProfile } from '../services/firebaseService.js';
 
   function SignUp(){
     const navigate = useNavigate();
@@ -34,10 +33,9 @@ import { validateSignUp } from '../utils/validators';
             displayName: username
         });
 
-        await setDoc(doc(db, 'users', userCredential.user.uid), {
+        await createUserProfile(userCredential.user.uid, {
             username: username,
             email: email,
-            createdAt: new Date()
         });
 
         setSignUpSuccess(`You've successfully signed up, ${username}!`)

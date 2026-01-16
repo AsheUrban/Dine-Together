@@ -42,7 +42,6 @@ export {
     KebabMenuDropdown,
     KebabMenuItem,
     CircularButton,
-    CircularBackButton,
     ActionBarContainer
 } from './globalStyles';
 

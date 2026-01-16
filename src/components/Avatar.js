@@ -4,6 +4,7 @@ import { AvatarContainer } from '../styles/avatarStyles';
 
 function Avatar({ displayName, size = '48px', variant = 'header' }) {
     const getInitials = (name) => {
+        if (!name) return ' ';
         return name
             .split(' ')
             .map(word => word[0].toUpperCase())
