@@ -61,7 +61,7 @@ export const TabContainer = styled.div`
     display: flex;
     gap: 20px;
     justify-content: center;
-    margin-bottom: 0px;
+    margin-bottom: 20px;
 `;
 
 export const TabButton = styled.button`

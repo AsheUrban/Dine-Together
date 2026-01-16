@@ -97,6 +97,7 @@ export const HeaderContainer = styled.div`
     color: #F5F1E8;
     padding: 25px 40px;
     margin: auto;
+    margin-bottom: 10px;
     background-color: #8B4513;
     box-sizing: border-box;
 `;
@@ -217,7 +218,7 @@ export const GlobalContentWrapper = styled.div`
     gap: 4px;
     height: fit-content;
     width: 100%;
-    padding-top: 20px;
+    // padding-top: 10px;
 `;
 
 // ConfirmDialog Components
