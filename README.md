@@ -148,8 +148,7 @@ The inspiration for the aesthetic of this project is vintage menus. Colors were 
 
 ---
 
-## **Known Bugs - Updated 1/12/26**
-- **Loading Flash:** Feed and Profile briefly show "no restaurants" empty state before data loads. Will be addressed in later polish.
+## **Known Bugs - Updated 1/15/26**
 - **Global Notes:** Notes are stored on global `places` collection. When any user edits notes, it changes for all users. Will be fixed with NotesSection architecture (per-user notes in userPlaces subcollection) after API integration.
 
 ---
