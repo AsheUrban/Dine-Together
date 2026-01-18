@@ -9,6 +9,10 @@
 
 - [Overview](#overview)
 - [Architecture Decisions](#architecture-decisions)
+  - [Decision 1: Separate Service Files](#decision-1-separate-service-files)
+  - [Decision 2: Direct REST API](#decision-2-direct-rest-api-places-api-new)
+  - [Decision 3: Manual Entry in MVP](#decision-3-manual-entry-in-mvp)
+  - [Decision 4: Route-Based PlaceProfile](#decision-4-route-based-placeprofile-2026-01-18)
 - [Google Places API Integration](#google-places-api-integration)
   - [Service Layer Design](#service-layer-design)
   - [Schema Evolution](#schema-evolution)
@@ -86,6 +90,49 @@ Manual restaurant entry is **included in MVP**, not deferred to TypeScript.
 - "Can't find it? Add manually" provides graceful fallback
 - Schema supports both sources with `source: 'google' | 'manual'` field
 
+### Decision 4: Route-Based PlaceProfile (2026-01-18)
+
+**Problem Identified:** PlaceProfile currently renders inline (conditional render replaces Feed/UserProfile content). This causes:
+- Header navigation blocked while viewing a place
+- Browser back button doesn't work
+- URLs not shareable
+- Inconsistent with standard web patterns
+
+**Decision:** PlaceProfile accessed via `/place/:placeId` route, fetches data by URL param.
+
+**Options Evaluated:**
+
+| Option | Pros | Cons |
+|--------|------|------|
+| A. Inline render (current) | No route setup | Nav blocked, no shareable URLs, non-standard |
+| B. Route with state pass | Fast (no fetch) | Breaks on refresh, not shareable |
+| C. Route with URL param fetch | Shareable, refresh works, standard pattern | Extra fetch |
+
+**Decision:** Option C - Route with URL param fetch.
+
+**Values Assessment:**
+- **Simplicity:** One code path (always fetch by ID)
+- **Testability:** Mock fetch, pass placeId - single scenario
+- **Reusability:** Works everywhere: direct links, refresh, shares
+- **Consistency:** Matches UserProfile pattern (uses `useParams`, fetches by ID)
+- **Efficiency:** Single Firestore doc fetch is fast
+- **Modern:** URL as source of truth is standard React Router pattern
+
+**Implementation:**
+1. Add `/place/:placeId` route to App.js
+2. Create `usePlaceData(placeId)` hook (subscription pattern, matches `useUser`)
+3. PlaceProfile uses `useParams()` to get placeId, calls hook
+4. Feed/UserProfile navigate to route instead of setting inline state
+5. Remove `usePlaceSelection` hook (no longer needed)
+
+**TypeScript Benefit:** Maps directly to React Query:
+```typescript
+const { data: place, isLoading } = useQuery(
+    ['place', placeId],
+    () => getPlaceById(placeId)
+);
+```
+
 ---
 
 ## Google Places API Integration
@@ -103,24 +150,47 @@ src/services/
 2. Place details fetch (returns full place data)
 3. Photo URL construction
 4. Data transformation (Google schema → our schema)
-5. Session token management (cost optimization)
 
-**Inter-service communication:**
+**firebaseService.js additions:**
+1. `findPlaceByGoogleId(googlePlaceId)` - Check if place exists
+2. `createPlace(placeData)` - Create place document
+3. `getPlaceById(placeId)` - Fetch place by Firestore ID
+
+**Orchestration pattern:**
+Services do individual operations. Hooks orchestrate and manage state. This matches our established patterns (e.g., `usePlaceSaveState`) and maps cleanly to React Query in TypeScript.
+
 ```javascript
-// googlePlacesService.js
-import { createPlace, findPlaceByGoogleId } from './firebaseService';
+// hooks/placeSelect.js - NEW HOOK
+import { findPlaceByGoogleId, createPlace } from '../services/firebaseService';
+import { fetchPlaceDetails, transformPlaceDetails } from '../services/googlePlacesService';
 
-export const selectPlace = async (googlePlaceId) => {
-    // Check if place already exists in Firestore
-    const existing = await findPlaceByGoogleId(googlePlaceId);
-    if (existing) return existing;
+export const usePlaceSelect = () => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-    // Fetch from Google API
-    const googleData = await fetchPlaceDetails(googlePlaceId);
+    const selectPlace = async (googlePlaceId) => {
+        setLoading(true);
+        setError(null);
+        try {
+            // Check if place already exists in Firestore
+            const existing = await findPlaceByGoogleId(googlePlaceId);
+            if (existing) return existing;
 
-    // Transform and save to Firestore
-    const placeData = transformGooglePlace(googleData);
-    return await createPlace(placeData);
+            // Fetch from Google API
+            const googleData = await fetchPlaceDetails(googlePlaceId);
+
+            // Transform and save to Firestore
+            const placeData = transformPlaceDetails(googleData);
+            return await createPlace(placeData);
+        } catch (err) {
+            setError(err.message);
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return { selectPlace, loading, error };
 };
 ```
 
@@ -191,8 +261,8 @@ User types in Explore search
         │
         ▼
 ┌─────────────────────────────┐
-│  useRestaurantSearch hook   │
-│  (debounced, session token) │
+│  useExploreSearch hook      │
+│  (debounced, geolocation)   │
 └─────────────────────────────┘
         │
         ▼
@@ -207,7 +277,7 @@ User selects from dropdown
         │
         ▼
 ┌─────────────────────────────┐
-│  googlePlacesService        │
+│  usePlaceSelect hook        │
 │  .selectPlace(place_id)     │
 └─────────────────────────────┘
         │
@@ -236,7 +306,10 @@ User selects from dropdown
 └─────────────────────────────┘
         │
         ▼
-Navigate to PlaceProfile
+┌─────────────────────────────┐
+│  Navigate to /place/:id     │
+│  (route-based navigation)   │
+└─────────────────────────────┘
 ```
 
 #### Flow 2: Manual Entry Fallback
@@ -357,27 +430,23 @@ const { data: photoUrl } = useQuery(
 
 ### Cost Optimization
 
-#### Session Tokens
+#### Session Tokens (Deferred to TypeScript)
 
-Group autocomplete keystrokes + place details into one billing session:
+Session tokens group autocomplete keystrokes + place details fetch into one billing "session" for cost optimization.
 
+**Decision:** Defer to TypeScript phase.
+
+**Rationale:**
+- Cost optimization, not architectural change
+- Free tier sufficient for MVP (10K autocomplete, 5K details/month)
+- Adding later is additive - just add `sessionToken` parameter to API calls
+- Keeps Chunk 2 focused on core functionality
+
+**Future implementation (TypeScript):**
 ```javascript
-// In useRestaurantSearch hook
-const [sessionToken, setSessionToken] = useState(null);
-
-useEffect(() => {
-    // Create new session token when search starts
-    if (searchQuery.length > 0 && !sessionToken) {
-        setSessionToken(new google.maps.places.AutocompleteSessionToken());
-    }
-}, [searchQuery]);
-
-const handlePlaceSelect = async (placeId) => {
-    // Use session token in details request
-    await fetchPlaceDetails(placeId, sessionToken);
-    // Clear token after use
-    setSessionToken(null);
-};
+// Generate UUID for session, pass to autocomplete and details calls
+const sessionToken = crypto.randomUUID();
+// Include in API requests: { sessionToken } in request body
 ```
 
 #### Field Masks
@@ -677,16 +746,26 @@ restaurant              user                         │
 
 ```javascript
 // In Explore.js
-const handlePlaceSelect = async (prediction) => {
-    // Fetch full details, save to Firestore, navigate
-    const place = await googlePlacesService.selectPlace(prediction.googlePlaceId);
-    navigate(`/place/${place.id}`);  // Or show PlaceProfile inline
-};
+import { useNavigate } from 'react-router-dom';
+import { useExploreSearch } from '../hooks/exploreSearch';
+import { usePlaceSelect } from '../hooks/placeSelect';
 
-const handleUserSelect = (user) => {
-    // Simple navigation
-    navigate(`/profile/${user.userId}`);
-};
+function Explore() {
+    const navigate = useNavigate();
+    const [searchQuery, setSearchQuery] = useState('');
+    const { places, loading: searchLoading } = useExploreSearch(searchQuery);
+    const { selectPlace, loading: selectLoading, error } = usePlaceSelect();
+
+    const handlePlaceSelect = async (prediction) => {
+        const place = await selectPlace(prediction.googlePlaceId);
+        navigate(`/place/${place.id}`);
+    };
+
+    const handleUserSelect = (user) => {
+        navigate(`/profile/${user.userId}`);
+    };
+    // ... render
+}
 ```
 
 ### Implementation Order (Revised)
@@ -776,14 +855,19 @@ src/services/
 ### React Query Integration
 
 ```typescript
-// Current (custom hook)
-const { predictions, loading } = useRestaurantSearch(query);
+// Current (custom hooks)
+const { places, loading } = useExploreSearch(query);
+const { selectPlace, loading: selectLoading } = usePlaceSelect();
 
 // TypeScript (React Query)
-const { data: predictions, isLoading } = useQuery(
+const { data: places, isLoading } = useQuery(
     ['restaurantSearch', query],
     () => googlePlacesService.search(query),
     { enabled: query.length > 2 }
+);
+
+const { mutate: selectPlace, isLoading: selectLoading } = useMutation(
+    (googlePlaceId) => placeSelectionService.select(googlePlaceId)
 );
 ```
 
@@ -870,18 +954,29 @@ function PlaceProfile({ place }) {
 4. Create `useExploreSearch` hook with geolocation and debouncing
 5. Update Explore.js with autocomplete UI
 
-### Phase 2: Place Details (Next)
+### Phase 2: Place Details & Route Navigation (Next)
+
+**2a. Route-Based PlaceProfile Architecture**
+1. Create `/place/:placeId` route in App.js
+2. Create `usePlaceData` hook - fetches place by Firestore ID (matches `useUser` pattern)
+3. Update PlaceProfile to use URL params + `usePlaceData` hook
+4. Refactor Feed.js - navigate to `/place/:id` instead of inline rendering
+5. Refactor UserProfile.js - navigate to `/place/:id` instead of inline rendering
+6. Remove `usePlaceSelection` hook (no longer needed)
+
+**2b. Google Places Integration**
 1. Add `fetchPlaceDetails()` to googlePlacesService.js
-2. Implement `getOrCreatePlace` with deduplication
-3. Add `findPlaceByGoogleId` to firebaseService.js
-4. Update schema (add new fields)
-5. Wire selection flow in Explore.js → save to Firestore → navigate to PlaceProfile
+2. Add `findPlaceByGoogleId()` to firebaseService.js
+3. Add `createPlace()` to firebaseService.js
+4. Add `getPlaceById()` to firebaseService.js
+5. Create Firestore index on `googlePlaceId` field
+6. Create `usePlaceSelect` hook (orchestrates dedup + fetch + create)
+7. Wire selection flow in Explore.js → `usePlaceSelect` → navigate to `/place/:id`
 
 ### Phase 3: Save Flow & Post Creation
-1. Save place to user's saved places
-2. Navigate to PlaceProfile after save
-3. Add "Create Post" button in PlaceProfile
-4. Wire post creation flow
+1. PlaceProfile ActionBar shows "Add" button (if not saved)
+2. Add "Create Post" button in PlaceProfile
+3. Wire post creation flow
 
 ### Phase 4: Manual Fallback
 1. Add "Can't find it?" link to Explore.js
