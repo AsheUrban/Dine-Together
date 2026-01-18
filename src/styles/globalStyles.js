@@ -9,6 +9,15 @@ export const H1 = styled.h1`
     font-family: 'Rosaline', serif;
 `;
 
+export const H1Centered = styled.h1`
+    font-size: 48px;
+    text-align: center;
+    color: #F5F1E8;
+    margin: 0;
+    font-family: 'Rosaline', serif;
+`;
+
+
 export const H2 = styled.h2`
     font-size: 30px;
     color: #8B4513;

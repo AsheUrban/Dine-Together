@@ -1,6 +1,6 @@
 import { auth } from '../firebase.js';
 import { db } from '../firebase.js';
-import { collection, doc, updateDoc, query, orderBy, where, onSnapshot, getDoc, writeBatch, serverTimestamp, getDocs, setDoc } from 'firebase/firestore';
+import { collection, doc, updateDoc, query, orderBy, where, onSnapshot, getDoc, writeBatch, serverTimestamp, getDocs, setDoc, limit } from 'firebase/firestore';
 import { formatDistanceToNow } from 'date-fns';
 
 
@@ -296,6 +296,41 @@ export const removeFromSavedPlaces = async (userId, placeId) => {
 export const updatePlace = async (placeId, placeData) => {
     const placeRef = doc(db, 'places', placeId);
     return await updateDoc(placeRef, placeData);
+};
+
+// ===== PLACE LOOKUP =====
+
+export const findPlaceByGoogleId = async (googlePlaceId) => {
+    const q = query(
+        collection(db, 'places'),
+        where('googlePlaceId', '==', googlePlaceId),
+        limit(1)
+    );
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) {
+        return null;
+    }
+
+    return { id: snapshot.docs[0].id, ...snapshot.docs[0].data() };
+};
+
+export const getPlaceById = async (placeId) => {
+    const docRef = doc(db, 'places', placeId);
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) {
+        return null;
+    }
+
+    return { id: docSnap.id, ...docSnap.data() };
+};
+
+export const createPlace = async (placeData) => {
+    const placeRef = doc(collection(db, 'places'));
+    await setDoc(placeRef, {
+        ...placeData,
+        createdAt: serverTimestamp()
+    });
+    return { id: placeRef.id, ...placeData};
 };
 
 // ===== UTILITY FUNCTIONS =====
