@@ -954,12 +954,12 @@ function PlaceProfile({ place }) {
 4. Create `useExploreSearch` hook with geolocation and debouncing
 5. Update Explore.js with autocomplete UI
 
-### Phase 2: Place Details & Route Navigation (Next)
+### Phase 2: Place Details & Route Navigation | COMPLETE (2026-01-18)
 
 **2a. Route-Based PlaceProfile Architecture**
 1. Create `/place/:placeId` route in App.js
-2. Create `usePlaceData` hook - fetches place by Firestore ID (matches `useUser` pattern)
-3. Update PlaceProfile to use URL params + `usePlaceData` hook
+2. Create `usePlace` hook - fetches place by Firestore ID (matches `useUser` pattern)
+3. Update PlaceProfile to use URL params + `usePlace` hook
 4. Refactor Feed.js - navigate to `/place/:id` instead of inline rendering
 5. Refactor UserProfile.js - navigate to `/place/:id` instead of inline rendering
 6. Remove `usePlaceSelection` hook (no longer needed)
@@ -973,17 +973,36 @@ function PlaceProfile({ place }) {
 6. Create `usePlaceSelect` hook (orchestrates dedup + fetch + create)
 7. Wire selection flow in Explore.js → `usePlaceSelect` → navigate to `/place/:id`
 
-### Phase 3: Save Flow & Post Creation
+### Phase 3: Display Google Places Data (Next)
+
+Update UI components to display all Google Places data.
+
+**PlaceDetail.js** (used in PlaceProfile):
+1. Add rating display with star icon
+2. Add userRatingsTotal (review count)
+3. Add priceLevel display ($ symbols)
+4. Add phone (clickable tel: link)
+5. Add website (clickable external link)
+6. Add photo display using photoReferences
+
+**Place.js** (card used in PlaceGrid):
+1. Replace PlaceImage placeholder with actual photo
+2. Use first photoReference if available
+
+**googlePlacesService.js**:
+1. Add `getPhotoUrl(photoReference, maxWidth)` helper function
+
+### Phase 4: Save Flow & Post Creation
 1. PlaceProfile ActionBar shows "Add" button (if not saved)
 2. Add "Create Post" button in PlaceProfile
 3. Wire post creation flow
 
-### Phase 4: Manual Fallback
+### Phase 5: Manual Fallback
 1. Add "Can't find it?" link to Explore.js
 2. Wire to existing NewPlaceForm
 3. Ensure `source: 'manual'` is set
 
-### Phase 5: Polish
+### Phase 6: Polish
 1. Error handling (API failures, rate limits)
 2. Loading states and UX refinements
 3. Combined search (restaurants + people)
