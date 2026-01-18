@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PostList from './PostList';
-import PlaceProfile from './PlaceProfile';
 import EditPostForm from './EditPostForm';
 import ConfirmDialog from './ConfirmDialog';
 import { auth } from '../firebase.js';
 import { FormContainer, H1 } from '../styles';
 import { useAllPosts } from '../hooks/allPosts';
-import { usePlaceSelection } from '../hooks/placeSelection';
 import { deletePost, updatePostCaption } from '../services/firebaseService';
 
 function Feed () {
     const navigate = useNavigate();
     const { posts, error, loading } = useAllPosts();
-    const { selectedPlace, handleSelectPlace, handleBackToList } = usePlaceSelection();
     const [editingPostId, setEditingPostId] = useState(null);
     const [deleteConfirmation, setDeleteConfirmation] = useState({
         isOpen: false,
@@ -22,7 +19,7 @@ function Feed () {
     });
 
     const selectPlaceFromPost = (postId, place, authorId) => {
-    handleSelectPlace(place);
+        navigate(`/place/${place.id}`);
     };
 
     const handleUserClick = (userId) => {
@@ -71,16 +68,6 @@ function Feed () {
 
     if (error) {
         return <div>There was an error: {error}</div>
-    }
-
-    if (selectedPlace) {
-        return (
-        <PlaceProfile
-            place={selectedPlace}
-            onBack={handleBackToList}
-            onUserClick={handleUserClick}
-        />
-        );
     }
 
     if(editingPostId) {

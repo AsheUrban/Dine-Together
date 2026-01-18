@@ -1,17 +1,15 @@
-import PlaceProfile from './PlaceProfile';
+import React, { useState } from 'react';
 import PlaceGrid from './PlaceGrid';
 import PostList from './PostList';
 import UserDetails from './UserDetails';
 import EditPostForm from './EditPostForm';
 import ConfirmDialog from './ConfirmDialog';
-import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { auth } from './../firebase.js';
 import { useUser } from '../hooks/user';
 import { updateUserBio, deletePost, updatePostCaption } from '../services/firebaseService.js';
 import { useUserPosts } from '../hooks/userPosts';
 import { useUserPlaces } from '../hooks/userPlaces';
-import { usePlaceSelection } from '../hooks/placeSelection';
 import { useEditMode } from '../hooks/editMode';
 import { useFormSubmit } from '../hooks/formSubmit';
 import {
@@ -35,7 +33,6 @@ function UserProfile() {
     const { username, userBio, loading, error } = useUser(userId);
     const { posts, loading: postsLoading } = useUserPosts(userId);
     const { places, loading: placesLoading } = useUserPlaces(userId);
-    const { selectedPlace, handleSelectPlace, handleBackToList } = usePlaceSelection();
     const { isEditing, enterEditMode, exitEditMode } = useEditMode();
     const { isLoading, handleSubmit } = useFormSubmit(async (bioData) => {
         try {
@@ -46,19 +43,13 @@ function UserProfile() {
         }
     });
 
-    const handlePlaceUpdate = (updatedPlace) => {
-        if (selectedPlace && selectedPlace.id === updatedPlace.id) {
-            handleSelectPlace({ ...selectedPlace, ...updatedPlace });
-        }
-    };
 
     const selectPlace = (id) => {
-        const selection = places.find(place => place.id === id);
-        handleSelectPlace(selection);
-    }
+        navigate(`/place/${id}`);
+    };
 
     const selectPlaceFromPost = (postId, place, authorId) => {
-        handleSelectPlace(place);
+        navigate(`/place/${place.id}`);
     };
 
     const handleUserClick = (clickedUserId) => {
@@ -99,32 +90,21 @@ function UserProfile() {
         return <div>User not found</div>;
     }
 
-    if(selectedPlace) {
-        return (
-          <PlaceProfile
-            place={selectedPlace}
-            onBack={handleBackToList}
-            onUserClick={handleUserClick}
-            onPlaceUpdate={isOwnProfile ? handlePlaceUpdate : undefined}
+    if(editingPostId && isOwnProfile) {
+    return (
+        <EditPostForm
+            post={posts.find(p => p.id === editingPostId)}
+            onEditPost={handleSaveEditPost}
+            onBack={() => setEditingPostId(null)}
+            onDelete={handleDeletePost}
         />
-     );
+    );
     }
-
-     if(editingPostId && isOwnProfile) {
-        return (
-          <EditPostForm
-              post={posts.find(p => p.id === editingPostId)}
-              onEditPost={handleSaveEditPost}
-              onBack={() => setEditingPostId(null)}
-              onDelete={handleDeletePost}
-            />
-        );
-      }
     
-      const postsWithOwnership = posts.map(post => ({
-          ...post,
-          isOwner: isOwnProfile && post.userId === auth.currentUser.uid
-      }));
+    const postsWithOwnership = posts.map(post => ({
+        ...post,
+        isOwner: isOwnProfile && post.userId === auth.currentUser.uid
+    }));
 
     return (
         <PageContainer>
