@@ -34,7 +34,7 @@ Following MVP polish, the project is planned to be refactored to TypeScript with
 
 ---
 
-**Current Status:** Google Places API integration in progress (Chunk 1 complete). Autocomplete search working with geolocation-based results. Next: Place Details fetch and save to Firestore.
+**Current Status:** Google Places API integration complete (Phase 2 done). Full flow working: Autocomplete search with geolocation → Place Details fetch → Firestore save with deduplication → Route-based PlaceProfile navigation. Next: Display Google Places data (photos, rating, phone, etc.) in PlaceProfile and Place cards.
 
 ---
 
@@ -65,7 +65,7 @@ This project uses a **service-layer pattern** to separate concerns and keep comp
 
 - **Posts & Places Collections** — Posts (social wrappers with captions) reference Places (restaurant data) by ID. One Place can be referenced by multiple Posts, keeping data normalized and shareable.
 - **Service Layer** (`firebaseService.js`, `googlePlacesService.js`) — Centralizes all Firebase operations and external API calls. Components receive clean data in props without direct API coupling.
-- **Custom Hooks** — 10 reusable hooks manage component state (data subscriptions, form handling, edit modes, search), promoting code reuse and testability.
+- **Custom Hooks** — 11 reusable hooks manage component state (data subscriptions, form handling, edit modes, search, place selection), promoting code reuse and testability.
 - **Styled Components** — Centralized styling system with 8 style files, maintaining consistent theme and visual language across the app.
 
 This architecture scales cleanly: adding Google Places API integration requires changes only to the service layer and firebaseService.js, not to component logic.
@@ -235,10 +235,13 @@ src/
 │   ├── editMode.js            (Toggle edit/view state)
 │   ├── exploreSearch.js       (Restaurant search with geolocation)
 │   ├── formSubmit.js          (Form submission with loading/error states)
+│   ├── place.js               (Subscribe to place by Firestore ID)
 │   ├── placeSaveState.js      (Manage saved place state & "saved by" display)
-│   ├── placeSelection.js      (Track selected place)
+│   ├── placeSelect.js         (Orchestrate place selection flow)
 │   ├── placeUpdate.js         (Handle place update logic)
-│   └── user.js                (Current user state with subscription pattern)
+│   ├── user.js                (Current user state with subscription pattern)
+│   ├── userPosts.js           (Subscribe to user's posts)
+│   └── userPlaces.js          (Subscribe to user's saved places)
 ├── services/
 │   ├── firebaseService.js     (Firebase CRUD and real-time subscriptions)
 │   └── googlePlacesService.js (Google Places API REST calls)
@@ -275,28 +278,49 @@ src/
 - ActionBar component for fixed-bottom actions
 
 **Current Sprint:**
-- Google Places API integration (Chunk 1 complete, Chunk 2 in progress)
+- Phase 3: Display Google Places Data
 
-### **Phase 2: Google Places API Integration**
+### **Phase 2: Google Places API Integration** | COMPLETE
 
 1. ~~Google Places Autocomplete in Explore~~ | Complete (using Places API New via REST)
-2. Google Places Details API for full restaurant data (in progress)
-3. Save flow with deduplication
-4. Post creation from PlaceProfile
-5. Combined search (restaurants + people)
-6. Manual entry as fallback when API returns no results
+2. ~~Google Places Details API for full restaurant data~~ | Complete
+3. ~~Save flow with deduplication~~ | Complete (findPlaceByGoogleId checks before creating)
+4. ~~Route-based PlaceProfile~~ | Complete (`/place/:placeId` with usePlace hook)
+5. Post creation from PlaceProfile (Phase 4)
+6. Combined search (restaurants + people) (Phase 7)
+7. Manual entry as fallback when API returns no results (Phase 5)
 
-### **Phase 3: Design with Real Data**
+### **Phase 3: Display Google Places Data** (Current)
 
-- NotesSection component (design with actual photos/data)
-- Notes schema update (generalNote/privateNote in userPlaces)
-- "Create Post" button in PlaceProfile
+- Add `location` (lat/lng) to PLACE_FIELDS and transform
+- PlaceDetail.js: Display rating, priceLevel, phone, website, photos, static map
+- Place.js: Replace PlaceImage placeholder with actual Google photo
+- googlePlacesService.js: Add `getPhotoUrl()` helper
 
-### **Phase 4: Polish**
+### **Phase 4: Save Flow & Post Creation**
 
-- Form validation and error handling
-- Loading state improvements (fix loading flash bug)
-- Code cleanup
+- PlaceProfile ActionBar shows "Add" button (if not saved)
+- Add "Create Post" button in PlaceProfile
+- Wire post creation flow
+
+### **Phase 5: Manual Fallback**
+
+- Add "Can't find it?" link to Explore.js
+- Wire to existing NewPlaceForm
+- Ensure `source: 'manual'` is set
+
+### **Phase 6: Map Integration**
+
+- Enable Maps JavaScript API in Google Cloud Console
+- Add `@react-google-maps/api` dependency
+- Add map view toggle to Explore (list view vs map view)
+- Implement Nearby Search API for map browse mode
+
+### **Phase 7: Polish**
+
+- Error handling (API failures, rate limits)
+- Loading states and UX refinements
+- Combined search (restaurants + people)
 
 **TypeScript Refactor (Post-MVP)**
 

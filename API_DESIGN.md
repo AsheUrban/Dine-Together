@@ -29,6 +29,8 @@
   - [Combined Data Flow](#combined-data-flow)
 - [TypeScript Migration Considerations](#typescript-migration-considerations)
 - [Future APIs (Reservations)](#future-apis-reservations)
+- [Implementation Phases](#implementation-phases)
+- [Future: Map Integration Strategy](#future-map-integration-strategy)
 
 ---
 
@@ -977,6 +979,11 @@ function PlaceProfile({ place }) {
 
 Update UI components to display all Google Places data.
 
+**Schema Update:**
+1. Add `location` (lat/lng) to PLACE_FIELDS in googlePlacesService.js
+2. Update `transformPlaceDetails` to include location
+3. Store coordinates in Firestore (sets up for future map features)
+
 **PlaceDetail.js** (used in PlaceProfile):
 1. Add rating display with star icon
 2. Add userRatingsTotal (review count)
@@ -984,6 +991,7 @@ Update UI components to display all Google Places data.
 4. Add phone (clickable tel: link)
 5. Add website (clickable external link)
 6. Add photo display using photoReferences
+7. Add static map image showing location
 
 **Place.js** (card used in PlaceGrid):
 1. Replace PlaceImage placeholder with actual photo
@@ -1002,9 +1010,82 @@ Update UI components to display all Google Places data.
 2. Wire to existing NewPlaceForm
 3. Ensure `source: 'manual'` is set
 
-### Phase 6: Polish
+### Phase 6: Map Integration
+1. Enable Maps JavaScript API in Google Cloud Console
+2. Add `@react-google-maps/api` dependency
+3. Add map view toggle to Explore (list view vs map view)
+4. Implement Nearby Search API for map browse mode
+5. Display nearby restaurants as pins on map
+6. Tap pin → show preview card → navigate to PlaceProfile
+
+### Phase 7: Polish
 1. Error handling (API failures, rate limits)
 2. Loading states and UX refinements
 3. Combined search (restaurants + people)
+
+### TypeScript Refactor: Text Search
+1. Add Text Search API for "search on map" functionality
+2. Hybrid approach: Autocomplete for typeahead, Text Search for map+text
+3. Full map integration (search results + map sync, saved places on map)
+
+---
+
+## Future: Map Integration Strategy
+
+### Hybrid Search Approach
+
+Explore will offer two search modes, each optimized for its use case:
+
+| Mode | API | User Intent | Returns |
+|------|-----|-------------|---------|
+| Text search | Autocomplete + Details | "I know the name" | Fast typeahead, details on select |
+| Map browse | Nearby Search | "What's around here?" | Full details + coordinates for all |
+| Map + text (TS) | Text Search | "Show me 'sushi' on map" | Full details + coordinates for all |
+
+### Why Hybrid?
+
+**Autocomplete** is optimized for typeahead:
+- Fast, lightweight responses
+- Cheap ($2.83/1K requests)
+- But no coordinates until you fetch details
+
+**Nearby Search / Text Search** returns full data:
+- Coordinates for all results (enables map pins)
+- Ratings, photos available immediately
+- But heavier, more expensive ($32/1K requests)
+
+Using both gives best UX for each mode without compromise.
+
+### Implementation Path
+
+1. **Phase 3:** Store `location` (lat/lng) in schema - sets foundation
+2. **Phase 3:** Static map on PlaceProfile - quick win
+3. **Phase 6:** Map view in Explore with Nearby Search - visual browsing
+4. **TS Refactor:** Text Search for "search on map" - full integration
+
+### Technical Notes
+
+**Nearby Search API (New):**
+```javascript
+// Request
+POST https://places.googleapis.com/v1/places:searchNearby
+{
+    "includedTypes": ["restaurant"],
+    "locationRestriction": {
+        "circle": {
+            "center": { "latitude": 37.7749, "longitude": -122.4194 },
+            "radius": 5000
+        }
+    }
+}
+// Returns array of places with full details including location
+```
+
+**Static Map for PlaceProfile:**
+```javascript
+const getStaticMapUrl = (lat, lng) => {
+    return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=15&size=400x200&markers=color:red%7C${lat},${lng}&key=${API_KEY}`;
+};
+```
 
 ---
