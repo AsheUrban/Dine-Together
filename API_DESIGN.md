@@ -407,28 +407,37 @@ export const findPlaceByGoogleId = async (googlePlaceId) => {
 
 ### Photo Strategy
 
-**MVP Approach:** Fetch on demand
+**Decision (2026-01-20): Firebase Cloud Function Proxy**
+
+API key must not be exposed client-side (Google flagged previous exposure). Security is a baseline requirement.
+
+**Implementation:**
 
 ```javascript
-// Photo URL construction (New API format)
-const getPhotoUrl = (photoReference, maxWidth = 400) => {
-    return `https://places.googleapis.com/v1/${photoReference}/media?maxWidthPx=${maxWidth}&key=${API_KEY}`;
+// Firebase Cloud Function (server-side)
+exports.getPlacePhoto = functions.https.onCall(async (data) => {
+    const { photoRef, maxWidth = 400 } = data;
+    const url = `https://places.googleapis.com/v1/${photoRef}/media?maxWidthPx=${maxWidth}&key=${process.env.GOOGLE_PLACES_API_KEY}`;
+    // Fetch and return image or redirect
+});
+
+// Client-side helper (googlePlacesService.js)
+export const getPhotoUrl = async (photoReference, maxWidth = 400) => {
+    const getPlacePhoto = httpsCallable(functions, 'getPlacePhoto');
+    const result = await getPlacePhoto({ photoRef: photoReference, maxWidth });
+    return result.data.url;
 };
 ```
 
-**Why fetch on demand:**
-- Always fresh (Google rotates URLs)
-- No storage costs
-- Simpler implementation
+**Why Cloud Function Proxy:**
+- API key stays server-side (security)
+- Simple single function (6/6 on team values)
+- No caching complexity needed at MVP scale
+- Don't over-invest in Firebase given Supabase decision for TS refactor
 
-**TypeScript Target:** Store photo references, generate URLs with React Query caching:
-```typescript
-const { data: photoUrl } = useQuery(
-    ['placePhoto', photoRef],
-    () => getPhotoUrl(photoRef),
-    { staleTime: 60 * 60 * 1000 }  // 1 hour cache
-);
-```
+**Rejected:** Firebase Storage caching - more complex, unnecessary for MVP.
+
+**TypeScript Target (Supabase):** Edge Function with same pattern, or Supabase Storage if caching needed.
 
 ### Cost Optimization
 
@@ -792,6 +801,14 @@ This order ensures:
 ---
 
 ## TypeScript Migration Considerations
+
+**Decided Tech Stack (2026-01-20):**
+- **Mobile Framework:** Expo + React Native (mobile-first, single codebase)
+- **Backend:** Supabase (PostgreSQL for relational social queries)
+- **Data Fetching:** TanStack Query
+- **Forms:** React Hook Form + Zod
+
+Current service layer pattern translates directly: `firebaseService.js` → `supabaseService.ts`
 
 ### Discriminated Union Types
 

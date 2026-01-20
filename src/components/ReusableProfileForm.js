@@ -65,7 +65,7 @@ function ReusableProfileForm(props) {
 ReusableProfileForm.propTypes = {
     userBio: PropTypes.object,
     onSave: PropTypes.func.isRequired,
-    onBack: PropTypes.func,
+    backButton:PropTypes.node,
     isLoading: PropTypes.bool,
     buttonText: PropTypes.string.isRequired
 };

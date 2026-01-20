@@ -1,7 +1,7 @@
 # Dine-Together Design Document
 
-**Last Updated:** 2026-01-16
-**Status:** ACTIVE - Google Places API integration in progress (Chunk 1 complete)
+**Last Updated:** 2026-01-20
+**Status:** ACTIVE - Phase 3 planning complete (photos via Cloud Function, PlaceDetail design)
 
 ---
 

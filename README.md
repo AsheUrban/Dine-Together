@@ -34,7 +34,7 @@ Following MVP polish, the project is planned to be refactored to TypeScript with
 
 ---
 
-**Current Status:** Google Places API integration complete (Phase 2 done). Full flow working: Autocomplete search with geolocation → Place Details fetch → Firestore save with deduplication → Route-based PlaceProfile navigation. Next: Display Google Places data (photos, rating, phone, etc.) in PlaceProfile and Place cards.
+**Current Status:** Phase 3 planning complete. Photos implementation decided (Firebase Cloud Function proxy for API key security). TypeScript refactor tech stack decided (Supabase + Expo/React Native for mobile-first social features). Next: Implement Cloud Function, then PlaceDetail UI with Google Places data.
 
 ---
 
@@ -286,16 +286,14 @@ src/
 2. ~~Google Places Details API for full restaurant data~~ | Complete
 3. ~~Save flow with deduplication~~ | Complete (findPlaceByGoogleId checks before creating)
 4. ~~Route-based PlaceProfile~~ | Complete (`/place/:placeId` with usePlace hook)
-5. Post creation from PlaceProfile (Phase 4)
-6. Combined search (restaurants + people) (Phase 7)
-7. Manual entry as fallback when API returns no results (Phase 5)
 
 ### **Phase 3: Display Google Places Data** (Current)
 
+- Implement Firebase Cloud Function for secure photo fetching
+- Add `getPhotoUrl()` helper to googlePlacesService.js
 - Add `location` (lat/lng) to PLACE_FIELDS and transform
-- PlaceDetail.js: Display rating, priceLevel, phone, website, photos, static map
+- PlaceDetail.js: Display rating, priceLevel, phone, website, photos, embedded map
 - Place.js: Replace PlaceImage placeholder with actual Google photo
-- googlePlacesService.js: Add `getPhotoUrl()` helper
 
 ### **Phase 4: Save Flow & Post Creation**
 
@@ -303,33 +301,34 @@ src/
 - Add "Create Post" button in PlaceProfile
 - Wire post creation flow
 
-### **Phase 5: Manual Fallback**
-
-- Add "Can't find it?" link to Explore.js
-- Wire to existing NewPlaceForm
-- Ensure `source: 'manual'` is set
-
-### **Phase 6: Map Integration**
+### **Phase 5: Map Integration**
 
 - Enable Maps JavaScript API in Google Cloud Console
 - Add `@react-google-maps/api` dependency
 - Add map view toggle to Explore (list view vs map view)
 - Implement Nearby Search API for map browse mode
 
-### **Phase 7: Polish**
+### **Phase 6: Polish**
 
 - Error handling (API failures, rate limits)
 - Loading states and UX refinements
 - Combined search (restaurants + people)
 
-**TypeScript Refactor (Post-MVP)**
+### **Phase 7: Manual Fallback**
 
-After the JavaScript version is finalized:
-- Migrate codebase to TypeScript
-- Introduce React Query for advanced state management
-- Add Zod/Yup for schema validation
-- Implement Suspense for async boundaries
-- Build foundation for social features (friends, connections, reservations)
+- Add "Can't find it?" link to Explore.js
+- Wire to existing NewPlaceForm
+- Ensure `source: 'manual'` is set
+
+## **TypeScript Refactor (Post-MVP)**
+
+Mobile-first rebuild with decided tech stack:
+- **Framework:** Expo + React Native (single codebase for iOS/Android/web)
+- **Backend:** Supabase (PostgreSQL for relational social queries - friends, groups, shared wishlists)
+- **Data Fetching:** TanStack Query
+- **Forms:** React Hook Form + Zod
+- **Navigation:** React Navigation
+- Build foundation for social features (friends, connections, reservation coordination with OpenTable/Resy)
 
 ---
 
