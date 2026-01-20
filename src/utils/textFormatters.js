@@ -1,3 +1,4 @@
+const DIRECTIONS = ['N', 'S', 'E', 'W', 'NE', 'NW', 'SE', 'SW'];
 
 export const shortenAddress = (address) => {
     if (!address) return '';
@@ -10,15 +11,22 @@ export const shortenAddress = (address) => {
 
 export const toTitleCase = (str) => {
     if (!str) return '';
+
     return str
         .toLowerCase()
-        .replace(/\b\w/g, char => char.toUpperCase());
+        .split(' ')
+        .map(word => {
+            const letters = word.replace(/[^a-z]/gi, '').toUpperCase();
+            if (DIRECTIONS.includes(letters)) {
+                return word.toUpperCase();
+            }
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        })
+        .join(' ');
 };
 
 export const toSentenceCase = (str) => {
     if (!str) return '';
-
-    const directions = ['N', 'S', 'E', 'W', 'NE', 'NW', 'SE', 'SW'];
 
     const segments = str.split(',');
 
@@ -31,7 +39,7 @@ export const toSentenceCase = (str) => {
         .map(word => {
             const letters = word.replace(/[^a-z]/gi, '').toUpperCase();
 
-            if (directions.includes(letters)) {
+            if (DIRECTIONS.includes(letters)) {
                 return word.toUpperCase();
             }
             if (!isFirstSegment && letters.length === 2) {
