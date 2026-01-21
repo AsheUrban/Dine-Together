@@ -50,3 +50,14 @@ export const toSentenceCase = (str) => {
         .join(' ');
     }).join(',');
 };
+
+export const formatPriceLevel = (priceLevel) => {
+    const levels = {
+        'PRICE_LEVEL_FREE': 'Free',
+        'PRICE_LEVEL_INEXPENSIVE': '$',
+        'PRICE_LEVEL_MODERATE': '$$',
+        'PRICE_LEVEL_EXPENSIVE': '$$$',
+        'PRICE_LEVEL_VERY_EXPENSIVE': '$$$$'
+    };
+    return levels[priceLevel] || '';
+};

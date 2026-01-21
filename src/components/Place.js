@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { toTitleCase, toSentenceCase, shortenAddress } from '../utils/textFormatters';
+import { toTitleCase, toSentenceCase, shortenAddress, formatPriceLevel } from '../utils/textFormatters';
 import { H6Centered, PlaceWrapper, PlaceItem, PlaceContent, PlaceImage, PlaceDetails, H4Centered } from '../styles';
-
 
 function Place(props){
     return (
@@ -13,7 +12,7 @@ function Place(props){
                 <PlaceContent>
                     <PlaceImage />
                     <PlaceDetails>
-                        <p>{props.priceLevel ? '$'.repeat(props.priceLevel) : 'Price TBD'}</p>
+                        <p>{formatPriceLevel(props.priceLevel)}</p>
                         <p>{props.rating ? `⭐ ${props.rating} (${props.userRatingsTotal})` : 'Rating TBD'}</p>
                     </PlaceDetails>
                 </PlaceContent>
@@ -25,7 +24,7 @@ function Place(props){
 Place.propTypes = {
     restaurantName: PropTypes.string,
     restaurantAddress: PropTypes.string,
-    priceLevel: PropTypes.number,
+    priceLevel: PropTypes.string,
     rating: PropTypes.number,
     userRatingsTotal: PropTypes.number,
     id: PropTypes.string,
