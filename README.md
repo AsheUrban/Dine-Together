@@ -34,7 +34,7 @@ Following MVP polish, the project is planned to be refactored to TypeScript with
 
 ---
 
-**Current Status:** Phase 3 planning complete. Photos implementation decided (Firebase Cloud Function proxy for API key security). TypeScript refactor tech stack decided (Supabase + Expo/React Native for mobile-first social features). Next: Implement Cloud Function, then PlaceDetail UI with Google Places data.
+**Current Status:** Phase 3 in progress. Firebase Cloud Function `getPlacePhoto` deployed for secure photo proxy. Next: Client-side integration (`getPhotoUrl()` helper, display photos in Place.js and PlaceDetail.js).
 
 ---
 

@@ -411,23 +411,43 @@ export const findPlaceByGoogleId = async (googlePlaceId) => {
 
 API key must not be exposed client-side (Google flagged previous exposure). Security is a baseline requirement.
 
-**Implementation:**
+**Implementation (2026-01-21):**
 
 ```javascript
-// Firebase Cloud Function (server-side)
-exports.getPlacePhoto = functions.https.onCall(async (data) => {
-    const { photoRef, maxWidth = 400 } = data;
-    const url = `https://places.googleapis.com/v1/${photoRef}/media?maxWidthPx=${maxWidth}&key=${process.env.GOOGLE_PLACES_API_KEY}`;
-    // Fetch and return image or redirect
-});
+// Firebase Cloud Function (functions/index.js) - uses onRequest for HTTP endpoint
+exports.getPlacePhoto = onRequest(
+    { cors: true, maxInstances: 10, secrets: [googlePlacesApiKey] },
+    async (req, res) => {
+        const { photoRef, maxWidth = "400" } = req.query;
+        // Fetch from Google Places API, get photoUri, redirect to it
+        res.redirect(data.photoUri);
+    }
+);
 
-// Client-side helper (googlePlacesService.js)
-export const getPhotoUrl = async (photoReference, maxWidth = 400) => {
-    const getPlacePhoto = httpsCallable(functions, 'getPlacePhoto');
-    const result = await getPlacePhoto({ photoRef: photoReference, maxWidth });
-    return result.data.url;
+// Client-side helper (googlePlacesService.js) - pure URL construction
+const CLOUD_FUNCTION_URL = 'https://us-central1-dine-together-2e4b4.cloudfunctions.net/getPlacePhoto';
+
+export const getPhotoUrl = (photoReference, maxWidth = 400) => {
+    if (!photoReference) return null;
+    const encodedRef = encodeURIComponent(photoReference);
+    return `${CLOUD_FUNCTION_URL}?photoRef=${encodedRef}&maxWidth=${maxWidth}`;
 };
+
+// Usage in components - URL works directly as img src
+<img src={getPhotoUrl(place.photoReferences[0])} />
 ```
+
+**Why `onRequest` (HTTP endpoint) over `onCall`:**
+- Photos are consumed as URLs in `<img>` tags - URL can be the src directly
+- Browser handles redirect automatically, no async call needed in component
+- Platform-agnostic (just HTTP) - portable to Supabase Edge Functions
+- No Firebase SDK dependency on client for photos
+- Simpler: pure URL construction vs async callable + loading states
+
+**Key Implementation Details:**
+- PhotoRefs must be URL-encoded (slashes → `%2F`)
+- Server-side API key stored in Firebase Secrets (separate key with no website restrictions)
+- Function validates redirect domain (must be `*.googleusercontent.com`)
 
 **Why Cloud Function Proxy:**
 - API key stays server-side (security)
@@ -437,7 +457,7 @@ export const getPhotoUrl = async (photoReference, maxWidth = 400) => {
 
 **Rejected:** Firebase Storage caching - more complex, unnecessary for MVP.
 
-**TypeScript Target (Supabase):** Edge Function with same pattern, or Supabase Storage if caching needed.
+**TypeScript Target (Supabase):** Edge Function with same HTTP pattern. Only change: update `CLOUD_FUNCTION_URL` constant to Supabase endpoint.
 
 ### Cost Optimization
 
