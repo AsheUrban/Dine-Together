@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Inter:wght@400;500;600&display=swap');
 
 @font-face {
   font-family: 'Rosaline';
@@ -10,6 +10,7 @@
 body {
   margin: 0;
   font-family: 'Lato', sans-serif;
+  font-weight: 300;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 12px;

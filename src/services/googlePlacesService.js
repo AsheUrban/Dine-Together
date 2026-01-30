@@ -2,6 +2,7 @@
 const API_KEY = process.env.REACT_APP_GOOGLE_PLACES_API_KEY;
 const AUTOCOMPLETE_URL = 'https://places.googleapis.com/v1/places:autocomplete';
 const PLACE_DETAILS_URL = 'https://places.googleapis.com/v1/places/';
+const PHOTO_FUNCTION_URL = 'https://us-central1-dine-together-2e4b4.cloudfunctions.net/getPlacePhoto';
 
 const PLACE_FIELDS = [
     'id',
@@ -14,6 +15,12 @@ const PLACE_FIELDS = [
     'websiteUri',
     'photos'
 ];
+
+export const getPhotoUrl = (photoReference, maxWidth = 400) => {
+    if (!photoReference) return null;
+    const encodedRef = encodeURIComponent(photoReference);
+    return `${PHOTO_FUNCTION_URL}?photoRef=${encodedRef}&maxWidth=${maxWidth}`;
+};
 
 export const searchPlaces = async (input, coordinates = null) => {
     if (!input || input.length < 2) return [];

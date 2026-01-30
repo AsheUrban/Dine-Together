@@ -13,8 +13,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const user1Id = "RnZ0d0mOZfXG44xhwdB0T5F12yI3";
-const user2Id = "D9dgtRmZSpTW6ovFs1DSoJaZDq32";
+const user1Id = "ddz79YeTaOWLFwTlR9ds01sHJt12";
+const user2Id = "dhBX6TBMxGXcTRgVeYpeTYDW17p2";
 
 const user1Username = "Ashe";
 const user2Username = "Blerp";
