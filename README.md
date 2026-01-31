@@ -45,6 +45,7 @@ Following MVP polish, the project is planned to be refactored to TypeScript with
 | Branch | Status | Focus |
 |--------|--------|-------|
 | **remodel** | Active Development | All new work developed here. |
+| **wip-redesign** | Active Development | Design exploration. |
 | **main** | Development Snapshot (2026-01-16) | Synced with remodel. Functional snapshot representing current state of active development. |
 | **Legacy** | Early prototype, capstone project | For memories. |
 
