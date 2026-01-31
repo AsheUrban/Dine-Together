@@ -4,11 +4,9 @@ import Place from './Place';
 import Avatar from './Avatar';
 import KebabMenu from './KebabMenu';
 import { formatDistanceToNow } from 'date-fns';
-import { PostCard, PostHeader, PostHeaderLeft, Username, PostCaption, PostWrapper, PlacedDate, LinkStyle } from '../styles';
-import { usePlaceSaveState } from '../hooks/placeSaveState';
+import { PostCard, PostHeader, PostHeaderLeft, PostUserInfo, PostUserMeta, Username, PostCaption, PostWrapper, PlacedDate } from '../styles';
 
 function Post({ postId, authorId, username, caption, place, timeOpen, onPostClick, isOwner, onEditPost, onDeletePost, onUserClick }) {
-    const { savedByUsers, savedByUsernames, showAllSavedBy, setShowAllSavedBy } = usePlaceSaveState(place.id);
     const handleClick = () => {
         onPostClick(postId, place, authorId);
     };
@@ -28,53 +26,19 @@ function Post({ postId, authorId, username, caption, place, timeOpen, onPostClic
         }
     };
 
-    const renderSavedByInfo = () => {
-        if (savedByUsers.length === 0) return null;
-
-        if (savedByUsers.length <= 3) {
-            return (
-                <p>
-                    Saved by: {savedByUsers.map((userId, index) => (
-                        <span key={userId}> 
-                            <LinkStyle onClick={(e) => handleProfileClick(e, userId)}>
-                                {savedByUsernames[userId]}
-                            </LinkStyle>
-                            {index < savedByUsers.length - 1 && ', '}
-                        </span>
-                    ))}
-                </p>     
-            );
-        }
-
-        return (
-            <p>
-                Saved by: {showAllSavedBy ?
-                    savedByUsers.map((userId, index) => (
-                        <span key={userId}> 
-                            <LinkStyle onClick={(e) => handleProfileClick(e, userId)}>
-                                {savedByUsernames[userId]}
-                            </LinkStyle>
-                            {index < savedByUsers.length - 1 && ', '}
-                        </span>
-                    ))
-                    : `${savedByUsers.length} people`
-                }
-                {!showAllSavedBy && (
-                    <LinkStyle onClick={(e) => { e.stopPropagation(); setShowAllSavedBy(true); }}>
-                        more
-                    </LinkStyle>
-                    )}
-            </p>
-        );
-    };
-
     return (
         <PostWrapper>
             <PostCard onClick={handleClick}>
+                {/* User + Caption Section */}
                 <PostHeader>
                     <PostHeaderLeft onClick={(e) => handleProfileClick(e, authorId)} style={{ cursor: 'pointer' }}>
-                        <Avatar displayName={username} variant="profile"/>
-                        <Username>{username}</Username>
+                        <Avatar displayName={username} size="44px" variant="profile"/>
+                        <PostUserInfo>
+                            <PostUserMeta>
+                                <Username>{username}</Username>
+                            </PostUserMeta>
+                            <PostCaption>{caption}</PostCaption>
+                        </PostUserInfo>
                     </PostHeaderLeft>
                     {isOwner && (
                         <KebabMenu
@@ -86,7 +50,8 @@ function Post({ postId, authorId, username, caption, place, timeOpen, onPostClic
                         />
                     )}
                 </PostHeader>
-                <PostCaption>{caption}</PostCaption>
+
+                {/* Place Component (image + restaurant info) */}
                 <Place
                     restaurantName={place.restaurantName}
                     restaurantAddress={place.restaurantAddress}
@@ -95,9 +60,9 @@ function Post({ postId, authorId, username, caption, place, timeOpen, onPostClic
                     userRatingsTotal={place.userRatingsTotal}
                     id={place.id}
                     photoReferences={place.photoReferences}
+                    variant="post"
                     whenPlaceClicked={handleClick}
                 />
-                {renderSavedByInfo()}
             </PostCard>
             <PlacedDate>{formatDistanceToNow(timeOpen, { addSuffix: true })}</PlacedDate>
         </PostWrapper>

@@ -26,41 +26,80 @@ export const PlaceMenuContainer = styled.div`
 `;
 
 export const PlaceItem = styled.div`
-    background-color: #F5F1E8;
-    border: 2px solid #D98560;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #FFFCF7;
+    border: ${props => props.variant === 'post' ? 'none' : '2px solid #D98560'};
     width: 100%;
     box-sizing: border-box;
     cursor: pointer;
     transition: opacity 0.2s ease;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
 
     &:hover {
-        opacity: 0.8;
+        opacity: 0.9;
     }
 `;
 
-export const PlaceContent = styled.div`
-    display: flex;
-    gap: 15px;
-    align-items: flex-start;
-`;
-
 export const PlaceImage = styled.div`
-    width: 100px;
-    height: 100px;
-    min-width: 100px;
+    width: 100%;
+    height: 140px;
     background-color: #D4A574;
-    flex-shrink: 0;
 `;
 
-export const PlaceDetails = styled.div`
+export const PlaceInfoSection = styled.div`
+    padding: 20px 24px;
+    background-color: #F5F1E8;
+`;
+
+export const PlaceName = styled.h3`
+    font-family: 'Lato', sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: #8B4513;
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+`;
+
+export const PlaceMeta = styled.div`
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    flex: 1;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    color: #5C3D2E;
 `;
 
+export const PlaceMetaDivider = styled.span`
+    color: #D4A574;
+`;
+
+export const PlaceAddress = styled.span`
+    font-size: 12px;
+    color: #8B7355;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+`;
+
+export const PlacePrice = styled.span`
+    font-size: 14px;
+    font-weight: 700;
+    color: #5C3D2E;
+`;
+
+export const PlaceRating = styled.span`
+    font-size: 14px;
+    color: #5C3D2E;
+`;
+
+export const PlaceRatingStar = styled.span`
+    color: #D98560;
+`;
+
+export const PlaceRatingCount = styled.span`
+    font-size: 12px;
+    color: #8B7355;
+`;
 
 export const PlacedDate = styled.p`
     font-size: 14px;
