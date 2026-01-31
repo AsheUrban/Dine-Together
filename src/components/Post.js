@@ -94,6 +94,7 @@ function Post({ postId, authorId, username, caption, place, timeOpen, onPostClic
                     rating={place.rating}
                     userRatingsTotal={place.userRatingsTotal}
                     id={place.id}
+                    photoReferences={place.photoReferences}
                     whenPlaceClicked={handleClick}
                 />
                 {renderSavedByInfo()}

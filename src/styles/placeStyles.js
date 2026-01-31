@@ -61,6 +61,7 @@ export const PlaceDetails = styled.div`
     flex: 1;
 `;
 
+
 export const PlacedDate = styled.p`
     font-size: 14px;
     color: #8B4513;

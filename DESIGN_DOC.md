@@ -1150,6 +1150,7 @@ UserProfile re-renders → PlaceGrid shows updated list without removed place
 6. **useFormValidation hook** - Extract errors/setErrors/clearErrors pattern (duplicated across SignUp, SignIn, forms)
 7. **Type safety throughout** - Full TypeScript coverage with strict mode
 8. **Schema validation** - Zod or Yup for runtime validation
+9. **URL slugs** - Human-readable URLs for places (e.g., `/place/salish-lodge` instead of `/place/1ErUK60UxbIpi7BauDvF`). Generate from restaurant name, handle collisions, store on place document.
 
 #### Social Features (Core Long-term Vision)
 9. **Friends/Connections System**

@@ -43,7 +43,8 @@ export const subscribeToUserPosts = (userId, onPostsUpdate, onError) => {
                     notes: placeDoc.data().notes,
                     priceLevel: placeDoc.data().priceLevel,
                     rating: placeDoc.data().rating,
-                    userRatingsTotal: placeDoc.data().userRatingsTotal
+                    userRatingsTotal: placeDoc.data().userRatingsTotal,
+                    photoReferences: placeDoc.data().photoReferences
                 }));
             onPostsUpdate(posts);
         },
@@ -91,7 +92,8 @@ export const subscribeToAllPosts = (onPostsUpdate, onError) => {
                     notes: placeDoc.data().notes,
                     priceLevel: placeDoc.data().priceLevel,
                     rating: placeDoc.data().rating,
-                    userRatingsTotal: placeDoc.data().userRatingsTotal
+                    userRatingsTotal: placeDoc.data().userRatingsTotal,
+                    photoReferences: placeDoc.data().photoReferences
                 }));
             onPostsUpdate(posts);
         },
