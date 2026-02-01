@@ -1,5 +1,5 @@
 const { initializeApp } = require("firebase/app");
-const { getFirestore, collection, addDoc, serverTimestamp } = require("firebase/firestore");
+const { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } = require("firebase/firestore");
 
 const firebaseConfig = {
   apiKey: "AIzaSyAjVs1eF9S5RdLpJfELZ1GUOz-lHJfgRpE",
@@ -19,33 +19,60 @@ const user2Id = "dhBX6TBMxGXcTRgVeYpeTYDW17p2";
 const user1Username = "Ashe";
 const user2Username = "Blerp";
 
-// Existing saved places (from Google Places API)
-const ashePlace = "1ErUK60UxbIpi7BauDvF";
-const blerpPlace = "7bT4AiFBnk4QmOy3cTFN";
+// All saved places (from Google Places API)
+const places = [
+  "1ErUK60UxbIpi7BauDvF",
+  "7bT4AiFBnk4QmOy3cTFN",
+  "C7rbhEZqcQTBPtxlBSu9",
+  "COzTfaSDF4reKE6o011M",
+  "GHkpUSxzhzdRDhhjH9FI",
+  "Gk19jJhUyAwzczgqqhDC",
+  "JCNEvkmy27Pv9Tec8sVJ",
+  "RinZIe9tBmK6yN5gt7Xd",
+  "ZpUY5KZ94EEjRQu28Lyq",
+  "lFl1SETdLoJ4GakOouoI"
+];
+
+const captions = [
+  "Finally tried this place - amazing!",
+  "Great spot for dinner with friends!",
+  "Hidden gem, highly recommend!",
+  "Perfect for date night.",
+  "The vibes here are unmatched.",
+  "Can't stop thinking about this meal.",
+  "New favorite spot in town!",
+  "Worth the wait, trust me.",
+  "Already planning my next visit.",
+  "This place never disappoints."
+];
+
+async function clearPosts() {
+  console.log("Clearing existing posts...");
+  const postsSnapshot = await getDocs(collection(db, "posts"));
+  const deletePromises = postsSnapshot.docs.map(postDoc =>
+    deleteDoc(doc(db, "posts", postDoc.id))
+  );
+  await Promise.all(deletePromises);
+  console.log(`Deleted ${postsSnapshot.size} posts.`);
+}
 
 async function addTestData() {
   try {
+    await clearPosts();
+
     console.log("Starting to add test posts...");
 
-    // Add post for Ashe
-    const ashePostRef = await addDoc(collection(db, "posts"), {
-      userId: user1Id,
-      authorUsername: user1Username,
-      caption: "Finally tried this place - amazing!",
-      placeId: ashePlace,
-      timeOpen: serverTimestamp()
-    });
-    console.log(`Created Ashe's post: ${ashePostRef.id}`);
-
-    // Add post for Blerp
-    const blerpPostRef = await addDoc(collection(db, "posts"), {
-      userId: user2Id,
-      authorUsername: user2Username,
-      caption: "Great spot for dinner with friends!",
-      placeId: blerpPlace,
-      timeOpen: serverTimestamp()
-    });
-    console.log(`Created Blerp's post: ${blerpPostRef.id}`);
+    for (let i = 0; i < places.length; i++) {
+      const isAshe = i % 2 === 0;
+      const postRef = await addDoc(collection(db, "posts"), {
+        userId: isAshe ? user1Id : user2Id,
+        authorUsername: isAshe ? user1Username : user2Username,
+        caption: captions[i],
+        placeId: places[i],
+        timeOpen: serverTimestamp()
+      });
+      console.log(`Created ${isAshe ? "Ashe" : "Blerp"}'s post: ${postRef.id}`);
+    }
 
     console.log("\n✅ Test posts added successfully!");
     process.exit(0);

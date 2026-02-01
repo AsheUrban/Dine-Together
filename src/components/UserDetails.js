@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import Avatar from './Avatar';
 import EditProfileForm from './EditUserProfileForm';
 import {
-    H2,
-    BioText,
-    BioLabel,
     EditProfileLink,
     InfoSection,
     BioSection,
+    ProfileBioLabel,
+    BioValue,
+    ProfileUsername
 } from '../styles';
 
 function UserDetails(props) {
@@ -30,18 +30,33 @@ function UserDetails(props) {
     return (
         <InfoSection>
             <Avatar displayName={username} variant="profile" />
-                <H2>{username}</H2>
-                {isOwnProfile && (
-                    <EditProfileLink href="#edit" onClick={(e) => { 
-                        e.preventDefault(); 
-                        enterEditMode(); 
-                        }}>edit profile
-                    </EditProfileLink>
-                )}
+            <ProfileUsername>{username}</ProfileUsername>
+            {isOwnProfile && (
+                <EditProfileLink href="#edit" onClick={(e) => {
+                    e.preventDefault();
+                    enterEditMode();
+                }}>edit profile
+                </EditProfileLink>
+            )}
             <BioSection>
-                {userBio.bestMeal && <BioText><BioLabel>Best Meal:</BioLabel>{userBio.bestMeal}</BioText>}
-                {userBio.goToMeals && <BioText><BioLabel>Repeat Restaurants:</BioLabel>{userBio.goToMeals}</BioText>}
-                {userBio.aboutMe && <BioText><BioLabel>About:</BioLabel>{userBio.aboutMe}</BioText>}
+                {userBio.bestMeal && (
+                    <div>
+                        <ProfileBioLabel>Best Meal</ProfileBioLabel>
+                        <BioValue>{userBio.bestMeal}</BioValue>
+                    </div>
+                )}
+                {userBio.goToMeals && (
+                    <div>
+                        <ProfileBioLabel>Repeat Restaurants</ProfileBioLabel>
+                        <BioValue>{userBio.goToMeals}</BioValue>
+                    </div>
+                )}
+                {userBio.aboutMe && (
+                    <div>
+                        <ProfileBioLabel>About</ProfileBioLabel>
+                        <BioValue>{userBio.aboutMe}</BioValue>
+                    </div>
+                )}
             </BioSection>
         </InfoSection>
     );

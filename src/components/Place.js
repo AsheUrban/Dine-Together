@@ -5,55 +5,52 @@ import { toTitleCase, toSentenceCase, shortenAddress, formatPriceLevel } from '.
 import {
     PlaceWrapper,
     PlaceItem,
+    PlaceImageContainer,
     PlaceImage,
+    GradientBar,
     PlaceInfoSection,
+    PlaceNameRow,
     PlaceName,
-    PlaceMeta,
-    PlaceMetaDivider,
+    RatingPill,
     PlaceAddress,
-    PlacePrice,
-    PlaceRating,
-    PlaceRatingStar,
-    PlaceRatingCount
+    PlacePrice
 } from '../styles';
 
 function Place(props){
     const [imageError, setImageError] = useState(false);
-    const photoUrl = props.photoReferences?.[0] ? getPhotoUrl(props.photoReferences[0]) : null;
+    const photoUrl = props.photoReferences?.[0] ? getPhotoUrl(props.photoReferences[0], 800) : null;
+    const variant = props.variant || 'grid';
 
     return (
         <PlaceWrapper>
-            <PlaceItem variant={props.variant} onClick = {() => props.whenPlaceClicked(props.id)}>
-                {photoUrl && !imageError ? (
-                    <img
-                        src={photoUrl}
-                        alt={props.restaurantName}
-                        style={{ width: '100%', height: '140px', objectFit: 'cover' }}
-                        onError={() => setImageError(true)}
-                    />
-                ) : (
-                    <PlaceImage />
-                )}
+            <PlaceItem variant={variant} onClick={() => props.whenPlaceClicked(props.id)}>
+                <PlaceImageContainer>
+                    {photoUrl && !imageError ? (
+                        <img
+                            src={photoUrl}
+                            alt={props.restaurantName}
+                            style={{
+                                width: '100%',
+                                height: variant === 'post' ? '160px' : '100px',
+                                objectFit: 'cover',
+                                display: 'block'
+                            }}
+                            onError={() => setImageError(true)}
+                        />
+                    ) : (
+                        <PlaceImage variant={variant} />
+                    )}
+                    <GradientBar />
+                </PlaceImageContainer>
                 <PlaceInfoSection>
-                    <PlaceName>{toTitleCase(props.restaurantName)}</PlaceName>
-                    <PlaceMeta>
-                        <PlaceAddress>{shortenAddress(toSentenceCase(props.restaurantAddress))}</PlaceAddress>
-                        {formatPriceLevel(props.priceLevel) && (
-                            <>
-                                <PlaceMetaDivider>·</PlaceMetaDivider>
-                                <PlacePrice>{formatPriceLevel(props.priceLevel)}</PlacePrice>
-                            </>
+                    <PlaceName variant={variant}>{toTitleCase(props.restaurantName)}</PlaceName>
+                    <PlaceAddress variant={variant}>{shortenAddress(toSentenceCase(props.restaurantAddress))}</PlaceAddress>
+                    <PlaceNameRow>
+                        <PlacePrice variant={variant}>{formatPriceLevel(props.priceLevel) || '\u00A0'}</PlacePrice>
+                        {props.rating && (
+                            <RatingPill variant={variant}>★ {props.rating}</RatingPill>
                         )}
-                        <PlaceMetaDivider>·</PlaceMetaDivider>
-                        <PlaceRating>
-                            {props.rating ? (
-                                <>
-                                    <PlaceRatingStar>★</PlaceRatingStar> {props.rating}
-                                    <PlaceRatingCount> ({props.userRatingsTotal?.toLocaleString()})</PlaceRatingCount>
-                                </>
-                            ) : 'Rating TBD'}
-                        </PlaceRating>
-                    </PlaceMeta>
+                    </PlaceNameRow>
                 </PlaceInfoSection>
             </PlaceItem>
         </PlaceWrapper>

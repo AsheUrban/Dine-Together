@@ -53,8 +53,14 @@ export {
     BioText,
     EditProfileLink,
     BioSection,
+    ProfileBioLabel,
+    BioValue,
     TabContainer,
-    TabButton
+    TabButton,
+    SectionHeader,
+    SectionLabel,
+    SectionCount,
+    ProfileUsername
 } from './profileStyles';
 
 export {
@@ -62,9 +68,13 @@ export {
     PlaceProfileContainer,
     PlaceWrapper,
     PlaceItem,
+    PlaceImageContainer,
     PlaceImage,
+    GradientBar,
     PlaceInfoSection,
+    PlaceNameRow,
     PlaceName,
+    RatingPill,
     PlaceMeta,
     PlaceMetaDivider,
     PlaceAddress,
@@ -83,7 +93,8 @@ export {
 } from './feedStyles';
 
 export {
-    AvatarContainer
+    AvatarContainer,
+    AvatarInner
 } from './avatarStyles';
 
 export {

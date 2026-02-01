@@ -1,6 +1,18 @@
 import styled from 'styled-components';
 import { GlobalContentWrapper } from './globalStyles';
 
+// Design system colors
+const colors = {
+    bg: '#FFFFFF',
+    card: '#F5F1E8',
+    text: '#3D3328',
+    muted: '#9D9485',
+    border: '#D4CFC6',
+    accent: '#C4663D',
+    warm: '#D4956A',
+    olive: '#8B956A',
+};
+
 export const PlaceWrapper = GlobalContentWrapper;
 
 export const PlaceProfileContainer = styled.div`
@@ -8,14 +20,13 @@ export const PlaceProfileContainer = styled.div`
 `;
 
 export const PlaceContainer = styled.div`
-    background-color: #F5F1E8;
+    background-color: ${colors.card};
     width: 350px;
     margin: auto;
     margin-top: 50px;
     padding: 45px;
-    border: 2px solid #D4A574;
+    border: 2px solid ${colors.border};
     text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     position: relative;
 `;
 
@@ -26,86 +37,117 @@ export const PlaceMenuContainer = styled.div`
 `;
 
 export const PlaceItem = styled.div`
-    background-color: #FFFCF7;
-    border: ${props => props.variant === 'post' ? 'none' : '2px solid #D98560'};
+    background-color: ${colors.bg};
+    border: ${props => props.variant === 'post' ? `1px solid ${colors.border}` : `2px solid ${colors.border}`};
     width: 100%;
     box-sizing: border-box;
     cursor: pointer;
     transition: opacity 0.2s ease;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
 
     &:hover {
         opacity: 0.9;
     }
 `;
 
+export const PlaceImageContainer = styled.div`
+    position: relative;
+    width: 100%;
+`;
+
 export const PlaceImage = styled.div`
     width: 100%;
-    height: 140px;
-    background-color: #D4A574;
+    height: ${props => props.variant === 'post' ? '160px' : '100px'};
+    background-color: ${colors.border};
+`;
+
+export const GradientBar = styled.div`
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, ${colors.accent}, ${colors.warm}, ${colors.olive});
 `;
 
 export const PlaceInfoSection = styled.div`
-    padding: 20px 24px;
-    background-color: #F5F1E8;
+    padding: 12px 14px;
+`;
+
+export const PlaceNameRow = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
 `;
 
 export const PlaceName = styled.h3`
     font-family: 'Lato', sans-serif;
-    font-size: 24px;
+    font-size: ${props => props.variant === 'post' ? '20px' : '16px'};
     font-weight: 400;
-    color: #8B4513;
-    margin: 0 0 8px 0;
+    color: ${colors.text};
+    margin: 0;
     line-height: 1.2;
 `;
 
-export const PlaceMeta = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
+export const RatingPill = styled.div`
+    background-color: ${colors.accent};
+    color: #FFFFFF;
+    padding: 2px 8px;
+    font-size: ${props => props.variant === 'post' ? '12px' : '10px'};
+    font-weight: 600;
     font-family: 'Lato', sans-serif;
-    font-size: 13px;
-    color: #5C3D2E;
+    flex-shrink: 0;
 `;
 
-export const PlaceMetaDivider = styled.span`
-    color: #D4A574;
-`;
-
-export const PlaceAddress = styled.span`
-    font-size: 12px;
-    color: #8B7355;
-    text-decoration: underline;
-    text-underline-offset: 2px;
+export const PlaceAddress = styled.p`
+    font-size: ${props => props.variant === 'post' ? '12px' : '10px'};
+    color: ${colors.muted};
+    font-family: 'Lato', sans-serif;
+    margin: 0 0 4px 0;
 `;
 
 export const PlacePrice = styled.span`
-    font-size: 14px;
-    font-weight: 700;
-    color: #5C3D2E;
+    font-size: ${props => props.variant === 'post' ? '14px' : '12px'};
+    font-weight: 600;
+    color: ${colors.text};
+    font-family: 'Lato', sans-serif;
+`;
+
+// Legacy exports for compatibility
+export const PlaceMeta = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    color: ${colors.text};
+`;
+
+export const PlaceMetaDivider = styled.span`
+    color: ${colors.warm};
 `;
 
 export const PlaceRating = styled.span`
-    font-size: 14px;
-    color: #5C3D2E;
+    font-size: 11px;
+    color: ${colors.text};
 `;
 
 export const PlaceRatingStar = styled.span`
-    color: #D98560;
+    color: ${colors.accent};
 `;
 
 export const PlaceRatingCount = styled.span`
-    font-size: 12px;
-    color: #8B7355;
+    font-size: 10px;
+    color: ${colors.muted};
 `;
 
 export const PlacedDate = styled.p`
-    font-size: 14px;
-    color: #8B4513;
-    margin-top: 0px;
-    margin-bottom: 10px;
+    font-size: 12px;
+    color: ${colors.muted};
+    margin-top: 8px;
+    margin-bottom: 0;
     margin-left: 0;
     font-family: 'Lato', sans-serif;
     font-style: italic;
@@ -114,7 +156,7 @@ export const PlacedDate = styled.p`
 
 export const PlaceActionButton = styled.button`
     background-color: #8B4513;
-    border: 2px solid #D98560;
+    border: 2px solid ${colors.accent};
     margin: 10px;
     color: #F5F1E8;
     padding: 15px 32px;
@@ -127,16 +169,29 @@ export const PlaceActionButton = styled.button`
     transition: all 0.2s ease;
 
     &:hover {
-        background-color: #D98560;
-        color: #2C2C2C;
+        background-color: ${colors.accent};
+        color: #FFFFFF;
         border-color: #8B4513;
     }
 `;
 
 export const PlaceGridStyles = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fill, 310px);
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
     width: 100%;
-    justify-content: center;
+`;
+
+// Keep old exports for backwards compatibility
+export const PlaceContent = styled.div`
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+`;
+
+export const PlaceDetails = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
 `;

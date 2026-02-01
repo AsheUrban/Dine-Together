@@ -4,7 +4,7 @@ import Place from './Place';
 import Avatar from './Avatar';
 import KebabMenu from './KebabMenu';
 import { formatDistanceToNow } from 'date-fns';
-import { PostCard, PostHeader, PostHeaderLeft, PostUserInfo, PostUserMeta, Username, PostCaption, PostWrapper, PlacedDate } from '../styles';
+import { PostCard, PostHeader, PostHeaderLeft, Username, PostCaption, PostWrapper, PlacedDate } from '../styles';
 
 function Post({ postId, authorId, username, caption, place, timeOpen, onPostClick, isOwner, onEditPost, onDeletePost, onUserClick }) {
     const handleClick = () => {
@@ -32,13 +32,8 @@ function Post({ postId, authorId, username, caption, place, timeOpen, onPostClic
                 {/* User + Caption Section */}
                 <PostHeader>
                     <PostHeaderLeft onClick={(e) => handleProfileClick(e, authorId)} style={{ cursor: 'pointer' }}>
-                        <Avatar displayName={username} size="44px" variant="profile"/>
-                        <PostUserInfo>
-                            <PostUserMeta>
-                                <Username>{username}</Username>
-                            </PostUserMeta>
-                            <PostCaption>{caption}</PostCaption>
-                        </PostUserInfo>
+                        <Avatar displayName={username} size="44px" variant="post"/>
+                        <Username>{username}</Username>
                     </PostHeaderLeft>
                     {isOwner && (
                         <KebabMenu
@@ -50,6 +45,7 @@ function Post({ postId, authorId, username, caption, place, timeOpen, onPostClic
                         />
                     )}
                 </PostHeader>
+                <PostCaption>{caption}</PostCaption>
 
                 {/* Place Component (image + restaurant info) */}
                 <Place

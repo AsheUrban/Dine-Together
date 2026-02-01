@@ -1,37 +1,45 @@
 import styled from 'styled-components';
 import { GlobalContentWrapper } from './globalStyles';
 
+// Design system colors
+const colors = {
+    bg: '#FFFFFF',
+    card: '#F5F1E8',
+    text: '#3D3328',
+    muted: '#9D9485',
+    border: '#D4CFC6',
+    accent: '#C4663D',
+};
+
 export const PostWrapper = GlobalContentWrapper;
 
 export const PostCard = styled.div`
-    background-color: #FFFCF7;
-    border: 2px solid #8B4513;
+    background-color: ${colors.card};
+    border: 2px solid ${colors.border};
     margin-top: 0px;
     cursor: pointer;
     transition: opacity 0.2s ease;
     width: 100%;
     box-sizing: border-box;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
 
     &:hover {
-        opacity: 0.9;
+        opacity: 0.95;
     }
 `;
 
 export const PostHeader = styled.div`
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 14px;
-    padding: 20px 24px;
-    border-bottom: 2px solid #8B4513;
+    align-items: center;
+    gap: 12px;
+    padding: 20px;
+    padding-bottom: 14px;
 `;
 
 export const PostHeaderLeft = styled.div`
     display: flex;
-    align-items: flex-start;
-    gap: 14px;
+    align-items: center;
+    gap: 12px;
     flex: 1;
 `;
 
@@ -46,43 +54,42 @@ export const PostUserMeta = styled.div`
     margin-bottom: 8px;
 `;
 
-export const Username = styled.p`
+export const Username = styled.span`
     font-size: 15px;
-    font-weight: 700;
-    color: #8B4513;
-    margin: 0;
+    font-weight: 400;
+    color: ${colors.text};
     font-family: 'Lato', sans-serif;
 `;
 
 export const PostTime = styled.span`
     font-size: 12px;
     font-weight: 400;
-    color: #8B7355;
+    color: ${colors.muted};
     font-family: 'Lato', sans-serif;
 `;
 
 export const PostCaption = styled.p`
     font-size: 15px;
-    color: #5C3D2E;
+    color: ${colors.text};
     margin: 0;
+    padding: 0 20px 16px 20px;
     font-family: 'Lato', sans-serif;
-    line-height: 1.6;
+    line-height: 1.55;
 `;
 
 export const PostFooter = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 14px;
-    color: #8B4513;
+    font-size: 12px;
+    color: ${colors.muted};
     font-family: 'Lato', sans-serif;
     font-style: italic;
 `;
 
 export const PostSavedBy = styled.span`
-    font-size: 14px;
-    color: #8B4513;
+    font-size: 12px;
+    color: ${colors.muted};
     font-family: 'Lato', sans-serif;
     font-style: italic;
 `;
-

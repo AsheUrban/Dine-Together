@@ -25,22 +25,22 @@ function Header({ user }) {
                 </HeaderLogo>
 
                 <HeaderNav>
-                    <NavLink to="/"> Feed </NavLink>
-                    <NavLink to="/search">Explore Restaurants</NavLink>
+                    <NavLink to="/">Feed</NavLink>
+                    <NavLink to="/search">Explore</NavLink>
+                    {user ? (
+                        <SignOutButton onClick={handleSignOut}>Sign Out</SignOutButton>
+                    ) : (
+                        <NavLink to="/sign-in">Sign In</NavLink>
+                    )}
                 </HeaderNav>
 
                 <HeaderProfile>
-                  {user ? (
-                        <>
-                            <NavLink to={`/profile/${user.uid}`}>
-                                <Avatar displayName={user.displayName} variant="header" />
-                                </NavLink>
-                            <SignOutButton onClick={handleSignOut}>Sign Out</SignOutButton>
-                        </>
-                    ) : (
-                        <NavLink to="/sign-in"> Sign In </NavLink>
+                    {user && (
+                        <NavLink to={`/profile/${user.uid}`}>
+                            <Avatar displayName={user.displayName} size="36px" variant="header" />
+                        </NavLink>
                     )}
-               </HeaderProfile>
+                </HeaderProfile>
             </HeaderContainer>
         </React.Fragment>
     );

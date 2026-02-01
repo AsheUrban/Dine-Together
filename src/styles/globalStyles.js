@@ -117,17 +117,17 @@ export const HeaderLogo = styled.div`
 
 export const HeaderNav = styled.div`
     display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex: 1;
+    align-items: center;
+    gap: 20px;
+    margin-left: auto;
     font-family: 'Lato', sans-serif;
 `;
 
 export const HeaderProfile = styled.div`
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 8px;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 20px;
     flex: 0 0 auto;
 `;
 
@@ -135,10 +135,12 @@ export const NavLink = styled(Link)`
     color: #F5F1E8;
     text-decoration: none;
     font-family: 'Lato', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: 400;
+    opacity: 0.8;
 
     &:hover {
-        text-decoration: underline;
+        opacity: 1;
     }
 `;
 
@@ -149,10 +151,12 @@ export const SignOutButton = styled.button`
     cursor: pointer;
     font-size: 14px;
     font-family: 'Lato', sans-serif;
+    font-weight: 400;
     padding: 0;
+    opacity: 0.8;
 
     &:hover {
-        text-decoration: underline;
+        opacity: 1;
     }
 `;
 
@@ -194,9 +198,9 @@ export const LinkStyle = styled.button`
 
 // Background
 export const BackgroundStyles = styled.div`
-    background-color: #F5F1E8;
+    background-color: #FFFFFF;
     min-height: 100vh;
-    padding: 40px 20px;
+    padding: 0;
 `;
 
 // General Utilities
