@@ -20,7 +20,6 @@ export const toTitleCase = (str) => {
             if (DIRECTIONS.includes(letters)) {
                 return word.toUpperCase();
             }
-            // Find the first letter and capitalize it
             const firstLetterIndex = word.search(/[a-z]/i);
             if (firstLetterIndex === -1) return word;
             return word.slice(0, firstLetterIndex) +
