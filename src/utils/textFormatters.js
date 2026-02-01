@@ -20,7 +20,12 @@ export const toTitleCase = (str) => {
             if (DIRECTIONS.includes(letters)) {
                 return word.toUpperCase();
             }
-            return word.charAt(0).toUpperCase() + word.slice(1);
+            // Find the first letter and capitalize it
+            const firstLetterIndex = word.search(/[a-z]/i);
+            if (firstLetterIndex === -1) return word;
+            return word.slice(0, firstLetterIndex) +
+                   word.charAt(firstLetterIndex).toUpperCase() +
+                   word.slice(firstLetterIndex + 1);
         })
         .join(' ');
 };
