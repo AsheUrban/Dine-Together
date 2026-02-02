@@ -34,19 +34,21 @@ Following MVP polish, the project is planned to be refactored to TypeScript with
 
 ---
 
-**Current Status:** Phase 3 in progress. Firebase Cloud Function `getPlacePhoto` deployed for secure photo proxy. Next: Client-side integration (`getPhotoUrl()` helper, display photos in Place.js and PlaceDetail.js).
+**Current Status:** V2 "receipt-style" redesign in progress on wip-design-2 branch. Footer navigation added, ActionBar repositioned, SignIn/SignUp updated. Style audit completed. Phase 3 (Google Places photos) complete.
 
 ---
 
 **Remodel branch** (this branch) is the active development branch where all new work happens. All features are implemented here first.
 
-**Main branch** is a functional snapshot synced with remodel on 2025-12-04. It represents the current state of work and runs without errors, though some features are pending implementation.
+**Main branch** is a functional snapshot synced with remodel on 2026-02-01. It represents the current state of work and runs without errors, though some features are pending implementation.
 
 | Branch | Status | Focus |
 |--------|--------|-------|
-| **remodel** | Active Development | All new work developed here. |
-| **main** | Development Snapshot (2026-01-16) | Synced with remodel. Functional snapshot representing current state of active development. |
-| **Legacy** | Early prototype, capstone project | For memories. |
+| **main** | Snapshot (2026-02-01) | Stable snapshot synced with remodel. |
+| **remodel** | Active Development | Primary development branch. |
+| **wip-design-2** | V2 Design Exploration | Receipt-style redesign (current focus). |
+| **wip-design** | V1 Design Exploration | Earlier design iteration. |
+| **Legacy** | Archive | Early prototype, capstone project. |
 
 ---
 
@@ -55,7 +57,7 @@ Following MVP polish, the project is planned to be refactored to TypeScript with
 | Core | Frontend | APIs / BaaS | Architecture |
 |------|----------|-------------|---------|
 | JavaScript, JSX | React 18 | Firebase (Auth, Firestore) | Service Layer Pattern |
-| CSS | Styled Components | Google Places API *(In Progress)* | Centralized Styling |
+| CSS | Styled Components | Google Places API | Centralized Styling |
 
 ---
 
@@ -81,7 +83,7 @@ The **service layer** (`firebaseService.js`) sits between components and externa
 - **Flexibility** — Swapping Firebase for a different backend requires changes only in the service layer
 - **API Integration** — Adding Google Places API calls happens in the service layer without touching components
 
-**Example:** When Explore.js needs to search restaurants, it will call `firebaseService.searchRestaurants()` instead of directly calling Google Places API. The service layer handles the API call, error handling, and data transformation. Components receive clean data ready to display.
+**Example:** When Explore.js needs to search restaurants, it calls `googlePlacesService.searchPlaces()`. The service layer handles the API call, error handling, and data transformation. Components receive clean data ready to display.
 
 ### **Firestore Schema**
 
@@ -97,12 +99,17 @@ firestore/
 │
 ├── places/
 │   └── {placeId}
+│       ├── googlePlaceId (string) - Google's place ID (null for manual entries)
 │       ├── restaurantName (string)
 │       ├── restaurantAddress (string)
-│       ├── notes (string) - User observations/details // will move to separate wrapper
-│       ├── priceLevel (number) - 1-4 price indicator
+│       ├── notes (string) - User observations (manual entries only)
+│       ├── priceLevel (string) - e.g. "PRICE_LEVEL_MODERATE"
 │       ├── rating (number) - Google Places rating
 │       ├── userRatingsTotal (number) - Number of ratings
+│       ├── phone (string) - Restaurant phone number
+│       ├── website (string) - Restaurant website URL
+│       ├── photoReferences (array) - Google photo references
+│       ├── source (string) - 'google' or 'manual'
 │       └── createdAt (timestamp) - When place was added to system
 │
 ├── placeSavedBy/{placeId}/
@@ -140,11 +147,23 @@ firestore/
 ---
 
 ## **Diagrams & Design**
-The inspiration for the aesthetic of this project is vintage menus. Colors were selected that provide a sense of nostalgia and warmth. Using this app should feel a bit like browsing an old menu for a favorite dish.
-![plot](src/img/colorPalette.png)
-![plot](src/img/vintageMenu3.png)
+The inspiration for the aesthetic of this project is vintage menus. Using this app should feel a bit like browsing an old menu for a favorite dish.
+
+## Inspiration
 ![plot](src/img/vintageMenu2.png)
 ![plot](src/img/vintageMenu1.png)
+
+## Wireframes
+### Feed
+![plot](src/img/feed.png)
+### User Profile
+![plot](src/img/user-profile.png)
+### Place Profile
+![plot](src/img/place-profile.png)
+### Sign Up
+![plot](src/img/sign-up.png)
+### Sign In
+![plot](src/img/sign-in.png)
 
 ---
 
@@ -171,7 +190,7 @@ The inspiration for the aesthetic of this project is vintage menus. Colors were 
 
 3. **Create `.env.local` (required)**
    - In the project root, create a file named `.env.local`
-   - Add your Firebase config variables exactly as they appear in your Firebase console:  
+   - Add your Firebase config variables exactly as they appear in your Firebase console:
      ```bash
      REACT_APP_FIREBASE_API_KEY=YOUR_API_KEY
      REACT_APP_FIREBASE_AUTH_DOMAIN=YOUR_PROJECT.firebaseapp.com
@@ -179,6 +198,7 @@ The inspiration for the aesthetic of this project is vintage menus. Colors were 
      REACT_APP_FIREBASE_STORAGE_BUCKET=YOUR_PROJECT.appspot.com
      REACT_APP_FIREBASE_MESSAGING_SENDER_ID=YOUR_SENDER_ID
      REACT_APP_FIREBASE_APP_ID=YOUR_APP_ID
+     REACT_APP_GOOGLE_PLACES_API_KEY=YOUR_GOOGLE_PLACES_API_KEY
      ```
    - Add `.env.local` to `.gitignore` and **do not commit** this file.
 
@@ -199,8 +219,8 @@ The inspiration for the aesthetic of this project is vintage menus. Colors were 
 
 ```
 src/
-├── components/ (30 files)
-│   ├── ActionBar.js           (Fixed-bottom action container)
+├── components/ (31 files)
+│   ├── ActionBar.js           (Floating action buttons above footer nav)
 │   ├── App.js                 (Main app with routing & auth state)
 │   ├── Avatar.js              (User avatar component)
 │   ├── Background.js          (Background styling component)
@@ -208,9 +228,10 @@ src/
 │   ├── EditPlaceForm.js       (Edit place information)
 │   ├── EditPostForm.js        (Edit post caption)
 │   ├── EditUserProfileForm.js (Edit user profile bio)
-│   ├── Explore.js             (Search restaurants & manual add - WIP)
+│   ├── Explore.js             (Search restaurants & manual add)
 │   ├── Feed.js                (Display all posts from all users)
-│   ├── Header.js              (Navigation header with user info)
+│   ├── Footer.js              (Bottom navigation - FEED, EXPLORE, PROFILE)
+│   ├── Header.js              (Branding only)
 │   ├── KebabMenu.js           (Reusable dropdown menu for actions)
 │   ├── NewPlaceForm.js        (Create new place)
 │   ├── NewPostForm.js         (Create new post)
@@ -252,8 +273,14 @@ src/
 │   ├── placeStyles.js         (Place card styled components)
 │   ├── profileStyles.js       (Profile page styled components)
 │   ├── avatarStyles.js        (Avatar styled components)
-│   ├── FeedStyles.js          (Feed page styled components)
+│   ├── feedStyles.js          (Feed page styled components)
 │   └── index.js               (Centralized style exports)
+├── utils/
+│   ├── textFormatters.js      (Format display text - addresses, price levels)
+│   └── validators/
+│       ├── authValidator.js   (Email/password validation)
+│       ├── index.js           (Validator exports)
+│       └── placeValidator.js  (Place form validation)
 ├── firebase.js                (Firebase configuration)
 └── mood/                      (UI/UX design reference images)
 ```
@@ -268,17 +295,14 @@ src/
 - Posts/Places architectural separation (two Firestore collections)
 - Profile page with tabbed interface (Posts | Restaurants)
 - Place edit/update and delete functionality
-- 10 custom hooks for scalable state management
+- 11 custom hooks for scalable state management
 - Vintage menu aesthetic with centralized styling
 - KebabMenu integration across Feed, Profile, and PlaceProfile
 - ConfirmDialog for delete confirmations
 - Post edit/delete functionality
 - View other users' profiles
 - PlaceProfile architecture (PlaceDetail purely presentational, PlaceProfile as feature container)
-- ActionBar component for fixed-bottom actions
-
-**Current Sprint:**
-- Phase 3: Display Google Places Data
+- ActionBar component for floating action buttons
 
 ### **Phase 2: Google Places API Integration** | COMPLETE
 
@@ -287,7 +311,7 @@ src/
 3. ~~Save flow with deduplication~~ | Complete (findPlaceByGoogleId checks before creating)
 4. ~~Route-based PlaceProfile~~ | Complete (`/place/:placeId` with usePlace hook)
 
-### **Phase 3: Display Google Places Data** (Current)
+### **Phase 3: Display Google Places Data** | COMPLETE
 
 - Implement Firebase Cloud Function for secure photo fetching
 - Add `getPhotoUrl()` helper to googlePlacesService.js
