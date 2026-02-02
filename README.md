@@ -209,9 +209,20 @@ The inspiration for the aesthetic of this project is vintage menus. Using this a
    ```
    - Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-> **Note:**  
-> - If Firestore reads/writes fail, check your **Firebase Rules** and confirm authentication is enabled.  
+> **Note:**
+> - If Firestore reads/writes fail, check your **Firebase Rules** and confirm authentication is enabled.
 > - The app checks `auth.currentUser` to gate access. You must log in before creating or viewing posts.
+
+5. **Populate test data (optional)**
+
+   Post creation UI is not yet implemented. To populate the Feed with test posts, use the `addTestData.js` script:
+   ```bash
+   node addTestData.js
+   ```
+   > **Note:** This script references place IDs and user IDs specific to the development database. To use it with your own Firebase project, you'll need to:
+   > 1. Create users via the Sign Up flow
+   > 2. Save some places via Explore
+   > 3. Update the script with your user IDs and place IDs
 
 ---
 
