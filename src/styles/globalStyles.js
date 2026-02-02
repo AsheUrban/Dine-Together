@@ -387,16 +387,58 @@ export const CircularButton = styled.button`
 // ActionBar Container
 export const ActionBarContainer = styled.div`
     position: fixed;
+    bottom: 70px;
+    left: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+    font-family: ${fonts.primary};
+`;
+
+// Centered Page Wrapper
+export const CenteredPageWrapper = styled.div`
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background-color: ${colors.bg};
+    font-family: ${fonts.primary};
+`;
+
+// Footer Nav
+export const FooterNavContainer = styled.nav`
+    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     background-color: ${colors.bg};
-    border-top: 1px solid ${colors.border};
-    padding: 12px 16px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 10px;
+    border-top: 2px solid ${colors.border};
+    padding: 16px 20px;
     z-index: 100;
     font-family: ${fonts.primary};
+`;
+
+export const FooterNavLinks = styled.div`
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    font-size: 12px;
+`;
+
+export const FooterNavLink = styled.button`
+    background: none;
+    border: none;
+    font-family: ${fonts.primary};
+    font-size: 12px;
+    font-weight: ${props => props.$active ? 700 : 400};
+    opacity: ${props => props.$active ? 1 : 0.5};
+    color: ${colors.text};
+    cursor: pointer;
+    padding: 0;
+
+    &:hover {
+        opacity: 1;
+    }
 `;
