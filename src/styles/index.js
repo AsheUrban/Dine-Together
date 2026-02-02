@@ -53,8 +53,17 @@ export {
     BioText,
     EditProfileLink,
     BioSection,
+    ProfileBioLabel,
+    BioValue,
     TabContainer,
-    TabButton
+    TabButton,
+    SectionHeader,
+    SectionLabel,
+    SectionCount,
+    ProfileUsername,
+    BioRow,
+    ProfileHeader,
+    ProfileHeaderInfo
 } from './profileStyles';
 
 export {
@@ -62,13 +71,26 @@ export {
     PlaceProfileContainer,
     PlaceWrapper,
     PlaceItem,
-    PlaceContent,
+    PlaceImageContainer,
     PlaceImage,
-    PlaceDetails,
+    GradientBar,
+    PlaceInfoSection,
+    PlaceNameRow,
+    PlaceName,
+    RatingPill,
+    PlaceMeta,
+    PlaceMetaDivider,
+    PlaceAddress,
+    PlacePrice,
+    PlaceRating,
+    PlaceRatingStar,
+    PlaceRatingCount,
     PlacedDate,
     PlaceActionButton,
     PlaceGridStyles,
-    PlaceMenuContainer
+    PlaceMenuContainer,
+    PlaceContent,
+    PlaceDetails
 } from './placeStyles';
 
 export {
@@ -76,7 +98,8 @@ export {
 } from './feedStyles';
 
 export {
-    AvatarContainer
+    AvatarContainer,
+    AvatarInner
 } from './avatarStyles';
 
 export {
@@ -84,6 +107,11 @@ export {
     PostCard,
     PostHeader,
     PostHeaderLeft,
+    PostUserInfo,
+    PostUserMeta,
     Username,
+    PostTime,
     PostCaption,
+    PostFooter,
+    PostSavedBy,
 } from './postStyles';

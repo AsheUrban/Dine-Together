@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { AvatarContainer } from '../styles/avatarStyles';
+import { AvatarContainer, AvatarInner } from '../styles/avatarStyles';
 
-function Avatar({ displayName, size = '48px', variant = 'header' }) {
+function Avatar({ displayName, size = '44px', variant = 'default' }) {
     const getInitials = (name) => {
         if (!name) return ' ';
         return name
@@ -12,44 +12,29 @@ function Avatar({ displayName, size = '48px', variant = 'header' }) {
             .slice(0, 2);
     };
 
-    const colorSchemes = {
-        header: {
-            borderColor: '#D98560',
-            textColor: '#D98560'
-        },
-        profile: {
-            borderColor: '#8B4513',
-            textColor: '#8B4513'
-        }
-    };
-    
-    const scheme = colorSchemes[variant] || colorSchemes.header;
-    
-    const sizeMap = {
-        '48px': '24px',
-        '50px': '30px',
-        '100px': '40px',
-        '120px': '48px'
+    const sizeConfigs = {
+        '32px': { fontSize: '14px' },
+        '36px': { fontSize: '16px' },
+        '44px': { fontSize: '18px' },
+        '56px': { fontSize: '24px' },
+        '80px': { fontSize: '32px' },
     };
 
-    const fontSize = sizeMap[size] || '20px';
+    const config = sizeConfigs[size] || { fontSize: '18px' };
 
     return (
-        <AvatarContainer
-            size={size}
-            borderColor={scheme.borderColor}
-            textColor={scheme.textColor}
-            fontSize={fontSize}
-            >
+        <AvatarContainer size={size}>
+            <AvatarInner fontSize={config.fontSize}>
                 {getInitials(displayName)}
-            </AvatarContainer>
+            </AvatarInner>
+        </AvatarContainer>
     );
 }
 
 Avatar.propTypes = {
     displayName: PropTypes.string.isRequired,
     size: PropTypes.string,
-    variant: PropTypes.oneOf(['header', 'profile'])
+    variant: PropTypes.oneOf(['default', 'header', 'profile'])
 };
 
 export default Avatar;

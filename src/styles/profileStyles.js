@@ -1,82 +1,151 @@
 import styled from 'styled-components';
 
+const colors = {
+    bg: '#FFFFFF',
+    text: '#000000',
+    muted: 'rgba(0, 0, 0, 0.6)',
+    border: '#000000',
+};
+
+const fonts = {
+    primary: 'Courier, monospace',
+};
+
 export const PageContainer = styled.div`
-    display: flex;
-    gap: 40px;
-    max-width: 1400px;
+    max-width: 480px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 16px;
+    font-family: ${fonts.primary};
 `;
 
-export const InfoSection = styled.div`
-    margin-top: 40px;
-    flex: 0 0 300px;
-    background-color: #D98560;
-    padding: 40px;
-    height: fit-content;
+export const InfoSection = styled.section`
+    border-bottom: 1px solid ${colors.border};
+    padding-bottom: 20px;
+    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    font-family: ${fonts.primary};
 `;
 
 export const BioSection = styled.div`
-    border: 2px solid #8B4513;
     width: 100%;
-    padding: 10px;
-    margin-top: 20px;
+    font-size: 12px;
+    line-height: 1.8;
+`;
+
+export const ProfileBioLabel = styled.span`
+    font-size: 12px;
+    font-weight: 400;
+    color: ${colors.text};
+    opacity: 0.6;
+    text-transform: uppercase;
+    font-family: ${fonts.primary};
+`;
+
+export const BioValue = styled.span`
+    font-size: 12px;
+    color: ${colors.text};
+    font-family: ${fonts.primary};
+    text-align: right;
 `;
 
 export const RestaurantSection = styled.div`
-    margin-top: 20px;
     flex: 1;
     min-width: 0;
+    padding-bottom: 20px;
+    font-family: ${fonts.primary};
 `;
 
 export const BioText = styled.p`
-    font-family: 'Lato', sans-serif;
-    font-size: 14px;
-    color: #2C2C2C;
-    margin: 12px 0;
-    line-height: 1.6;
+    font-family: ${fonts.primary};
+    font-size: 12px;
+    color: ${colors.text};
+    margin: 0;
+    line-height: 1.5;
     font-weight: 400;
 `;
 
-export const EditProfileLink = styled.a`
-    display: inline-block;
-    text-decoration: none;
-    color: #8B4513;
-    cursor: pointer;
-    font-size: 10px;
-    font-family: 'Inter', sans-serif;
-    font-style: italic;
-    font-weight: 500;
-    transition: opacity 0.2s ease;
-
-    &:hover {
-        opacity: 0.7;
-    }
+export const EditProfileLink = styled.button`
+    display: none;
 `;
 
 export const TabContainer = styled.div`
     display: flex;
-    gap: 20px;
+    gap: 32px;
     justify-content: center;
     margin-bottom: 20px;
+    font-size: 12px;
+    font-family: ${fonts.primary};
 `;
 
 export const TabButton = styled.button`
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 16px;
-    color: #8B4513;
-    font-family: 'Lato', sans-serif;
-    font-weight: ${props => props.active ? 'bold' : 'normal'};
-    border-bottom: ${props => props.active ? '2px solid #8B4513' : 'none'};
+    font-size: 12px;
+    color: ${colors.text};
+    font-family: ${fonts.primary};
+    font-weight: ${props => props.active ? 700 : 400};
+    opacity: ${props => props.active ? 1 : 0.5};
     padding: 0;
-    transition: all 0.2s ease;
+    text-transform: uppercase;
 
     &:hover {
-        opacity: 0.8;
+        opacity: 1;
     }
+`;
+
+export const SectionHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-family: ${fonts.primary};
+`;
+
+export const SectionLabel = styled.span`
+    font-size: 11px;
+    font-weight: 400;
+    color: ${colors.text};
+    opacity: 0.6;
+    text-transform: uppercase;
+    font-family: ${fonts.primary};
+`;
+
+export const SectionCount = styled.span`
+    font-size: 11px;
+    color: ${colors.text};
+    opacity: 0.6;
+    font-family: ${fonts.primary};
+`;
+
+export const ProfileUsername = styled.h2`
+    font-family: ${fonts.primary};
+    font-size: 20px;
+    font-weight: 700;
+    color: ${colors.text};
+    margin: 0;
+`;
+
+export const BioRow = styled.div`
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dotted ${colors.border};
+    padding-bottom: 6px;
+    margin-bottom: 6px;
+
+    &:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+`;
+
+export const ProfileHeader = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+`;
+
+export const ProfileHeaderInfo = styled.div`
+    flex: 1;
 `;
