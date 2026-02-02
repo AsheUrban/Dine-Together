@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useParams, useNavigate } from 'react-router-dom';
 import PlaceDetail from './PlaceDetail';
 import ActionBar from './ActionBar';
 import EditPlaceForm from './EditPlaceForm';
@@ -10,8 +10,12 @@ import { CircularButton, PlaceMenuContainer, PlaceProfileContainer, LinkStyle } 
 import { updatePlace, removeFromSavedPlaces } from '../services/firebaseService';
 import { useEditMode } from '../hooks/editMode';
 import { usePlaceSaveState } from '../hooks/placeSaveState';
+import { usePlace } from '../hooks/place';
 
-function PlaceProfile({ place, onBack, onPlaceUpdate, onUserClick }) {
+function PlaceProfile() {
+    const { placeId } = useParams();
+    const navigate = useNavigate();
+    const { place, loading, error } = usePlace(placeId);
     const { isEditing, enterEditMode, exitEditMode } = useEditMode();
         const {
             isSaved,
@@ -21,18 +25,19 @@ function PlaceProfile({ place, onBack, onPlaceUpdate, onUserClick }) {
             savedByUsernames,
             showAllSavedBy,
             setShowAllSavedBy
-        } = usePlaceSaveState(place.id);
+        } = usePlaceSaveState(placeId);
     const [removeConfirmation, setRemoveConfirmation] = useState({
         isOpen: false,
         message: '',
     });
 
+    const handleBack = () => {
+        navigate(-1);
+    };
+
     const handleEditingPlace = async (placeToEdit) => {
         const { id, ...placeData } = placeToEdit;
         await updatePlace(id, placeData);
-        if (onPlaceUpdate) {
-            onPlaceUpdate(placeToEdit);
-        }
         exitEditMode();
     };
 
@@ -44,12 +49,12 @@ function PlaceProfile({ place, onBack, onPlaceUpdate, onUserClick }) {
     };
 
     const confirmRemovePlace = async () => {
-        await removeFromSavedPlaces(auth.currentUser.uid, place.id);
+        await removeFromSavedPlaces(auth.currentUser.uid, placeId);
         setRemoveConfirmation({ 
             isOpen: false,
             message: '',
         });
-        onBack();
+        handleBack();
     };
 
     const handleKebabAction = (item) => {
@@ -62,7 +67,7 @@ function PlaceProfile({ place, onBack, onPlaceUpdate, onUserClick }) {
 
     const buildMenuItems = () => {
         const items = [];
-        if (onPlaceUpdate) {
+        if (isSaved) {
             items.push({ id: 'edit', label: 'Edit' });
         }
         items.push({ id: 'remove', label: 'Remove' });
@@ -70,9 +75,7 @@ function PlaceProfile({ place, onBack, onPlaceUpdate, onUserClick }) {
     };
 
      const handleProfileClick = ( userId) => {
-        if(onUserClick) {
-            onUserClick(userId);
-        }
+        navigate(`/profile/${userId}`);
     };
 
     const renderSavedByInfo = () => {
@@ -115,6 +118,13 @@ function PlaceProfile({ place, onBack, onPlaceUpdate, onUserClick }) {
         );
     };
 
+    if (loading) {
+        return null;
+    }
+
+    if (error || !place) {
+        return <div>Place not found</div>
+    }
 
     if (isEditing) {
         return (
@@ -122,7 +132,7 @@ function PlaceProfile({ place, onBack, onPlaceUpdate, onUserClick }) {
                 place={place}
                 onEditPlace={handleEditingPlace}
                 userId={place.userId}
-                onBack={onBack}
+                onBack={handleBack}
                 onDelete={handleRemove}
             />
         );
@@ -137,7 +147,7 @@ function PlaceProfile({ place, onBack, onPlaceUpdate, onUserClick }) {
                 </PlaceMenuContainer>
             )}
             <ActionBar>
-                <CircularButton onClick={onBack}>↩</CircularButton>
+                <CircularButton onClick={handleBack}>↩</CircularButton>
                 {isSaved === false && (
                     <CircularButton onClick={savePlace} disabled={isLoading}>
                         +
@@ -160,12 +170,5 @@ function PlaceProfile({ place, onBack, onPlaceUpdate, onUserClick }) {
         </PlaceProfileContainer>
     );
 }
-
-PlaceProfile.propTypes = {
-    place: PropTypes.object.isRequired,
-    onBack: PropTypes.func.isRequired,
-    onPlaceUpdate: PropTypes.func,
-    onUserClick: PropTypes.func
-};
 
 export default PlaceProfile;

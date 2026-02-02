@@ -11,6 +11,7 @@ export {
 
 export {
     H1,
+    H1Centered,
     H2,
     H2Centered,
     H3,

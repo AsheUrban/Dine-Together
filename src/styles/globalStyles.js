@@ -9,6 +9,15 @@ export const H1 = styled.h1`
     font-family: 'Rosaline', serif;
 `;
 
+export const H1Centered = styled.h1`
+    font-size: 48px;
+    text-align: center;
+    color: #F5F1E8;
+    margin: 0;
+    font-family: 'Rosaline', serif;
+`;
+
+
 export const H2 = styled.h2`
     font-size: 30px;
     color: #8B4513;
@@ -29,7 +38,7 @@ export const H3 = styled.h3`
     font-size: 35px;
     color: #8B4513;
     font-family: 'Lato', sans-serif;
-    font-weight: 700;
+    font-weight: 400;
     margin: 10px 0;
 `;
 
@@ -38,7 +47,7 @@ export const H3Centered = styled.h3`
     text-align: center;
     color: #8B4513;
     font-family: 'Lato', sans-serif;
-    font-weight: 700;
+    font-weight: 400;
     margin: 10px 0;
 `;
 
@@ -46,7 +55,7 @@ export const H4 = styled.h4`
     font-size: 24px;
     color: #8B4513;
     font-family: 'Lato', sans-serif;
-    font-weight: 700;
+    font-weight: 400;
     margin: 5px 0;
 `;
 
@@ -55,7 +64,7 @@ export const H4Centered = styled.h4`
     text-align: center;
     color: #8B4513;
     font-family: 'Lato', sans-serif;
-    font-weight: 700;
+    font-weight: 400;
     margin: 5px 0;
 `;
 
@@ -63,7 +72,7 @@ export const H5 = styled.h5`
     font-size: 18px;
     color: #D98560;
     font-family: 'Lato', sans-serif;
-    font-weight: 700;
+    font-weight: 400;
     margin: 5px 0;
 `;
 

@@ -8,6 +8,7 @@ import ProtectedRoute from './ProtectedRoute';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { auth } from '../firebase.js';
 import UserProfile from './UserProfile';
+import PlaceProfile from './PlaceProfile.js';
 
 function App(){
     const [user, setUser] = useState(null);
@@ -33,6 +34,7 @@ function App(){
             <Route path='/sign-in' element={<SignIn />} />
             <Route path='/' element={<ProtectedRoute element={<Feed />} />} />
             <Route path='/profile/:userId' element={<ProtectedRoute element={<UserProfile />} />} />
+            <Route path='/place/:placeId' element={<ProtectedRoute element={<PlaceProfile />} />} />
             <Route path='/search' element={<ProtectedRoute element ={<Explore />} />} />
             </Routes>
         </Router>

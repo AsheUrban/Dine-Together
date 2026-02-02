@@ -9,6 +9,10 @@
 
 - [Overview](#overview)
 - [Architecture Decisions](#architecture-decisions)
+  - [Decision 1: Separate Service Files](#decision-1-separate-service-files)
+  - [Decision 2: Direct REST API](#decision-2-direct-rest-api-places-api-new)
+  - [Decision 3: Manual Entry in MVP](#decision-3-manual-entry-in-mvp)
+  - [Decision 4: Route-Based PlaceProfile](#decision-4-route-based-placeprofile-2026-01-18)
 - [Google Places API Integration](#google-places-api-integration)
   - [Service Layer Design](#service-layer-design)
   - [Schema Evolution](#schema-evolution)
@@ -25,6 +29,8 @@
   - [Combined Data Flow](#combined-data-flow)
 - [TypeScript Migration Considerations](#typescript-migration-considerations)
 - [Future APIs (Reservations)](#future-apis-reservations)
+- [Implementation Phases](#implementation-phases)
+- [Future: Map Integration Strategy](#future-map-integration-strategy)
 
 ---
 
@@ -56,17 +62,25 @@ Create `src/services/googlePlacesService.js` alongside `firebaseService.js`. Ser
 - Natural separation: Firebase = persistence, Google = external data
 - Sets up cleanly for TypeScript modular structure
 
-### Decision 2: Hook-Based React Integration
+### Decision 2: Direct REST API (Places API New)
 
-**Library Choice:** `react-google-autocomplete` with `usePlacesAutocompleteService` hook
+**Original Plan:** `react-google-autocomplete` library with `usePlacesAutocompleteService` hook
 
-**Why this library:**
-- Hook-based API aligns with codebase patterns (9 custom hooks)
-- Full control over UI (matches vintage aesthetic)
-- Built-in debouncing reduces API calls
-- Returns `place_id` for subsequent details fetch
+**What Happened:** Google deprecated `AutocompleteService` for new customers (March 2025). The library relies on the legacy JavaScript SDK which is unavailable to new Google Cloud projects.
 
-**Alternative considered:** `react-google-places-autocomplete` - simpler but less UI control.
+**Pivot Decision:** Use Places API (New) directly via REST calls.
+
+**Implementation:**
+- `googlePlacesService.js` makes fetch calls to `https://places.googleapis.com/v1/places:autocomplete`
+- `useExploreSearch` hook handles debouncing, geolocation, and state management
+- No external library dependencies - cleaner and more maintainable
+
+**Benefits of REST approach:**
+- No heavy Google Maps JavaScript SDK to load
+- Full control over request/response handling
+- Works with Places API (New) which is available to all customers
+- Aligns with codebase patterns (custom hooks)
+- Easier to test (mock fetch vs mock Google SDK)
 
 ### Decision 3: Manual Entry in MVP
 
@@ -77,6 +91,49 @@ Manual restaurant entry is **included in MVP**, not deferred to TypeScript.
 - Existing NewPlaceForm already works
 - "Can't find it? Add manually" provides graceful fallback
 - Schema supports both sources with `source: 'google' | 'manual'` field
+
+### Decision 4: Route-Based PlaceProfile (2026-01-18)
+
+**Problem Identified:** PlaceProfile currently renders inline (conditional render replaces Feed/UserProfile content). This causes:
+- Header navigation blocked while viewing a place
+- Browser back button doesn't work
+- URLs not shareable
+- Inconsistent with standard web patterns
+
+**Decision:** PlaceProfile accessed via `/place/:placeId` route, fetches data by URL param.
+
+**Options Evaluated:**
+
+| Option | Pros | Cons |
+|--------|------|------|
+| A. Inline render (current) | No route setup | Nav blocked, no shareable URLs, non-standard |
+| B. Route with state pass | Fast (no fetch) | Breaks on refresh, not shareable |
+| C. Route with URL param fetch | Shareable, refresh works, standard pattern | Extra fetch |
+
+**Decision:** Option C - Route with URL param fetch.
+
+**Values Assessment:**
+- **Simplicity:** One code path (always fetch by ID)
+- **Testability:** Mock fetch, pass placeId - single scenario
+- **Reusability:** Works everywhere: direct links, refresh, shares
+- **Consistency:** Matches UserProfile pattern (uses `useParams`, fetches by ID)
+- **Efficiency:** Single Firestore doc fetch is fast
+- **Modern:** URL as source of truth is standard React Router pattern
+
+**Implementation:**
+1. Add `/place/:placeId` route to App.js
+2. Create `usePlaceData(placeId)` hook (subscription pattern, matches `useUser`)
+3. PlaceProfile uses `useParams()` to get placeId, calls hook
+4. Feed/UserProfile navigate to route instead of setting inline state
+5. Remove `usePlaceSelection` hook (no longer needed)
+
+**TypeScript Benefit:** Maps directly to React Query:
+```typescript
+const { data: place, isLoading } = useQuery(
+    ['place', placeId],
+    () => getPlaceById(placeId)
+);
+```
 
 ---
 
@@ -95,24 +152,47 @@ src/services/
 2. Place details fetch (returns full place data)
 3. Photo URL construction
 4. Data transformation (Google schema → our schema)
-5. Session token management (cost optimization)
 
-**Inter-service communication:**
+**firebaseService.js additions:**
+1. `findPlaceByGoogleId(googlePlaceId)` - Check if place exists
+2. `createPlace(placeData)` - Create place document
+3. `getPlaceById(placeId)` - Fetch place by Firestore ID
+
+**Orchestration pattern:**
+Services do individual operations. Hooks orchestrate and manage state. This matches our established patterns (e.g., `usePlaceSaveState`) and maps cleanly to React Query in TypeScript.
+
 ```javascript
-// googlePlacesService.js
-import { createPlace, findPlaceByGoogleId } from './firebaseService';
+// hooks/placeSelect.js - NEW HOOK
+import { findPlaceByGoogleId, createPlace } from '../services/firebaseService';
+import { fetchPlaceDetails, transformPlaceDetails } from '../services/googlePlacesService';
 
-export const selectPlace = async (googlePlaceId) => {
-    // Check if place already exists in Firestore
-    const existing = await findPlaceByGoogleId(googlePlaceId);
-    if (existing) return existing;
+export const usePlaceSelect = () => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-    // Fetch from Google API
-    const googleData = await fetchPlaceDetails(googlePlaceId);
+    const selectPlace = async (googlePlaceId) => {
+        setLoading(true);
+        setError(null);
+        try {
+            // Check if place already exists in Firestore
+            const existing = await findPlaceByGoogleId(googlePlaceId);
+            if (existing) return existing;
 
-    // Transform and save to Firestore
-    const placeData = transformGooglePlace(googleData);
-    return await createPlace(placeData);
+            // Fetch from Google API
+            const googleData = await fetchPlaceDetails(googlePlaceId);
+
+            // Transform and save to Firestore
+            const placeData = transformPlaceDetails(googleData);
+            return await createPlace(placeData);
+        } catch (err) {
+            setError(err.message);
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return { selectPlace, loading, error };
 };
 ```
 
@@ -183,8 +263,8 @@ User types in Explore search
         │
         ▼
 ┌─────────────────────────────┐
-│  useRestaurantSearch hook   │
-│  (debounced, session token) │
+│  useExploreSearch hook      │
+│  (debounced, geolocation)   │
 └─────────────────────────────┘
         │
         ▼
@@ -199,7 +279,7 @@ User selects from dropdown
         │
         ▼
 ┌─────────────────────────────┐
-│  googlePlacesService        │
+│  usePlaceSelect hook        │
 │  .selectPlace(place_id)     │
 └─────────────────────────────┘
         │
@@ -228,7 +308,10 @@ User selects from dropdown
 └─────────────────────────────┘
         │
         ▼
-Navigate to PlaceProfile
+┌─────────────────────────────┐
+│  Navigate to /place/:id     │
+│  (route-based navigation)   │
+└─────────────────────────────┘
 ```
 
 #### Flow 2: Manual Entry Fallback
@@ -324,52 +407,77 @@ export const findPlaceByGoogleId = async (googlePlaceId) => {
 
 ### Photo Strategy
 
-**MVP Approach:** Fetch on demand
+**Decision (2026-01-20): Firebase Cloud Function Proxy**
+
+API key must not be exposed client-side (Google flagged previous exposure). Security is a baseline requirement.
+
+**Implementation (2026-01-21):**
 
 ```javascript
-// Photo URL construction (New API format)
-const getPhotoUrl = (photoReference, maxWidth = 400) => {
-    return `https://places.googleapis.com/v1/${photoReference}/media?maxWidthPx=${maxWidth}&key=${API_KEY}`;
-};
-```
-
-**Why fetch on demand:**
-- Always fresh (Google rotates URLs)
-- No storage costs
-- Simpler implementation
-
-**TypeScript Target:** Store photo references, generate URLs with React Query caching:
-```typescript
-const { data: photoUrl } = useQuery(
-    ['placePhoto', photoRef],
-    () => getPhotoUrl(photoRef),
-    { staleTime: 60 * 60 * 1000 }  // 1 hour cache
+// Firebase Cloud Function (functions/index.js) - uses onRequest for HTTP endpoint
+exports.getPlacePhoto = onRequest(
+    { cors: true, maxInstances: 10, secrets: [googlePlacesApiKey] },
+    async (req, res) => {
+        const { photoRef, maxWidth = "400" } = req.query;
+        // Fetch from Google Places API, get photoUri, redirect to it
+        res.redirect(data.photoUri);
+    }
 );
+
+// Client-side helper (googlePlacesService.js) - pure URL construction
+const CLOUD_FUNCTION_URL = 'https://us-central1-dine-together-2e4b4.cloudfunctions.net/getPlacePhoto';
+
+export const getPhotoUrl = (photoReference, maxWidth = 400) => {
+    if (!photoReference) return null;
+    const encodedRef = encodeURIComponent(photoReference);
+    return `${CLOUD_FUNCTION_URL}?photoRef=${encodedRef}&maxWidth=${maxWidth}`;
+};
+
+// Usage in components - URL works directly as img src
+<img src={getPhotoUrl(place.photoReferences[0])} />
 ```
+
+**Why `onRequest` (HTTP endpoint) over `onCall`:**
+- Photos are consumed as URLs in `<img>` tags - URL can be the src directly
+- Browser handles redirect automatically, no async call needed in component
+- Platform-agnostic (just HTTP) - portable to Supabase Edge Functions
+- No Firebase SDK dependency on client for photos
+- Simpler: pure URL construction vs async callable + loading states
+
+**Key Implementation Details:**
+- PhotoRefs must be URL-encoded (slashes → `%2F`)
+- Server-side API key stored in Firebase Secrets (separate key with no website restrictions)
+- Function validates redirect domain (must be `*.googleusercontent.com`)
+
+**Why Cloud Function Proxy:**
+- API key stays server-side (security)
+- Simple single function (6/6 on team values)
+- No caching complexity needed at MVP scale
+- Don't over-invest in Firebase given Supabase decision for TS refactor
+
+**Rejected:** Firebase Storage caching - more complex, unnecessary for MVP.
+
+**TypeScript Target (Supabase):** Edge Function with same HTTP pattern. Only change: update `CLOUD_FUNCTION_URL` constant to Supabase endpoint.
 
 ### Cost Optimization
 
-#### Session Tokens
+#### Session Tokens (Deferred to TypeScript)
 
-Group autocomplete keystrokes + place details into one billing session:
+Session tokens group autocomplete keystrokes + place details fetch into one billing "session" for cost optimization.
 
+**Decision:** Defer to TypeScript phase.
+
+**Rationale:**
+- Cost optimization, not architectural change
+- Free tier sufficient for MVP (10K autocomplete, 5K details/month)
+- Adding later is additive - just add `sessionToken` parameter to API calls
+- Keeps Chunk 2 focused on core functionality
+
+**Future implementation (TypeScript):**
 ```javascript
-// In useRestaurantSearch hook
-const [sessionToken, setSessionToken] = useState(null);
-
-useEffect(() => {
-    // Create new session token when search starts
-    if (searchQuery.length > 0 && !sessionToken) {
-        setSessionToken(new google.maps.places.AutocompleteSessionToken());
-    }
-}, [searchQuery]);
-
-const handlePlaceSelect = async (placeId) => {
-    // Use session token in details request
-    await fetchPlaceDetails(placeId, sessionToken);
-    // Clear token after use
-    setSessionToken(null);
-};
+// Generate UUID for session, pass to autocomplete and details calls
+const sessionToken = crypto.randomUUID();
+// Include in API requests: { sessionToken } in request body
 ```
 
 #### Field Masks
@@ -669,16 +777,26 @@ restaurant              user                         │
 
 ```javascript
 // In Explore.js
-const handlePlaceSelect = async (prediction) => {
-    // Fetch full details, save to Firestore, navigate
-    const place = await googlePlacesService.selectPlace(prediction.googlePlaceId);
-    navigate(`/place/${place.id}`);  // Or show PlaceProfile inline
-};
+import { useNavigate } from 'react-router-dom';
+import { useExploreSearch } from '../hooks/exploreSearch';
+import { usePlaceSelect } from '../hooks/placeSelect';
 
-const handleUserSelect = (user) => {
-    // Simple navigation
-    navigate(`/profile/${user.userId}`);
-};
+function Explore() {
+    const navigate = useNavigate();
+    const [searchQuery, setSearchQuery] = useState('');
+    const { places, loading: searchLoading } = useExploreSearch(searchQuery);
+    const { selectPlace, loading: selectLoading, error } = usePlaceSelect();
+
+    const handlePlaceSelect = async (prediction) => {
+        const place = await selectPlace(prediction.googlePlaceId);
+        navigate(`/place/${place.id}`);
+    };
+
+    const handleUserSelect = (user) => {
+        navigate(`/profile/${user.userId}`);
+    };
+    // ... render
+}
 ```
 
 ### Implementation Order (Revised)
@@ -703,6 +821,14 @@ This order ensures:
 ---
 
 ## TypeScript Migration Considerations
+
+**Decided Tech Stack (2026-01-20):**
+- **Mobile Framework:** Expo + React Native (mobile-first, single codebase)
+- **Backend:** Supabase (PostgreSQL for relational social queries)
+- **Data Fetching:** TanStack Query
+- **Forms:** React Hook Form + Zod
+
+Current service layer pattern translates directly: `firebaseService.js` → `supabaseService.ts`
 
 ### Discriminated Union Types
 
@@ -768,14 +894,19 @@ src/services/
 ### React Query Integration
 
 ```typescript
-// Current (custom hook)
-const { predictions, loading } = useRestaurantSearch(query);
+// Current (custom hooks)
+const { places, loading } = useExploreSearch(query);
+const { selectPlace, loading: selectLoading } = usePlaceSelect();
 
 // TypeScript (React Query)
-const { data: predictions, isLoading } = useQuery(
+const { data: places, isLoading } = useQuery(
     ['restaurantSearch', query],
     () => googlePlacesService.search(query),
     { enabled: query.length > 2 }
+);
+
+const { mutate: selectPlace, isLoading: selectLoading } = useMutation(
+    (googlePlaceId) => placeSelectionService.select(googlePlaceId)
 );
 ```
 
@@ -855,33 +986,143 @@ function PlaceProfile({ place }) {
 
 ## Implementation Phases
 
-### Phase 1: Setup & Autocomplete
+### Phase 1: Setup & Autocomplete | COMPLETE (2026-01-16)
 1. Google Cloud Console setup (enable APIs, create key, set restrictions)
-2. Install `react-google-autocomplete`
-3. Create `googlePlacesService.js` with autocomplete function
-4. Create `useRestaurantSearch` hook
+2. Pivoted from library to REST API (see Decision 2)
+3. Create `googlePlacesService.js` with `searchPlaces()` and transform functions
+4. Create `useExploreSearch` hook with geolocation and debouncing
 5. Update Explore.js with autocomplete UI
 
-### Phase 2: Place Details
-1. Add place details fetch to googlePlacesService.js
-2. Implement `getOrCreatePlace` with deduplication
-3. Add `findPlaceByGoogleId` to firebaseService.js
-4. Update schema (add new fields)
-5. Wire selection flow in Explore.js
+### Phase 2: Place Details & Route Navigation | COMPLETE (2026-01-18)
 
-### Phase 3: Photos
-1. Add photo URL construction
-2. Update PlaceDetail to show Google photos
-3. Add fallback for places without photos
+**2a. Route-Based PlaceProfile Architecture**
+1. Create `/place/:placeId` route in App.js
+2. Create `usePlace` hook - fetches place by Firestore ID (matches `useUser` pattern)
+3. Update PlaceProfile to use URL params + `usePlace` hook
+4. Refactor Feed.js - navigate to `/place/:id` instead of inline rendering
+5. Refactor UserProfile.js - navigate to `/place/:id` instead of inline rendering
+6. Remove `usePlaceSelection` hook (no longer needed)
 
-### Phase 4: Manual Fallback
+**2b. Google Places Integration**
+1. Add `fetchPlaceDetails()` to googlePlacesService.js
+2. Add `findPlaceByGoogleId()` to firebaseService.js
+3. Add `createPlace()` to firebaseService.js
+4. Add `getPlaceById()` to firebaseService.js
+5. Create Firestore index on `googlePlaceId` field
+6. Create `usePlaceSelect` hook (orchestrates dedup + fetch + create)
+7. Wire selection flow in Explore.js → `usePlaceSelect` → navigate to `/place/:id`
+
+### Phase 3: Display Google Places Data (Next)
+
+Update UI components to display all Google Places data.
+
+**Schema Update:**
+1. Add `location` (lat/lng) to PLACE_FIELDS in googlePlacesService.js
+2. Update `transformPlaceDetails` to include location
+3. Store coordinates in Firestore (sets up for future map features)
+
+**PlaceDetail.js** (used in PlaceProfile):
+1. Add rating display with star icon
+2. Add userRatingsTotal (review count)
+3. Add priceLevel display ($ symbols)
+4. Add phone (clickable tel: link)
+5. Add website (clickable external link)
+6. Add photo display using photoReferences
+7. Add static map image showing location
+
+**Place.js** (card used in PlaceGrid):
+1. Replace PlaceImage placeholder with actual photo
+2. Use first photoReference if available
+
+**googlePlacesService.js**:
+1. Add `getPhotoUrl(photoReference, maxWidth)` helper function
+
+### Phase 4: Save Flow & Post Creation
+1. PlaceProfile ActionBar shows "Add" button (if not saved)
+2. Add "Create Post" button in PlaceProfile
+3. Wire post creation flow
+
+### Phase 5: Manual Fallback
 1. Add "Can't find it?" link to Explore.js
 2. Wire to existing NewPlaceForm
 3. Ensure `source: 'manual'` is set
 
-### Phase 5: Polish
-1. Session token optimization
-2. Error handling (API failures, rate limits)
-3. Loading states and UX refinements
+### Phase 6: Map Integration
+1. Enable Maps JavaScript API in Google Cloud Console
+2. Add `@react-google-maps/api` dependency
+3. Add map view toggle to Explore (list view vs map view)
+4. Implement Nearby Search API for map browse mode
+5. Display nearby restaurants as pins on map
+6. Tap pin → show preview card → navigate to PlaceProfile
+
+### Phase 7: Polish
+1. Error handling (API failures, rate limits)
+2. Loading states and UX refinements
+3. Combined search (restaurants + people)
+
+### TypeScript Refactor: Text Search
+1. Add Text Search API for "search on map" functionality
+2. Hybrid approach: Autocomplete for typeahead, Text Search for map+text
+3. Full map integration (search results + map sync, saved places on map)
+
+---
+
+## Future: Map Integration Strategy
+
+### Hybrid Search Approach
+
+Explore will offer two search modes, each optimized for its use case:
+
+| Mode | API | User Intent | Returns |
+|------|-----|-------------|---------|
+| Text search | Autocomplete + Details | "I know the name" | Fast typeahead, details on select |
+| Map browse | Nearby Search | "What's around here?" | Full details + coordinates for all |
+| Map + text (TS) | Text Search | "Show me 'sushi' on map" | Full details + coordinates for all |
+
+### Why Hybrid?
+
+**Autocomplete** is optimized for typeahead:
+- Fast, lightweight responses
+- Cheap ($2.83/1K requests)
+- But no coordinates until you fetch details
+
+**Nearby Search / Text Search** returns full data:
+- Coordinates for all results (enables map pins)
+- Ratings, photos available immediately
+- But heavier, more expensive ($32/1K requests)
+
+Using both gives best UX for each mode without compromise.
+
+### Implementation Path
+
+1. **Phase 3:** Store `location` (lat/lng) in schema - sets foundation
+2. **Phase 3:** Static map on PlaceProfile - quick win
+3. **Phase 6:** Map view in Explore with Nearby Search - visual browsing
+4. **TS Refactor:** Text Search for "search on map" - full integration
+
+### Technical Notes
+
+**Nearby Search API (New):**
+```javascript
+// Request
+POST https://places.googleapis.com/v1/places:searchNearby
+{
+    "includedTypes": ["restaurant"],
+    "locationRestriction": {
+        "circle": {
+            "center": { "latitude": 37.7749, "longitude": -122.4194 },
+            "radius": 5000
+        }
+    }
+}
+// Returns array of places with full details including location
+```
+
+**Static Map for PlaceProfile:**
+```javascript
+const getStaticMapUrl = (lat, lng) => {
+    return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=15&size=400x200&markers=color:red%7C${lat},${lng}&key=${API_KEY}`;
+};
+```
 
 ---

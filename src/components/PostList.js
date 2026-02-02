@@ -22,7 +22,8 @@ function PostList(props){
                                 priceLevel: post.priceLevel,
                                 rating: post.rating,
                                 userRatingsTotal: post.userRatingsTotal,
-                                id: post.placeId
+                                id: post.placeId,
+                                photoReferences: post.photoReferences
                             }}
                             onPostClick={props.onPostSelection}
                             isOwner={post.isOwner}

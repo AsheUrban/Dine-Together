@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { PlaceContainer, H3Centered, H6Centered } from '../styles';
+import { toTitleCase } from '../utils/textFormatters';
+import { PlaceContainer, H4Centered, H6Centered } from '../styles';
 
 function PlaceDetail({ place }) {
     return (
         <PlaceContainer>
-            <H3Centered>{place.restaurantName}</H3Centered>
+            <H4Centered>{toTitleCase(place.restaurantName)}</H4Centered>
             <H6Centered>{place.restaurantAddress}</H6Centered>
         </PlaceContainer>
     );

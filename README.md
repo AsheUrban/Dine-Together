@@ -34,7 +34,7 @@ Following MVP polish, the project is planned to be refactored to TypeScript with
 
 ---
 
-**Current Status:** Core social features complete - users can post restaurants, save places, view other profiles, and browse a shared feed. PlaceProfile architecture in place with presentational components. "Saved by" display complete. Next: Google Places API integration.
+**Current Status:** Phase 3 in progress. Firebase Cloud Function `getPlacePhoto` deployed for secure photo proxy. Next: Client-side integration (`getPhotoUrl()` helper, display photos in Place.js and PlaceDetail.js).
 
 ---
 
@@ -45,6 +45,7 @@ Following MVP polish, the project is planned to be refactored to TypeScript with
 | Branch | Status | Focus |
 |--------|--------|-------|
 | **remodel** | Active Development | All new work developed here. |
+| **wip-redesign** | Active Development | Design exploration. |
 | **main** | Development Snapshot (2026-01-16) | Synced with remodel. Functional snapshot representing current state of active development. |
 | **Legacy** | Early prototype, capstone project | For memories. |
 
@@ -64,8 +65,8 @@ Following MVP polish, the project is planned to be refactored to TypeScript with
 This project uses a **service-layer pattern** to separate concerns and keep components clean:
 
 - **Posts & Places Collections** — Posts (social wrappers with captions) reference Places (restaurant data) by ID. One Place can be referenced by multiple Posts, keeping data normalized and shareable.
-- **Service Layer** (`firebaseService.js`) — Centralizes all Firebase operations (auth, CRUD, subscriptions) and joins Post + Place data at the service level, so components receive complete data in props.
-- **Custom Hooks** — 9 reusable hooks manage component state (data subscriptions, form handling, edit modes), promoting code reuse and testability.
+- **Service Layer** (`firebaseService.js`, `googlePlacesService.js`) — Centralizes all Firebase operations and external API calls. Components receive clean data in props without direct API coupling.
+- **Custom Hooks** — 11 reusable hooks manage component state (data subscriptions, form handling, edit modes, search, place selection), promoting code reuse and testability.
 - **Styled Components** — Centralized styling system with 8 style files, maintaining consistent theme and visual language across the app.
 
 This architecture scales cleanly: adding Google Places API integration requires changes only to the service layer and firebaseService.js, not to component logic.
@@ -148,7 +149,7 @@ The inspiration for the aesthetic of this project is vintage menus. Colors were 
 
 ---
 
-## **Known Bugs - Updated 1/15/26**
+## **Known Bugs - Updated 1/16/26**
 - **Global Notes:** Notes are stored on global `places` collection. When any user edits notes, it changes for all users. Will be fixed with NotesSection architecture (per-user notes in userPlaces subcollection) after API integration.
 
 ---
@@ -233,15 +234,18 @@ src/
 ├── hooks/
 │   ├── allPosts.js            (Subscribe to all posts for Feed)
 │   ├── editMode.js            (Toggle edit/view state)
+│   ├── exploreSearch.js       (Restaurant search with geolocation)
 │   ├── formSubmit.js          (Form submission with loading/error states)
+│   ├── place.js               (Subscribe to place by Firestore ID)
 │   ├── placeSaveState.js      (Manage saved place state & "saved by" display)
-│   ├── placeSelection.js      (Track selected place)
+│   ├── placeSelect.js         (Orchestrate place selection flow)
 │   ├── placeUpdate.js         (Handle place update logic)
 │   ├── user.js                (Current user state with subscription pattern)
 │   ├── userPosts.js           (Subscribe to user's posts)
 │   └── userPlaces.js          (Subscribe to user's saved places)
 ├── services/
-│   └── firebaseService.js     (Firebase CRUD and real-time subscriptions)
+│   ├── firebaseService.js     (Firebase CRUD and real-time subscriptions)
+│   └── googlePlacesService.js (Google Places API REST calls)
 ├── styles/
 │   ├── formStyles.js          (Form & input styled components)
 │   ├── globalStyles.js        (Global theme & typography)
@@ -265,7 +269,7 @@ src/
 - Posts/Places architectural separation (two Firestore collections)
 - Profile page with tabbed interface (Posts | Restaurants)
 - Place edit/update and delete functionality
-- 9 custom hooks for scalable state management
+- 10 custom hooks for scalable state management
 - Vintage menu aesthetic with centralized styling
 - KebabMenu integration across Feed, Profile, and PlaceProfile
 - ConfirmDialog for delete confirmations
@@ -276,36 +280,57 @@ src/
 - "Saved by" display in ActionBar and Post cards
 
 **Current Sprint:**
-- Google Places API integration
+- Phase 3: Display Google Places Data
 
-### **Phase 2: Google Places API Integration**
+### **Phase 2: Google Places API Integration** | COMPLETE
 
-1. Google Places Autocomplete in Explore
-2. Google Places Details API for full restaurant data
-3. Google Photos API for restaurant images
-4. Combined search (restaurants + people)
-5. Manual entry as fallback when API returns no results
+1. ~~Google Places Autocomplete in Explore~~ | Complete (using Places API New via REST)
+2. ~~Google Places Details API for full restaurant data~~ | Complete
+3. ~~Save flow with deduplication~~ | Complete (findPlaceByGoogleId checks before creating)
+4. ~~Route-based PlaceProfile~~ | Complete (`/place/:placeId` with usePlace hook)
 
-### **Phase 3: Design with Real Data**
+### **Phase 3: Display Google Places Data** (Current)
 
-- NotesSection component (design with actual photos/data)
-- Notes schema update (generalNote/privateNote in userPlaces)
-- "Create Post" button in PlaceProfile
+- Implement Firebase Cloud Function for secure photo fetching
+- Add `getPhotoUrl()` helper to googlePlacesService.js
+- Add `location` (lat/lng) to PLACE_FIELDS and transform
+- PlaceDetail.js: Display rating, priceLevel, phone, website, photos, embedded map
+- Place.js: Replace PlaceImage placeholder with actual Google photo
 
-### **Phase 4: Polish**
+### **Phase 4: Save Flow & Post Creation**
 
-- Form validation and error handling
-- Loading state improvements (loading flash bug fixed)
-- Code cleanup
+- PlaceProfile ActionBar shows "Add" button (if not saved)
+- Add "Create Post" button in PlaceProfile
+- Wire post creation flow
 
-**TypeScript Refactor (Post-MVP)**
+### **Phase 5: Map Integration**
 
-After the JavaScript version is finalized:
-- Migrate codebase to TypeScript
-- Introduce React Query for advanced state management
-- Add Zod/Yup for schema validation
-- Implement Suspense for async boundaries
-- Build foundation for social features (friends, connections, reservations)
+- Enable Maps JavaScript API in Google Cloud Console
+- Add `@react-google-maps/api` dependency
+- Add map view toggle to Explore (list view vs map view)
+- Implement Nearby Search API for map browse mode
+
+### **Phase 6: Polish**
+
+- Error handling (API failures, rate limits)
+- Loading states and UX refinements
+- Combined search (restaurants + people)
+
+### **Phase 7: Manual Fallback**
+
+- Add "Can't find it?" link to Explore.js
+- Wire to existing NewPlaceForm
+- Ensure `source: 'manual'` is set
+
+## **TypeScript Refactor (Post-MVP)**
+
+Mobile-first rebuild with decided tech stack:
+- **Framework:** Expo + React Native (single codebase for iOS/Android/web)
+- **Backend:** Supabase (PostgreSQL for relational social queries - friends, groups, shared wishlists)
+- **Data Fetching:** TanStack Query
+- **Forms:** React Hook Form + Zod
+- **Navigation:** React Navigation
+- Build foundation for social features (friends, connections, reservation coordination with OpenTable/Resy)
 
 ---
 
