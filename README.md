@@ -34,7 +34,7 @@ Following MVP polish, the project is planned to be refactored to TypeScript with
 
 ---
 
-**Current Status:** V2 "receipt-style" redesign in progress on wip-design-2 branch. Footer navigation added, ActionBar repositioned, SignIn/SignUp updated. Style audit completed. Phase 3 (Google Places photos) complete.
+**Current Status:** V2 "receipt-style" redesign in progress. Footer navigation added, ActionBar repositioned, SignIn/SignUp updated. Style audit completed. Phase 3 (Google Places photos) complete. Next: PlaceProfile V2 design.
 
 ---
 
@@ -306,10 +306,10 @@ src/
 
 ### **Phase 2: Google Places API Integration** | COMPLETE
 
-1. ~~Google Places Autocomplete in Explore~~ | Complete (using Places API New via REST)
-2. ~~Google Places Details API for full restaurant data~~ | Complete
-3. ~~Save flow with deduplication~~ | Complete (findPlaceByGoogleId checks before creating)
-4. ~~Route-based PlaceProfile~~ | Complete (`/place/:placeId` with usePlace hook)
+- Google Places Autocomplete in Explore (using Places API New via REST)
+- Google Places Details API for full restaurant data
+- Save flow with deduplication (findPlaceByGoogleId checks before creating)
+- Route-based PlaceProfile (`/place/:placeId` with usePlace hook)
 
 ### **Phase 3: Display Google Places Data** | COMPLETE
 
@@ -319,18 +319,19 @@ src/
 - PlaceDetail.js: Display rating, priceLevel, phone, website, photos, embedded map
 - Place.js: Replace PlaceImage placeholder with actual Google photo
 
-### **Phase 4: Save Flow & Post Creation**
-
-- PlaceProfile ActionBar shows "Add" button (if not saved)
-- Add "Create Post" button in PlaceProfile
-- Wire post creation flow
-
-### **Phase 5: Map Integration**
-
+### **Phase 4: UI Redesign & Map Integration**
+- App redesign: Footer navigation, SignIn/SignUp pages, ActionBar repositioning | COMPLETE
+- PlaceProfile design (pending)
 - Enable Maps JavaScript API in Google Cloud Console
 - Add `@react-google-maps/api` dependency
 - Add map view toggle to Explore (list view vs map view)
 - Implement Nearby Search API for map browse mode
+
+### **Phase 5: Save Flow & Post Creation**
+
+- PlaceProfile ActionBar shows "Add" button (if not saved)
+- Add "Create Post" button in PlaceProfile
+- Wire post creation flow
 
 ### **Phase 6: Polish**
 
