@@ -1,115 +1,97 @@
 import styled from 'styled-components';
 
-// Design system colors
 const colors = {
     bg: '#FFFFFF',
-    card: '#F5F1E8',
-    text: '#3D3328',
-    muted: '#9D9485',
-    border: '#D4CFC6',
-    accent: '#C4663D',
+    text: '#000000',
+    muted: 'rgba(0, 0, 0, 0.6)',
+    border: '#000000',
+};
+
+const fonts = {
+    primary: 'Courier, monospace',
 };
 
 export const PageContainer = styled.div`
-    display: flex;
-    gap: 32px;
-    max-width: 1100px;
+    max-width: 480px;
     margin: 0 auto;
-    padding: 0 28px;
+    padding: 16px;
+    font-family: ${fonts.primary};
 `;
 
-export const InfoSection = styled.div`
-    margin-top: 32px;
-    flex: 0 0 240px;
-    background-color: ${colors.card};
-    border: 2px solid ${colors.border};
-    padding: 28px;
-    height: fit-content;
+export const InfoSection = styled.section`
+    border-bottom: 1px solid ${colors.border};
+    padding-bottom: 20px;
+    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    font-family: ${fonts.primary};
 `;
 
 export const BioSection = styled.div`
     width: 100%;
-    padding-top: 14px;
+    font-size: 12px;
+    line-height: 1.8;
 `;
 
-export const ProfileBioLabel = styled.label`
-    font-size: 10px;
-    font-weight: 700;
-    color: ${colors.muted};
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-family: 'Lato', sans-serif;
-`;
-
-export const BioValue = styled.p`
-    font-size: 13px;
+export const ProfileBioLabel = styled.span`
+    font-size: 12px;
+    font-weight: 400;
     color: ${colors.text};
-    margin: 2px 0 12px 0;
-    font-family: 'Lato', sans-serif;
+    opacity: 0.6;
+    text-transform: uppercase;
+    font-family: ${fonts.primary};
+`;
+
+export const BioValue = styled.span`
+    font-size: 12px;
+    color: ${colors.text};
+    font-family: ${fonts.primary};
+    text-align: right;
 `;
 
 export const RestaurantSection = styled.div`
-    margin-top: 32px;
     flex: 1;
     min-width: 0;
-    padding-bottom: 32px;
+    padding-bottom: 20px;
+    font-family: ${fonts.primary};
 `;
 
 export const BioText = styled.p`
-    font-family: 'Lato', sans-serif;
-    font-size: 13px;
+    font-family: ${fonts.primary};
+    font-size: 12px;
     color: ${colors.text};
-    margin: 2px 0 0 0;
+    margin: 0;
     line-height: 1.5;
     font-weight: 400;
 `;
 
 export const EditProfileLink = styled.button`
-    display: block;
-    margin: 0 auto 16px;
-    background: none;
-    border: none;
-    text-decoration: underline;
-    color: ${colors.muted};
-    cursor: pointer;
-    font-size: 11px;
-    font-family: 'Lato', sans-serif;
-    font-style: italic;
-    transition: opacity 0.2s ease;
-
-    &:hover {
-        opacity: 0.7;
-    }
+    display: none;
 `;
 
 export const TabContainer = styled.div`
     display: flex;
-    gap: 28px;
+    gap: 32px;
     justify-content: center;
     margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid ${colors.border};
+    font-size: 12px;
+    font-family: ${fonts.primary};
 `;
 
 export const TabButton = styled.button`
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 12px;
     color: ${colors.text};
-    font-family: 'Lato', sans-serif;
+    font-family: ${fonts.primary};
     font-weight: ${props => props.active ? 700 : 400};
-    border-bottom: ${props => props.active ? `3px solid ${colors.accent}` : '3px solid transparent'};
-    padding-bottom: 10px;
-    margin-bottom: -14px;
-    text-transform: capitalize;
-    transition: all 0.2s ease;
+    opacity: ${props => props.active ? 1 : 0.5};
+    padding: 0;
+    text-transform: uppercase;
 
     &:hover {
-        opacity: 0.8;
+        opacity: 1;
     }
 `;
 
@@ -117,28 +99,53 @@ export const SectionHeader = styled.div`
     display: flex;
     justify-content: space-between;
     margin-bottom: 12px;
+    font-family: ${fonts.primary};
 `;
 
 export const SectionLabel = styled.span`
-    font-size: 10px;
-    font-weight: 700;
-    color: ${colors.muted};
+    font-size: 11px;
+    font-weight: 400;
+    color: ${colors.text};
+    opacity: 0.6;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-family: 'Lato', sans-serif;
+    font-family: ${fonts.primary};
 `;
 
 export const SectionCount = styled.span`
     font-size: 11px;
-    color: ${colors.muted};
-    font-family: 'Lato', sans-serif;
+    color: ${colors.text};
+    opacity: 0.6;
+    font-family: ${fonts.primary};
 `;
 
 export const ProfileUsername = styled.h2`
-    font-family: 'Lato';
-    font-size: 24px;
-    font-weight: 400;
+    font-family: ${fonts.primary};
+    font-size: 20px;
+    font-weight: 700;
     color: ${colors.text};
-    margin: 0 0 4px;
-    text-align: center;
+    margin: 0;
+`;
+
+export const BioRow = styled.div`
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dotted ${colors.border};
+    padding-bottom: 6px;
+    margin-bottom: 6px;
+
+    &:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+`;
+
+export const ProfileHeader = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+`;
+
+export const ProfileHeaderInfo = styled.div`
+    flex: 1;
 `;

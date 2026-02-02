@@ -1,45 +1,39 @@
 import styled from 'styled-components';
 import { GlobalContentWrapper } from './globalStyles';
 
-// Design system colors
 const colors = {
     bg: '#FFFFFF',
-    card: '#F5F1E8',
-    text: '#3D3328',
-    muted: '#9D9485',
-    border: '#D4CFC6',
-    accent: '#C4663D',
+    text: '#000000',
+    muted: 'rgba(0, 0, 0, 0.6)',
+    border: '#000000',
+};
+
+const fonts = {
+    primary: 'Courier, monospace',
 };
 
 export const PostWrapper = GlobalContentWrapper;
 
-export const PostCard = styled.div`
-    background-color: ${colors.card};
-    border: 2px solid ${colors.border};
-    margin-top: 0px;
+export const PostCard = styled.article`
+    padding-bottom: 20px;
+    margin-bottom: 20px;
     cursor: pointer;
-    transition: opacity 0.2s ease;
     width: 100%;
     box-sizing: border-box;
-    overflow: hidden;
-
-    &:hover {
-        opacity: 0.95;
-    }
+    font-family: ${fonts.primary};
 `;
 
 export const PostHeader = styled.div`
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 20px;
-    padding-bottom: 14px;
+    gap: 10px;
+    margin-bottom: 10px;
 `;
 
 export const PostHeaderLeft = styled.div`
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     flex: 1;
 `;
 
@@ -51,45 +45,46 @@ export const PostUserMeta = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
 `;
 
 export const Username = styled.span`
-    font-size: 15px;
-    font-weight: 400;
+    font-size: 14px;
+    font-weight: 700;
     color: ${colors.text};
-    font-family: 'Lato', sans-serif;
+    font-family: ${fonts.primary};
 `;
 
 export const PostTime = styled.span`
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 400;
-    color: ${colors.muted};
-    font-family: 'Lato', sans-serif;
+    color: ${colors.text};
+    opacity: 0.6;
+    font-family: ${fonts.primary};
 `;
 
 export const PostCaption = styled.p`
-    font-size: 15px;
+    font-size: 13px;
     color: ${colors.text};
-    margin: 0;
-    padding: 0 20px 16px 20px;
-    font-family: 'Lato', sans-serif;
-    line-height: 1.55;
+    margin: 0 0 14px 0;
+    padding: 0;
+    font-family: ${fonts.primary};
+    font-style: italic;
+    line-height: 1.5;
 `;
 
 export const PostFooter = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 12px;
-    color: ${colors.muted};
-    font-family: 'Lato', sans-serif;
-    font-style: italic;
+    font-size: 11px;
+    color: ${colors.text};
+    opacity: 0.6;
+    font-family: ${fonts.primary};
 `;
 
 export const PostSavedBy = styled.span`
-    font-size: 12px;
-    color: ${colors.muted};
-    font-family: 'Lato', sans-serif;
-    font-style: italic;
+    font-size: 11px;
+    color: ${colors.text};
+    opacity: 0.6;
+    font-family: ${fonts.primary};
 `;

@@ -120,8 +120,12 @@ function UserProfile() {
             />
             <RestaurantSection>
                 <TabContainer>
-                    <TabButton active={activeTab === 'places'} onClick={() => setActiveTab('places')}>Restaurants</TabButton>
-                    <TabButton active={activeTab === 'posts'} onClick={() => setActiveTab('posts')}>Posts</TabButton>
+                    <TabButton active={activeTab === 'places'} onClick={() => setActiveTab('places')}>
+                        {activeTab === 'places' ? '[PLACES]' : 'PLACES'}
+                    </TabButton>
+                    <TabButton active={activeTab === 'posts'} onClick={() => setActiveTab('posts')}>
+                        {activeTab === 'posts' ? '[POSTS]' : 'POSTS'}
+                    </TabButton>
                 </TabContainer>
                 {activeTab === 'posts' ? (
                     <PostList 

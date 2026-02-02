@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
-// Design system colors
 const colors = {
     bg: '#FFFFFF',
-    card: '#F5F1E8',
-    text: '#3D3328',
-    accent: '#C4663D',
-    warm: '#D4956A',
-    olive: '#8B956A',
+    text: '#000000',
+    border: '#000000',
+};
+
+const fonts = {
+    primary: 'Courier, monospace',
 };
 
 export const AvatarContainer = styled.div`
@@ -17,8 +17,8 @@ export const AvatarContainer = styled.div`
     border-radius: 50%;
     width: ${props => props.size};
     height: ${props => props.size};
-    background: conic-gradient(from 45deg, ${colors.accent}, ${colors.warm}, ${colors.olive}, ${colors.accent});
-    padding: ${props => props.ringWidth || '3px'};
+    border: 1px solid ${colors.border};
+    background-color: ${colors.bg};
     flex-shrink: 0;
 `;
 
@@ -29,8 +29,8 @@ export const AvatarInner = styled.div`
     border-radius: 50%;
     width: 100%;
     height: 100%;
-    background-color: ${props => props.innerBg || colors.card};
-    font-family: 'Rosaline', serif;
+    font-family: ${fonts.primary};
     color: ${colors.text};
     font-size: ${props => props.fontSize};
+    font-weight: 700;
 `;

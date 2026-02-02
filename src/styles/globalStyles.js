@@ -1,143 +1,154 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+const fonts = {
+    primary: 'Courier, monospace',
+};
+
+const colors = {
+    bg: '#FFFFFF',
+    text: '#000000',
+    muted: 'rgba(0, 0, 0, 0.6)',
+    border: '#000000',
+    borderLight: '#fafafa',
+};
+
 // Typography
 export const H1 = styled.h1`
-    font-size: 48px;
-    color: #F5F1E8;
+    font-size: 18px;
+    color: ${colors.text};
     margin: 0;
-    font-family: 'Rosaline', serif;
+    font-family: ${fonts.primary};
+    font-weight: 700;
+    letter-spacing: 0.1em;
 `;
 
 export const H1Centered = styled.h1`
-    font-size: 48px;
+    font-size: 18px;
     text-align: center;
-    color: #F5F1E8;
+    color: ${colors.text};
     margin: 0;
-    font-family: 'Rosaline', serif;
+    font-family: ${fonts.primary};
+    font-weight: 700;
+    letter-spacing: 0.1em;
 `;
 
-
 export const H2 = styled.h2`
-    font-size: 30px;
-    color: #8B4513;
-    font-family: 'Rosaline', serif;
-    margin: 10px 0;
-    margin-bottom: 0px;
+    font-size: 20px;
+    color: ${colors.text};
+    font-family: ${fonts.primary};
+    font-weight: 700;
+    margin: 0;
 `;
 
 export const H2Centered = styled.h2`
-    font-size: 30px;
+    font-size: 20px;
     text-align: center;
-    color: #8B4513;
-    font-family: 'Rosaline', serif;
-    margin: 10px 0;
+    color: ${colors.text};
+    font-family: ${fonts.primary};
+    font-weight: 700;
+    margin: 0;
 `;
 
 export const H3 = styled.h3`
-    font-size: 35px;
-    color: #8B4513;
-    font-family: 'Lato', sans-serif;
-    font-weight: 400;
-    margin: 10px 0;
+    font-size: 18px;
+    color: ${colors.text};
+    font-family: ${fonts.primary};
+    font-weight: 700;
+    margin: 0;
 `;
 
 export const H3Centered = styled.h3`
-    font-size: 35px;
+    font-size: 18px;
     text-align: center;
-    color: #8B4513;
-    font-family: 'Lato', sans-serif;
-    font-weight: 400;
-    margin: 10px 0;
+    color: ${colors.text};
+    font-family: ${fonts.primary};
+    font-weight: 700;
+    margin: 0;
 `;
 
 export const H4 = styled.h4`
-    font-size: 24px;
-    color: #8B4513;
-    font-family: 'Lato', sans-serif;
-    font-weight: 400;
-    margin: 5px 0;
+    font-size: 14px;
+    color: ${colors.text};
+    font-family: ${fonts.primary};
+    font-weight: 700;
+    margin: 0;
 `;
 
 export const H4Centered = styled.h4`
-    font-size: 24px;
+    font-size: 14px;
     text-align: center;
-    color: #8B4513;
-    font-family: 'Lato', sans-serif;
-    font-weight: 400;
-    margin: 5px 0;
+    color: ${colors.text};
+    font-family: ${fonts.primary};
+    font-weight: 700;
+    margin: 0;
 `;
 
 export const H5 = styled.h5`
-    font-size: 18px;
-    color: #D98560;
-    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    color: ${colors.text};
+    font-family: ${fonts.primary};
     font-weight: 400;
-    margin: 5px 0;
+    margin: 0;
 `;
 
 export const H6 = styled.h6`
     font-size: 12px;
-    color: #2C2C2C;
-    font-family: 'Lato', sans-serif;
-    font-style: italic;
-    font-weight: 300;
-    text-decoration: underline;
-    margin: 5px 0;
+    color: ${colors.text};
+    font-family: ${fonts.primary};
+    font-weight: 400;
+    opacity: 0.6;
+    margin: 0;
 `;
 
 export const H6Centered = styled.h6`
     font-size: 12px;
     text-align: center;
-    color: #2C2C2C;
-    font-family: 'Lato', sans-serif;
-    font-style: italic;
-    font-weight: 300;
-    text-decoration: underline;
-    margin: 5px 0;
+    color: ${colors.text};
+    font-family: ${fonts.primary};
+    font-weight: 400;
+    opacity: 0.6;
+    margin: 0;
 `;
 
 // Header/Navigation
-export const HeaderContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100vw;
-    color: #F5F1E8;
-    padding: 25px 40px;
-    margin: auto;
-    margin-bottom: 10px;
-    background-color: #8B4513;
-    box-sizing: border-box;
+export const HeaderContainer = styled.header`
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 16px;
+    border-bottom: 2px solid ${colors.border};
+    margin-bottom: 20px;
+    font-family: ${fonts.primary};
+    color: ${colors.text};
+    background-color: ${colors.bg};
 `;
 
 export const HeaderLogo = styled.div`
-    flex: 0 0 auto;
+    text-align: center;
+    margin-bottom: 4px;
 `;
 
-export const HeaderNav = styled.div`
+export const HeaderNav = styled.nav`
     display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-left: auto;
-    font-family: 'Lato', sans-serif;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 12px;
+    font-size: 12px;
+    font-family: ${fonts.primary};
 `;
 
 export const HeaderProfile = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-left: 20px;
-    flex: 0 0 auto;
+    display: none;
 `;
 
 export const NavLink = styled(Link)`
-    color: #F5F1E8;
+    color: ${colors.text};
     text-decoration: none;
-    font-family: 'Lato', sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    opacity: 0.8;
+    font-family: ${fonts.primary};
+    font-size: 12px;
+    font-weight: ${props => props.$active ? 700 : 400};
+    opacity: ${props => props.$active ? 1 : 0.5};
+    padding: 0;
 
     &:hover {
         opacity: 1;
@@ -147,13 +158,14 @@ export const NavLink = styled(Link)`
 export const SignOutButton = styled.button`
     background: none;
     border: none;
-    color: #F5F1E8;
+    color: ${colors.text};
     cursor: pointer;
-    font-size: 14px;
-    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    font-family: ${fonts.primary};
     font-weight: 400;
     padding: 0;
-    opacity: 0.8;
+    opacity: 0.5;
+    text-transform: uppercase;
 
     &:hover {
         opacity: 1;
@@ -162,22 +174,22 @@ export const SignOutButton = styled.button`
 
 // Buttons
 export const Button = styled.button`
-    background-color: #8B4513;
-    border: 2px solid #D98560;
+    background-color: ${colors.bg};
+    border: 1px solid ${colors.border};
     margin: 0;
-    color: #F5F1E8;
-    padding: 8px 20px;
+    color: ${colors.text};
+    padding: 8px 16px;
     text-align: center;
     text-decoration: none;
     display: inline;
-    font-size: 14px;
+    font-size: 12px;
     cursor: pointer;
-    font-family: 'Lato', sans-serif;
-    transition: all 0.2s ease;
+    font-family: ${fonts.primary};
+    font-weight: 700;
 
     &:hover {
-        background-color: #D98560;
-        color: #2C2C2C;
+        background-color: ${colors.text};
+        color: ${colors.bg};
     }
 `;
 
@@ -185,32 +197,34 @@ export const LinkStyle = styled.button`
     background: none;
     border: none;
     cursor: pointer;
-    color: #8B4513;
-    font-family: 'Lato', sans-serif;
-    font-size: 14px;
+    color: ${colors.text};
+    font-family: ${fonts.primary};
+    font-size: 12px;
     padding: 0;
-    transition: color 0.2s ease;
+    text-decoration: underline;
 
     &:hover {
-        color: #D98560;
+        opacity: 0.6;
     }
 `;
 
 // Background
 export const BackgroundStyles = styled.div`
-    background-color: #FFFFFF;
+    background-color: ${colors.bg};
     min-height: 100vh;
     padding: 0;
+    font-family: ${fonts.primary};
+    color: ${colors.text};
 `;
 
 // General Utilities
 export const SignUpLink = styled(Link)`
-    color: #8B4513;
-    text-decoration: none;
-    font-family: 'Lato', sans-serif;
+    color: ${colors.text};
+    text-decoration: underline;
+    font-family: ${fonts.primary};
 
     &:hover {
-        text-decoration: underline;
+        opacity: 0.6;
     }
 `;
 
@@ -218,20 +232,19 @@ export const Center = styled.div`
     display: flex;
     justify-content: center;
     text-align: center;
-    width: 1230px;
-    color: #2C2C2C;
-    padding: 25px;
+    max-width: 400px;
+    color: ${colors.text};
+    padding: 16px;
     margin: auto;
-    font-family: 'Lato', sans-serif;
+    font-family: ${fonts.primary};
 `;
 
 export const GlobalContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 0;
     height: fit-content;
     width: 100%;
-    // padding-top: 10px;
 `;
 
 // ConfirmDialog Components
@@ -249,44 +262,43 @@ export const ConfirmDialogOverlay = styled.div`
 `;
 
 export const ConfirmDialogContainer = styled.div`
-    background-color: #F5F1E8;
-    border: 2px solid #8B4513;
-    padding: 40px;
-    max-width: 400px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    background-color: ${colors.bg};
+    border: 1px solid ${colors.border};
+    padding: 24px;
+    max-width: 300px;
     text-align: center;
+    font-family: ${fonts.primary};
 `;
 
 export const ConfirmDialogMessage = styled.p`
-    font-family: 'Lato', sans-serif;
-    font-size: 16px;
-    color: #2C2C2C;
-    margin: 0 0 30px 0;
+    font-family: ${fonts.primary};
+    font-size: 13px;
+    color: ${colors.text};
+    margin: 0 0 20px 0;
     line-height: 1.6;
 `;
 
 export const ConfirmDialogButtons = styled.div`
     display: flex;
-    gap: 15px;
+    gap: 12px;
     justify-content: center;
 `;
 
 export const ConfirmDialogButton = styled.button`
-    background-color: ${props => props.danger ? '#8B4513' : '#D4A574'};
-    border: 2px solid ${props => props.danger ? '#D98560' : '#8B4513'};
-    color: ${props => props.danger ? '#F5F1E8' : '#2C2C2C'};
-    padding: 12px 28px;
-    font-family: 'Lato', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
+    background-color: ${props => props.danger ? colors.text : colors.bg};
+    border: 1px solid ${colors.border};
+    color: ${props => props.danger ? colors.bg : colors.text};
+    padding: 8px 16px;
+    font-family: ${fonts.primary};
+    font-size: 12px;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s ease;
-    opacity: ${props => props.disabled ? 0.6 : 1};
+    opacity: ${props => props.disabled ? 0.5 : 1};
     pointer-events: ${props => props.disabled ? 'none' : 'auto'};
 
     &:hover {
-        background-color: ${props => props.danger ? '#D98560' : '#8B4513'};
-        color: ${props => props.danger ? '#2C2C2C' : '#F5F1E8'};
+        background-color: ${props => props.danger ? colors.bg : colors.text};
+        color: ${props => props.danger ? colors.text : colors.bg};
     }
 `;
 
@@ -294,18 +306,17 @@ export const ConfirmDialogButton = styled.button`
 export const KebabMenuButton = styled.button`
     background: none;
     border: none;
-    font-size: 20px;
+    font-size: 18px;
     cursor: pointer;
-    color: #D98560;
+    color: ${colors.text};
     padding: 4px 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: color 0.2s ease;
-    position: relative;
+    font-family: ${fonts.primary};
 
     &:hover {
-        color: #8B4513;
+        opacity: 0.6;
     }
 `;
 
@@ -317,10 +328,9 @@ export const KebabMenuDropdown = styled.div`
     position: absolute;
     top: 100%;
     right: 0;
-    background-color: #F5F1E8;
-    border: 2px solid #D98560;
-    min-width: 150px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background-color: ${colors.bg};
+    border: 1px solid ${colors.border};
+    min-width: 120px;
     z-index: 100;
     margin-top: 4px;
 `;
@@ -329,41 +339,43 @@ export const KebabMenuItem = styled.button`
     width: 100%;
     background: none;
     border: none;
-    padding: 12px 16px;
+    border-bottom: 1px dotted ${colors.border};
+    padding: 10px 14px;
     text-align: left;
-    font-family: 'Lato', sans-serif;
-    font-size: 14px;
-    color: #2C2C2C;
+    font-family: ${fonts.primary};
+    font-size: 12px;
+    color: ${colors.text};
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    text-transform: uppercase;
+
+    &:last-child {
+        border-bottom: none;
+    }
 
     &:hover {
-        background-color: #D98560;
-        color: #F5F1E8;
+        background-color: ${colors.text};
+        color: ${colors.bg};
     }
 `;
 
-// Circular Button (base - no positioning)
+// Circular Button
 export const CircularButton = styled.button`
-    width: 38px;
-    height: 38px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    background-color: #F5F1E8;
-    border: 2px solid #D98560;
-    color: #D98560;
-    font-size: 20px;
+    background-color: ${colors.bg};
+    border: 1px solid ${colors.border};
+    color: ${colors.text};
+    font-size: 14px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: ${fonts.primary};
 
     &:hover {
-        background-color: #D98560;
-        border-color: #D98560;
-        color: #F5F1E8;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+        background-color: ${colors.text};
+        color: ${colors.bg};
     }
 
     &:disabled {
@@ -378,12 +390,13 @@ export const ActionBarContainer = styled.div`
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: #F5F1E8;
-    border-top: 2px solid #8B4513;
-    padding: 15px 20px;
+    background-color: ${colors.bg};
+    border-top: 1px solid ${colors.border};
+    padding: 12px 16px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
     z-index: 100;
+    font-family: ${fonts.primary};
 `;

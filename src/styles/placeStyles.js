@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 import { GlobalContentWrapper } from './globalStyles';
 
-// Design system colors
 const colors = {
     bg: '#FFFFFF',
-    card: '#F5F1E8',
-    text: '#3D3328',
-    muted: '#9D9485',
-    border: '#D4CFC6',
-    accent: '#C4663D',
-    warm: '#D4956A',
-    olive: '#8B956A',
+    text: '#000000',
+    muted: 'rgba(0, 0, 0, 0.6)',
+    border: '#000000',
+    borderLight: '#fafafa',
+};
+
+const fonts = {
+    primary: 'Courier, monospace',
 };
 
 export const PlaceWrapper = GlobalContentWrapper;
@@ -20,30 +20,31 @@ export const PlaceProfileContainer = styled.div`
 `;
 
 export const PlaceContainer = styled.div`
-    background-color: ${colors.card};
+    background-color: ${colors.bg};
     width: 350px;
     margin: auto;
-    margin-top: 50px;
-    padding: 45px;
-    border: 2px solid ${colors.border};
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid ${colors.border};
     text-align: center;
     position: relative;
+    font-family: ${fonts.primary};
 `;
 
 export const PlaceMenuContainer = styled.div`
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 12px;
+    right: 12px;
 `;
 
 export const PlaceItem = styled.div`
     background-color: ${colors.bg};
-    border: ${props => props.variant === 'post' ? `1px solid ${colors.border}` : `2px solid ${colors.border}`};
+    border: 1px solid ${colors.border};
     width: 100%;
     box-sizing: border-box;
     cursor: pointer;
-    transition: opacity 0.2s ease;
     overflow: hidden;
+    font-family: ${fonts.primary};
 
     &:hover {
         opacity: 0.9;
@@ -53,140 +54,139 @@ export const PlaceItem = styled.div`
 export const PlaceImageContainer = styled.div`
     position: relative;
     width: 100%;
+    border-bottom: 1px solid ${colors.border};
 `;
 
 export const PlaceImage = styled.div`
     width: 100%;
-    height: ${props => props.variant === 'post' ? '160px' : '100px'};
-    background-color: ${colors.border};
+    height: ${props => props.variant === 'post' ? '200px' : '100px'};
+    background-color: ${colors.borderLight};
 `;
 
 export const GradientBar = styled.div`
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, ${colors.accent}, ${colors.warm}, ${colors.olive});
+    display: none;
 `;
 
 export const PlaceInfoSection = styled.div`
-    padding: 12px 14px;
+    padding: 12px;
+    font-size: 13px;
+    line-height: 1.7;
 `;
 
 export const PlaceNameRow = styled.div`
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 4px;
+    align-items: center;
+    border-top: 1px dotted ${colors.border};
+    padding-top: 8px;
+    margin-top: 8px;
 `;
 
 export const PlaceName = styled.h3`
-    font-family: 'Lato', sans-serif;
-    font-size: ${props => props.variant === 'post' ? '20px' : '16px'};
-    font-weight: 400;
+    font-family: ${fonts.primary};
+    font-size: ${props => props.variant === 'post' ? '18px' : '14px'};
+    font-weight: 700;
     color: ${colors.text};
-    margin: 0;
+    margin: 0 0 6px 0;
     line-height: 1.2;
 `;
 
-export const RatingPill = styled.div`
-    background-color: ${colors.accent};
-    color: #FFFFFF;
-    padding: 2px 8px;
-    font-size: ${props => props.variant === 'post' ? '12px' : '10px'};
-    font-weight: 600;
-    font-family: 'Lato', sans-serif;
-    flex-shrink: 0;
+export const RatingPill = styled.span`
+    font-family: ${fonts.primary};
+    font-size: ${props => props.variant === 'post' ? '13px' : '12px'};
+    font-weight: 400;
+    color: ${colors.text};
 `;
 
 export const PlaceAddress = styled.p`
-    font-size: ${props => props.variant === 'post' ? '12px' : '10px'};
-    color: ${colors.muted};
-    font-family: 'Lato', sans-serif;
-    margin: 0 0 4px 0;
+    font-size: ${props => props.variant === 'post' ? '13px' : '12px'};
+    color: ${colors.text};
+    opacity: 0.7;
+    font-family: ${fonts.primary};
+    margin: 0;
 `;
 
 export const PlacePrice = styled.span`
-    font-size: ${props => props.variant === 'post' ? '14px' : '12px'};
-    font-weight: 600;
+    font-size: ${props => props.variant === 'post' ? '13px' : '12px'};
+    font-weight: 400;
     color: ${colors.text};
-    font-family: 'Lato', sans-serif;
+    font-family: ${fonts.primary};
 `;
 
-// Legacy exports for compatibility
 export const PlaceMeta = styled.div`
     display: flex;
     align-items: center;
     gap: 8px;
     flex-wrap: wrap;
-    font-family: 'Lato', sans-serif;
-    font-size: 11px;
+    font-family: ${fonts.primary};
+    font-size: 12px;
     color: ${colors.text};
 `;
 
 export const PlaceMetaDivider = styled.span`
-    color: ${colors.warm};
+    opacity: 0.5;
 `;
 
 export const PlaceRating = styled.span`
-    font-size: 11px;
+    font-size: 12px;
     color: ${colors.text};
+    font-family: ${fonts.primary};
 `;
 
 export const PlaceRatingStar = styled.span`
-    color: ${colors.accent};
+    color: ${colors.text};
 `;
 
 export const PlaceRatingCount = styled.span`
-    font-size: 10px;
-    color: ${colors.muted};
+    font-size: 11px;
+    color: ${colors.text};
+    opacity: 0.6;
+    font-family: ${fonts.primary};
 `;
 
 export const PlacedDate = styled.p`
-    font-size: 12px;
-    color: ${colors.muted};
+    font-size: 11px;
+    color: ${colors.text};
+    opacity: 0.6;
     margin-top: 8px;
     margin-bottom: 0;
     margin-left: 0;
-    font-family: 'Lato', sans-serif;
-    font-style: italic;
+    font-family: ${fonts.primary};
     text-align: left;
 `;
 
 export const PlaceActionButton = styled.button`
-    background-color: #8B4513;
-    border: 2px solid ${colors.accent};
+    background-color: ${colors.bg};
+    border: 1px solid ${colors.border};
     margin: 10px;
-    color: #F5F1E8;
-    padding: 15px 32px;
+    color: ${colors.text};
+    padding: 10px 20px;
     text-align: center;
     text-decoration: none;
     display: inline;
-    font-size: 16px;
+    font-size: 12px;
     cursor: pointer;
-    font-family: 'Lato', sans-serif;
-    transition: all 0.2s ease;
+    font-family: ${fonts.primary};
+    font-weight: 700;
 
     &:hover {
-        background-color: ${colors.accent};
-        color: #FFFFFF;
-        border-color: #8B4513;
+        background-color: ${colors.text};
+        color: ${colors.bg};
     }
 `;
 
 export const PlaceGridStyles = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
     width: 100%;
 `;
 
-// Keep old exports for backwards compatibility
 export const PlaceContent = styled.div`
     display: flex;
-    gap: 15px;
+    gap: 12px;
     align-items: flex-start;
+    font-family: ${fonts.primary};
 `;
 
 export const PlaceDetails = styled.div`
@@ -194,4 +194,5 @@ export const PlaceDetails = styled.div`
     flex-direction: column;
     gap: 8px;
     flex: 1;
+    font-family: ${fonts.primary};
 `;

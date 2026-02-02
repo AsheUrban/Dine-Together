@@ -12,23 +12,19 @@ function Avatar({ displayName, size = '44px', variant = 'default' }) {
             .slice(0, 2);
     };
 
-    // Size configurations based on design guide
     const sizeConfigs = {
-        '32px': { fontSize: '14px', ringWidth: '2px' },
-        '36px': { fontSize: '16px', ringWidth: '3px' },
-        '44px': { fontSize: '20px', ringWidth: '3px' },
-        '56px': { fontSize: '24px', ringWidth: '3px' },
-        '80px': { fontSize: '32px', ringWidth: '4px' },
+        '32px': { fontSize: '14px' },
+        '36px': { fontSize: '16px' },
+        '44px': { fontSize: '18px' },
+        '56px': { fontSize: '24px' },
+        '80px': { fontSize: '32px' },
     };
 
-    const config = sizeConfigs[size] || { fontSize: '20px', ringWidth: '3px' };
-
-    // Inner background can vary by context
-    const innerBg = variant === 'header' ? '#FFFFFF' : '#F5F1E8';
+    const config = sizeConfigs[size] || { fontSize: '18px' };
 
     return (
-        <AvatarContainer size={size} ringWidth={config.ringWidth}>
-            <AvatarInner fontSize={config.fontSize} innerBg={innerBg}>
+        <AvatarContainer size={size}>
+            <AvatarInner fontSize={config.fontSize}>
                 {getInitials(displayName)}
             </AvatarInner>
         </AvatarContainer>

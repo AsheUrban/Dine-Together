@@ -1,21 +1,15 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { signOut } from "firebase/auth";
-import { auth } from '../firebase.js';
-import { HeaderContainer, HeaderLogo, H1, HeaderNav, NavLink, HeaderProfile, SignOutButton } from '../styles';
+import { useLocation } from 'react-router-dom';
+import { HeaderContainer, HeaderLogo, H1, HeaderNav, NavLink, HeaderProfile } from '../styles';
 import Avatar from './Avatar';
 
 function Header({ user }) {
-    const navigate = useNavigate();
+    const location = useLocation();
+    const path = location.pathname;
 
-    const handleSignOut = async () => {
-        try {
-            await signOut(auth);
-            navigate('/sign-in');
-        } catch (error) {
-            console.error('Error signing out: ', error);
-        }
-    };
+    const isFeed = path === '/';
+    const isExplore = path === '/search';
+    const isProfile = path.startsWith('/profile');
 
     return (
         <React.Fragment>
@@ -25,12 +19,12 @@ function Header({ user }) {
                 </HeaderLogo>
 
                 <HeaderNav>
-                    <NavLink to="/">Feed</NavLink>
-                    <NavLink to="/search">Explore</NavLink>
+                    <NavLink to="/" $active={isFeed}>{isFeed ? '[FEED]' : 'FEED'}</NavLink>
+                    <NavLink to="/search" $active={isExplore}>{isExplore ? '[EXPLORE]' : 'EXPLORE'}</NavLink>
                     {user ? (
-                        <SignOutButton onClick={handleSignOut}>Sign Out</SignOutButton>
+                        <NavLink to={`/profile/${user.uid}`} $active={isProfile}>{isProfile ? '[PROFILE]' : 'PROFILE'}</NavLink>
                     ) : (
-                        <NavLink to="/sign-in">Sign In</NavLink>
+                        <NavLink to="/sign-in">SIGN IN</NavLink>
                     )}
                 </HeaderNav>
 

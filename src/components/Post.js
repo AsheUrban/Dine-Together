@@ -4,7 +4,7 @@ import Place from './Place';
 import Avatar from './Avatar';
 import KebabMenu from './KebabMenu';
 import { formatDistanceToNow } from 'date-fns';
-import { PostCard, PostHeader, PostHeaderLeft, Username, PostCaption, PostWrapper, PlacedDate } from '../styles';
+import { PostCard, PostHeader, PostHeaderLeft, Username, PostCaption, PostWrapper, PostTime } from '../styles';
 
 function Post({ postId, authorId, username, caption, place, timeOpen, onPostClick, isOwner, onEditPost, onDeletePost, onUserClick }) {
     const handleClick = () => {
@@ -32,9 +32,10 @@ function Post({ postId, authorId, username, caption, place, timeOpen, onPostClic
                 {/* User + Caption Section */}
                 <PostHeader>
                     <PostHeaderLeft onClick={(e) => handleProfileClick(e, authorId)} style={{ cursor: 'pointer' }}>
-                        <Avatar displayName={username} size="44px" variant="post"/>
+                        <Avatar displayName={username} size="32px" variant="post"/>
                         <Username>{username}</Username>
                     </PostHeaderLeft>
+                    <PostTime>{formatDistanceToNow(timeOpen, { addSuffix: true })}</PostTime>
                     {isOwner && (
                         <KebabMenu
                             items={[
@@ -60,7 +61,6 @@ function Post({ postId, authorId, username, caption, place, timeOpen, onPostClic
                     whenPlaceClicked={handleClick}
                 />
             </PostCard>
-            <PlacedDate>{formatDistanceToNow(timeOpen, { addSuffix: true })}</PlacedDate>
         </PostWrapper>
     );
     

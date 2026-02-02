@@ -60,7 +60,10 @@ export {
     SectionHeader,
     SectionLabel,
     SectionCount,
-    ProfileUsername
+    ProfileUsername,
+    BioRow,
+    ProfileHeader,
+    ProfileHeaderInfo
 } from './profileStyles';
 
 export {
@@ -85,7 +88,9 @@ export {
     PlacedDate,
     PlaceActionButton,
     PlaceGridStyles,
-    PlaceMenuContainer
+    PlaceMenuContainer,
+    PlaceContent,
+    PlaceDetails
 } from './placeStyles';
 
 export {
