@@ -40,13 +40,14 @@ Following MVP polish, the project is planned to be refactored to TypeScript with
 
 **Remodel branch** is the active development branch where all new work happens. All features are implemented here first.
 
-**Main branch** (this branch) is a functional snapshot synced with remodel on 2026-01-16. It represents the current state of work and runs without errors, though some features are pending implementation.
+**Main branch** (this branch) is a functional snapshot synced with remodel on 2026-02-01. It represents the current state of work and runs without errors, though some features are pending implementation.
 
 | Branch | Status | Focus |
 |--------|--------|-------|
 | **remodel** | Active Development | All new work developed here. |
-| **wip-redesign** | Active Development | Design exploration. |
-| **main** | Development Snapshot (2026-01-16) | Synced with remodel. Functional snapshot representing current state of active development. |
+| **wip-design** | Exploratory | V1 design exploration. |
+| **wip-design-2** | Exploratory (Active) | V2 receipt-style redesign. This is the design direction moving forward. |
+| **main** | Development Snapshot (2026-02-01) | Synced with remodel. Functional snapshot representing current state of active development. |
 | **Legacy** | Early prototype, capstone project | For memories. |
 
 ---
