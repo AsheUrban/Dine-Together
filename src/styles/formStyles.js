@@ -4,6 +4,7 @@ const colors = {
     bg: '#FFFFFF',
     text: '#000000',
     border: '#000000',
+    inputBg: '#fafafa',
 };
 
 const fonts = {
@@ -12,9 +13,9 @@ const fonts = {
 
 export const FormContainer = styled.div`
     background-color: ${colors.bg};
-    max-width: 350px;
+    max-width: 320px;
+    width: 100%;
     margin: auto;
-    margin-top: 20px;
     padding: 24px;
     border: 1px solid ${colors.border};
     text-align: center;
@@ -28,7 +29,8 @@ export const Input = styled.input`
     margin-bottom: 10px;
     font-family: ${fonts.primary};
     color: ${colors.text};
-    padding: 8px;
+    background: ${colors.inputBg};
+    padding: 10px;
     font-size: 13px;
     width: 100%;
     box-sizing: border-box;
@@ -46,27 +48,14 @@ export const TextArea = styled.textarea`
     font-size: 13px;
 `;
 
-export const BioLabel = styled.label`
+export const FormLabel = styled.label`
     font-family: ${fonts.primary};
-    font-size: 12px;
-    color: ${colors.text};
-    text-transform: uppercase;
-    opacity: 0.6;
-    margin-top: 12px;
-    margin-bottom: 4px;
-    display: block;
-    text-align: left;
-`;
-
-export const PostLabel = styled.label`
-    font-family: ${fonts.primary};
-    font-weight: 400;
-    font-size: 12px;
+    font-size: 11px;
     color: ${colors.text};
     text-transform: uppercase;
     opacity: 0.6;
     margin-top: 10px;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     display: block;
     text-align: left;
 `;
@@ -91,5 +80,13 @@ export const FormButtons = styled.div`
 export const InlineFormWrapper = styled.div`
     position: relative;
     width: 100%;
+    font-family: ${fonts.primary};
+`;
+
+export const FormDivider = styled.div`
+    text-align: center;
+    margin: 20px 0;
+    font-size: 11px;
+    opacity: 0.6;
     font-family: ${fonts.primary};
 `;

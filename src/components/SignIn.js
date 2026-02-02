@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { auth } from './../firebase.js';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
-import { FormContainer, Input, H2, Button, SignUpLink } from '../styles';
+import { CenteredPageWrapper, FormContainer, FormLabel, Input, Button, FormDivider, SignUpLink, H4 } from '../styles';
 import { validateSignIn } from '../utils/validators';
 
 function SignIn(){
@@ -35,32 +35,31 @@ function SignIn(){
         }
 
         return (
-            <React.Fragment>
+            <CenteredPageWrapper>
                 <FormContainer>
-                    <H2>Sign In</H2>
+                    <H4>Sign In</H4>
                     {signInSuccess}
                     <form onSubmit={doSignIn}>
-                        <label htmlFor='email'>Email</label>
+                        <FormLabel htmlFor='email'>Email</FormLabel>
                         <Input
                         id='email'
                         type='text'
                         name='email'
                         placeholder='email' />
                         {errors.email && <p style={{color: 'red', fontSize: '12px'}}>{errors.email}</p>}
-                        <br />
-                        <label htmlFor='password'>Password</label>
+                        <FormLabel htmlFor='password'>Password</FormLabel>
                         <Input
                         id='password'
                         type='password'
                         name='password'
                         placeholder='Password' />
                         {errors.password && <p style={{color: 'red', fontSize: '12px'}}>{errors.password}</p>}
-                        <br />
                         <Button type='submit'>Sign in</Button>
                     </form>
+                    <FormDivider>— OR —</FormDivider>
                     <p>Don't have an account? <SignUpLink to ="/sign-up">Sign up</SignUpLink></p>
                 </FormContainer>
-            </React.Fragment>
+            </CenteredPageWrapper>
         );
   }
 

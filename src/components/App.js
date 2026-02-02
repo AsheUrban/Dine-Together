@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from './Header';
+import Footer from './Footer';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import Feed from './Feed';
@@ -37,6 +38,7 @@ function App(){
             <Route path='/place/:placeId' element={<ProtectedRoute element={<PlaceProfile />} />} />
             <Route path='/search' element={<ProtectedRoute element ={<Explore />} />} />
             </Routes>
+            <Footer user={user} />
         </Router>
     );
 }

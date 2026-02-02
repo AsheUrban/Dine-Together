@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { InlineFormWrapper, TextArea, Button, BioLabel, CharacterCounter, FormButtons } from '../styles';
+import { InlineFormWrapper, TextArea, Button, FormLabel, CharacterCounter, FormButtons } from '../styles';
 
 const BEST_MEAL_LIMIT = 75;
 const GO_TO_MEALS_LIMIT = 75;
@@ -24,7 +24,7 @@ function ReusableProfileForm(props) {
     return (
         <InlineFormWrapper>
             <form id="profileForm" onSubmit={handleSubmit}>
-                <BioLabel htmlFor="bestMeal">Best meal of your life: </BioLabel>
+                <FormLabel htmlFor="bestMeal">Best meal of your life: </FormLabel>
                 <TextArea
                     id="bestMeal"
                     value={bestMeal}
@@ -34,7 +34,7 @@ function ReusableProfileForm(props) {
                 />
                 <CharacterCounter>{bestMeal.length}/{BEST_MEAL_LIMIT}</CharacterCounter>
 
-                <BioLabel htmlFor="goToMeals">Go-To Restaurants:</BioLabel>
+                <FormLabel htmlFor="goToMeals">Go-To Restaurants:</FormLabel>
                 <TextArea
                     id="goToMeals"
                     value={goToMeals}
@@ -44,7 +44,7 @@ function ReusableProfileForm(props) {
                  />
                  <CharacterCounter>{goToMeals.length}/{GO_TO_MEALS_LIMIT}</CharacterCounter>
 
-                <BioLabel htmlFor="aboutMe">About you:</BioLabel>
+                <FormLabel htmlFor="aboutMe">About you:</FormLabel>
                 <TextArea
                     id="aboutMe"
                     value={aboutMe}

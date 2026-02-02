@@ -2,11 +2,11 @@ export {
     FormContainer,
     Input,
     TextArea,
-    BioLabel,
-    PostLabel,
+    FormLabel,
     CharacterCounter,
     FormButtons,
-    InlineFormWrapper
+    InlineFormWrapper,
+    FormDivider
 } from './formStyles';
 
 export {
@@ -43,7 +43,11 @@ export {
     KebabMenuDropdown,
     KebabMenuItem,
     CircularButton,
-    ActionBarContainer
+    ActionBarContainer,
+    CenteredPageWrapper,
+    FooterNavContainer,
+    FooterNavLinks,
+    FooterNavLink
 } from './globalStyles';
 
 export {
