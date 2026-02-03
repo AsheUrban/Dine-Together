@@ -1,14 +1,5 @@
 import styled from 'styled-components';
-
-const colors = {
-    bg: '#FFFFFF',
-    text: '#000000',
-    border: '#000000',
-};
-
-const fonts = {
-    primary: 'Courier, monospace',
-};
+import { colors, fonts } from './theme';
 
 export const AvatarContainer = styled.div`
     display: flex;

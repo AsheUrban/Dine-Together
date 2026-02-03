@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { getPhotoUrl } from '../services/googlePlacesService';
-import { toTitleCase, toSentenceCase, shortenAddress, formatPriceLevel } from '../utils/textFormatters';
+import { toTitleCase, toSentenceCase, splitAddress, formatPriceLevel } from '../utils/textFormatters';
 import {
     PlaceWrapper,
     PlaceItem,
@@ -20,6 +20,7 @@ function Place(props){
     const [imageError, setImageError] = useState(false);
     const photoUrl = props.photoReferences?.[0] ? getPhotoUrl(props.photoReferences[0], 800) : null;
     const variant = props.variant || 'grid';
+    const { street, cityState } = splitAddress(toSentenceCase(props.restaurantAddress));
 
     return (
         <PlaceWrapper>
@@ -44,7 +45,8 @@ function Place(props){
                 </PlaceImageContainer>
                 <PlaceInfoSection>
                     <PlaceName variant={variant}>{toTitleCase(props.restaurantName)}</PlaceName>
-                    <PlaceAddress variant={variant}>{shortenAddress(toSentenceCase(props.restaurantAddress))}</PlaceAddress>
+                    <PlaceAddress variant={variant}>{street}</PlaceAddress>
+                    <PlaceAddress variant={variant}>{cityState}</PlaceAddress>
                     <PlaceNameRow>
                         <PlacePrice variant={variant}>{formatPriceLevel(props.priceLevel) || '\u00A0'}</PlacePrice>
                         {props.rating && (

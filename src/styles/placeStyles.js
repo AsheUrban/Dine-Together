@@ -1,17 +1,6 @@
 import styled from 'styled-components';
 import { GlobalContentWrapper } from './globalStyles';
-
-const colors = {
-    bg: '#FFFFFF',
-    text: '#000000',
-    muted: 'rgba(0, 0, 0, 0.6)',
-    border: '#000000',
-    borderLight: '#fafafa',
-};
-
-const fonts = {
-    primary: 'Courier, monospace',
-};
+import { colors, fonts } from './theme';
 
 export const PlaceWrapper = GlobalContentWrapper;
 
@@ -142,17 +131,6 @@ export const PlaceRatingCount = styled.span`
     color: ${colors.text};
     opacity: 0.6;
     font-family: ${fonts.primary};
-`;
-
-export const PlacedDate = styled.p`
-    font-size: 11px;
-    color: ${colors.text};
-    opacity: 0.6;
-    margin-top: 8px;
-    margin-bottom: 0;
-    margin-left: 0;
-    font-family: ${fonts.primary};
-    text-align: left;
 `;
 
 export const PlaceActionButton = styled.button`

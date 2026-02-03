@@ -1,16 +1,6 @@
 import styled from 'styled-components';
 import { GlobalContentWrapper } from './globalStyles';
-
-const colors = {
-    bg: '#FFFFFF',
-    text: '#000000',
-    muted: 'rgba(0, 0, 0, 0.6)',
-    border: '#000000',
-};
-
-const fonts = {
-    primary: 'Courier, monospace',
-};
+import { colors, fonts } from './theme';
 
 export const PostWrapper = GlobalContentWrapper;
 
@@ -51,14 +41,6 @@ export const Username = styled.span`
     font-size: 14px;
     font-weight: 700;
     color: ${colors.text};
-    font-family: ${fonts.primary};
-`;
-
-export const PostTime = styled.span`
-    font-size: 11px;
-    font-weight: 400;
-    color: ${colors.text};
-    opacity: 0.6;
     font-family: ${fonts.primary};
 `;
 

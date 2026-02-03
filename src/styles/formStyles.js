@@ -1,15 +1,5 @@
 import styled from 'styled-components';
-
-const colors = {
-    bg: '#FFFFFF',
-    text: '#000000',
-    border: '#000000',
-    inputBg: '#fafafa',
-};
-
-const fonts = {
-    primary: 'Courier, monospace',
-};
+import { colors, fonts } from './theme';
 
 export const FormContainer = styled.div`
     background-color: ${colors.bg};

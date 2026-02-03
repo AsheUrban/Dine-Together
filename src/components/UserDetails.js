@@ -7,11 +7,11 @@ import Avatar from './Avatar';
 import KebabMenu from './KebabMenu';
 import EditProfileForm from './EditUserProfileForm';
 import {
+    H2,
     InfoSection,
     BioSection,
-    ProfileBioLabel,
+    Label,
     BioValue,
-    ProfileUsername,
     BioRow,
     ProfileHeader,
     ProfileHeaderInfo
@@ -56,7 +56,7 @@ function UserDetails(props) {
             <ProfileHeader>
                 <Avatar displayName={username} size="56px" variant="profile" />
                 <ProfileHeaderInfo>
-                    <ProfileUsername>{username}</ProfileUsername>
+                    <H2>{username}</H2>
                 </ProfileHeaderInfo>
                 {isOwnProfile && (
                     <KebabMenu
@@ -71,19 +71,19 @@ function UserDetails(props) {
             <BioSection>
                 {userBio.bestMeal && (
                     <BioRow>
-                        <ProfileBioLabel>Best Meal</ProfileBioLabel>
+                        <Label>Best Meal</Label>
                         <BioValue>{userBio.bestMeal}</BioValue>
                     </BioRow>
                 )}
                 {userBio.goToMeals && (
                     <BioRow>
-                        <ProfileBioLabel>Repeat Restaurants</ProfileBioLabel>
+                        <Label>Repeat Restaurants</Label>
                         <BioValue>{userBio.goToMeals}</BioValue>
                     </BioRow>
                 )}
                 {userBio.aboutMe && (
                     <BioRow>
-                        <ProfileBioLabel>About</ProfileBioLabel>
+                        <Label>About</Label>
                         <BioValue>{userBio.aboutMe}</BioValue>
                     </BioRow>
                 )}
