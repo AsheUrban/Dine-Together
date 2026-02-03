@@ -44,7 +44,7 @@ export const H3 = styled.h3`
     color: ${colors.text};
     font-family: ${fonts.primary};
     font-weight: 700;
-    margin: 0;
+    margin: 0 0 20px 0;
 `;
 
 export const H3Centered = styled.h3`

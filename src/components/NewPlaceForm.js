@@ -18,7 +18,7 @@ function NewPlaceForm(props){
             buttonText='Add Restaurant'
         />
     );
-    }
+}
 
     NewPlaceForm.propTypes = {
     onNewPlaceCreation: PropTypes.func.isRequired,
