@@ -38,7 +38,7 @@ Following MVP polish, the project is planned to be refactored to TypeScript with
 
 ---
 
-**Remodel branch** (this branch) is the active development branch where all new work happens. All features are implemented here first.
+**Remodel branch** is the active development branch where all new work happens. All features are implemented here first.
 
 **Main branch** is a functional snapshot synced with remodel on 2026-02-01. It represents the current state of work and runs without errors, though some features are pending implementation.
 
