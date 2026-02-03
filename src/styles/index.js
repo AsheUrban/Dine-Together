@@ -21,6 +21,8 @@ export {
     H5,
     H6,
     H6Centered,
+    Label,
+    MutedText,
     HeaderContainer,
     HeaderLogo,
     HeaderNav,
@@ -47,7 +49,8 @@ export {
     CenteredPageWrapper,
     FooterNavContainer,
     FooterNavLinks,
-    FooterNavLink
+    FooterNavLink,
+    SearchResult
 } from './globalStyles';
 
 export {
@@ -57,13 +60,10 @@ export {
     BioText,
     EditProfileLink,
     BioSection,
-    ProfileBioLabel,
     BioValue,
     TabContainer,
     TabButton,
     SectionHeader,
-    SectionLabel,
-    SectionCount,
     ProfileUsername,
     BioRow,
     ProfileHeader,
@@ -89,7 +89,6 @@ export {
     PlaceRating,
     PlaceRatingStar,
     PlaceRatingCount,
-    PlacedDate,
     PlaceActionButton,
     PlaceGridStyles,
     PlaceMenuContainer,
@@ -114,7 +113,6 @@ export {
     PostUserInfo,
     PostUserMeta,
     Username,
-    PostTime,
     PostCaption,
     PostFooter,
     PostSavedBy,

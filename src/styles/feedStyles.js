@@ -1,8 +1,5 @@
 import styled from 'styled-components';
-
-const fonts = {
-    primary: 'Courier, monospace',
-};
+import { fonts } from './theme';
 
 export const FeedContainer = styled.div`
     display: flex;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FormContainer, H3, Input, } from '../styles';
+import { FormContainer, H3, Input, SearchResult, MutedText } from '../styles';
 import { useExploreSearch } from '../hooks/exploreSearch';
 import { usePlaceSelect } from '../hooks/placeSelect';
 
@@ -32,25 +32,18 @@ function Explore() {
                     onChange={handleSearchChange}
                 />
                 {(loading || selectLoading) && <p>Searching...</p>}
-                {(error || selectError) && <p style={{ color: 'red' }}>{error || selectError}</p>}
+                {(error || selectError) && <MutedText>{error || selectError}</MutedText>}
                 {places.length > 0 && (
-                    <div style={{ textAlign: 'left', marginTop: '10px' }}>
+                    <div>
                         {places.map((place) => (
-                            <div
+                            <SearchResult
                                 key={place.googlePlaceId}
                                 onClick={() => handlePlaceSelect(place)}
-                                style={{
-                                    padding: '10px',
-                                    borderBottom: '1px solid #D4A574',
-                                    cursor: 'pointer'
-                                }}
                             >
                                 <strong>{place.name}</strong>
                                 <br/>
-                                <span style={{ fontSize: '12px', color: '#666' }}>
-                                    {place.address}
-                                </span>
-                            </div>
+                                <MutedText>{place.address}</MutedText>
+                            </SearchResult>
                         ))}
                     </div>
                 )}

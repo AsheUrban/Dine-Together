@@ -1,5 +1,6 @@
 const DIRECTIONS = ['N', 'S', 'E', 'W', 'NE', 'NW', 'SE', 'SW'];
 
+// Currently unused but kept for future implementation
 export const shortenAddress = (address) => {
     if (!address) return '';
 
@@ -8,6 +9,19 @@ export const shortenAddress = (address) => {
     const shortened = parts.slice(0, -1).join(', ');
     return shortened.replace(/\s\d{5}(-\d{4})?$/, '');
 };
+
+export const splitAddress = (address) => {
+    if (!address) return { street: '', cityState: '' };
+
+    const parts = address.split(',').map(p => p.trim());
+    if (parts.length <= 1) return { street: address, cityState: '' };
+
+    const withoutCountry = parts.slice(0, -1);
+    const street = withoutCountry[0] || '';
+    const cityState = withoutCountry.slice(1).join(', ').replace(/\s\d{5}(-\d{4})?$/, '' );
+
+    return { street, cityState };
+}
 
 export const toTitleCase = (str) => {
     if (!str) return '';

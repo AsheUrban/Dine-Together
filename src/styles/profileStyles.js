@@ -1,15 +1,5 @@
 import styled from 'styled-components';
-
-const colors = {
-    bg: '#FFFFFF',
-    text: '#000000',
-    muted: 'rgba(0, 0, 0, 0.6)',
-    border: '#000000',
-};
-
-const fonts = {
-    primary: 'Courier, monospace',
-};
+import { colors, fonts } from './theme';
 
 export const PageContainer = styled.div`
     max-width: 480px;
@@ -31,15 +21,6 @@ export const BioSection = styled.div`
     width: 100%;
     font-size: 12px;
     line-height: 1.8;
-`;
-
-export const ProfileBioLabel = styled.span`
-    font-size: 12px;
-    font-weight: 400;
-    color: ${colors.text};
-    opacity: 0.6;
-    text-transform: uppercase;
-    font-family: ${fonts.primary};
 `;
 
 export const BioValue = styled.span`
@@ -99,22 +80,6 @@ export const SectionHeader = styled.div`
     display: flex;
     justify-content: space-between;
     margin-bottom: 12px;
-    font-family: ${fonts.primary};
-`;
-
-export const SectionLabel = styled.span`
-    font-size: 11px;
-    font-weight: 400;
-    color: ${colors.text};
-    opacity: 0.6;
-    text-transform: uppercase;
-    font-family: ${fonts.primary};
-`;
-
-export const SectionCount = styled.span`
-    font-size: 11px;
-    color: ${colors.text};
-    opacity: 0.6;
     font-family: ${fonts.primary};
 `;
 

@@ -1,17 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
-const fonts = {
-    primary: 'Courier, monospace',
-};
-
-const colors = {
-    bg: '#FFFFFF',
-    text: '#000000',
-    muted: 'rgba(0, 0, 0, 0.6)',
-    border: '#000000',
-    borderLight: '#fafafa',
-};
+import { colors, fonts } from './theme';
 
 // Typography
 export const H1 = styled.h1`
@@ -109,6 +98,23 @@ export const H6Centered = styled.h6`
     font-weight: 400;
     opacity: 0.6;
     margin: 0;
+`;
+
+export const Label = styled.span`
+    font-size: 12px;
+    font-weight: 400;
+    color: ${colors.text};
+    opacity: 0.6;
+    text-transform: uppercase;
+    font-family: ${fonts.primary};
+`;
+
+export const MutedText = styled.span`
+    font-size: 11px;
+    font-weight: 400;
+    color: ${colors.text};
+    opacity: 0.6;
+    font-family: ${fonts.primary};
 `;
 
 // Header/Navigation
@@ -442,3 +448,22 @@ export const FooterNavLink = styled.button`
         opacity: 1;
     }
 `;
+
+// Search Results
+
+export const SearchResult = styled.div`
+    padding: 10px 0;
+    border-bottom: 1px dotted ${colors.border};
+    cursor: pointer;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &:hover {
+        opacity: 0.7;
+    }
+`;
+
+
+
