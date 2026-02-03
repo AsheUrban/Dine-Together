@@ -34,11 +34,11 @@ Following MVP polish, the project is planned to be refactored to TypeScript with
 
 ---
 
-**Current Status:** V2 "receipt-style" redesign in progress on wip-design-2 branch. Footer navigation added, ActionBar repositioned, SignIn/SignUp updated. Style audit completed. Phase 3 (Google Places photos) complete.
+**Current Status:** V2 "receipt-style" redesign in progress. Footer navigation added, ActionBar repositioned, SignIn/SignUp updated. Style audit completed. Phase 3 (Google Places photos) complete. Next: PlaceProfile V2 design.
 
 ---
 
-**Remodel branch** (this branch) is the active development branch where all new work happens. All features are implemented here first.
+**Remodel branch** is the active development branch where all new work happens. All features are implemented here first.
 
 **Main branch** is a functional snapshot synced with remodel on 2026-02-01. It represents the current state of work and runs without errors, though some features are pending implementation.
 
@@ -209,9 +209,20 @@ The inspiration for the aesthetic of this project is vintage menus. Using this a
    ```
    - Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-> **Note:**  
-> - If Firestore reads/writes fail, check your **Firebase Rules** and confirm authentication is enabled.  
+> **Note:**
+> - If Firestore reads/writes fail, check your **Firebase Rules** and confirm authentication is enabled.
 > - The app checks `auth.currentUser` to gate access. You must log in before creating or viewing posts.
+
+5. **Populate test data (optional)**
+
+   Post creation UI is not yet implemented. To populate the Feed with test posts, use the `addTestData.js` script:
+   ```bash
+   node addTestData.js
+   ```
+   > **Note:** This script references place IDs and user IDs specific to the development database. To use it with your own Firebase project, you'll need to:
+   > 1. Create users via the Sign Up flow
+   > 2. Save some places via Explore
+   > 3. Update the script with your user IDs and place IDs
 
 ---
 
@@ -306,10 +317,10 @@ src/
 
 ### **Phase 2: Google Places API Integration** | COMPLETE
 
-1. ~~Google Places Autocomplete in Explore~~ | Complete (using Places API New via REST)
-2. ~~Google Places Details API for full restaurant data~~ | Complete
-3. ~~Save flow with deduplication~~ | Complete (findPlaceByGoogleId checks before creating)
-4. ~~Route-based PlaceProfile~~ | Complete (`/place/:placeId` with usePlace hook)
+- Google Places Autocomplete in Explore (using Places API New via REST)
+- Google Places Details API for full restaurant data
+- Save flow with deduplication (findPlaceByGoogleId checks before creating)
+- Route-based PlaceProfile (`/place/:placeId` with usePlace hook)
 
 ### **Phase 3: Display Google Places Data** | COMPLETE
 
@@ -319,18 +330,19 @@ src/
 - PlaceDetail.js: Display rating, priceLevel, phone, website, photos, embedded map
 - Place.js: Replace PlaceImage placeholder with actual Google photo
 
-### **Phase 4: Save Flow & Post Creation**
-
-- PlaceProfile ActionBar shows "Add" button (if not saved)
-- Add "Create Post" button in PlaceProfile
-- Wire post creation flow
-
-### **Phase 5: Map Integration**
-
+### **Phase 4: UI Redesign & Map Integration**
+- App redesign: Footer navigation, SignIn/SignUp pages, ActionBar repositioning | COMPLETE
+- PlaceProfile design (pending)
 - Enable Maps JavaScript API in Google Cloud Console
 - Add `@react-google-maps/api` dependency
 - Add map view toggle to Explore (list view vs map view)
 - Implement Nearby Search API for map browse mode
+
+### **Phase 5: Save Flow & Post Creation**
+
+- PlaceProfile ActionBar shows "Add" button (if not saved)
+- Add "Create Post" button in PlaceProfile
+- Wire post creation flow
 
 ### **Phase 6: Polish**
 
