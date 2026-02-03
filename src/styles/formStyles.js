@@ -80,3 +80,10 @@ export const FormDivider = styled.div`
     opacity: 0.6;
     font-family: ${fonts.primary};
 `;
+
+export const FormMessage = styled.p`
+    font-size: 12px;
+    color: ${colors.text};
+    font-family: ${fonts.primary};
+    margin: 0 0 16px 0;
+`;

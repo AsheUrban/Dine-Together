@@ -61,7 +61,7 @@ export const H4 = styled.h4`
     color: ${colors.text};
     font-family: ${fonts.primary};
     font-weight: 700;
-    margin: 0;
+    margin: 0 0 20px 0;
 `;
 
 export const H4Centered = styled.h4`
@@ -182,7 +182,7 @@ export const SignOutButton = styled.button`
 export const Button = styled.button`
     background-color: ${colors.bg};
     border: 1px solid ${colors.border};
-    margin: 0;
+    margin: 16px 0 0 0;
     color: ${colors.text};
     padding: 8px 16px;
     text-align: center;
@@ -403,12 +403,9 @@ export const ActionBarContainer = styled.div`
 
 // Centered Page Wrapper
 export const CenteredPageWrapper = styled.div`
-    min-height: 100vh;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    padding: 16px;
+    padding: 90px 16px 0px 16px;
     background-color: ${colors.bg};
     font-family: ${fonts.primary};
 `;

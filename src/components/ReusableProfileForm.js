@@ -24,7 +24,7 @@ function ReusableProfileForm(props) {
     return (
         <InlineFormWrapper>
             <form id="profileForm" onSubmit={handleSubmit}>
-                <FormLabel htmlFor="bestMeal">Best meal of your life: </FormLabel>
+                <FormLabel htmlFor="bestMeal">best meal of your life: </FormLabel>
                 <TextArea
                     id="bestMeal"
                     value={bestMeal}
@@ -34,7 +34,7 @@ function ReusableProfileForm(props) {
                 />
                 <CharacterCounter>{bestMeal.length}/{BEST_MEAL_LIMIT}</CharacterCounter>
 
-                <FormLabel htmlFor="goToMeals">Go-To Restaurants:</FormLabel>
+                <FormLabel htmlFor="goToMeals">go-to restaurants:</FormLabel>
                 <TextArea
                     id="goToMeals"
                     value={goToMeals}
@@ -44,7 +44,7 @@ function ReusableProfileForm(props) {
                  />
                  <CharacterCounter>{goToMeals.length}/{GO_TO_MEALS_LIMIT}</CharacterCounter>
 
-                <FormLabel htmlFor="aboutMe">About you:</FormLabel>
+                <FormLabel htmlFor="aboutMe">about you:</FormLabel>
                 <TextArea
                     id="aboutMe"
                     value={aboutMe}

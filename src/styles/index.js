@@ -6,7 +6,8 @@ export {
     CharacterCounter,
     FormButtons,
     InlineFormWrapper,
-    FormDivider
+    FormDivider,
+    FormMessage
 } from './formStyles';
 
 export {

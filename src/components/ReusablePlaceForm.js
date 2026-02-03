@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { FormContainer, Input, TextArea, Button, FormLabel, FormButtons } from '../styles';
+import { FormContainer, Input, TextArea, Button, FormButtons, MutedText } from '../styles';
 import { validatePlace } from '../utils/validators';
 
 function ReusablePlaceForm(props) {
@@ -37,21 +37,21 @@ function ReusablePlaceForm(props) {
                 type='hidden'
                 name='placeId'
                 defaultValue={props.placeId || ''} />
-            <FormLabel htmlFor='restaurantName'>Restaurant Name:</FormLabel>
             <Input
                 id='restaurantName'
                 type='text'
                 name='restaurantName'
-                defaultValue={props.restaurantName || ''} />
-            {errors?.restaurantName && <p style={{color: 'red', fontSize: '12px'}}>{errors.restaurantName}</p>}
+                defaultValue={props.restaurantName || ''} 
+                placeholder='restaurant name' />
+            <MutedText>{errors.restaurantName}</MutedText>
             <br />
-            <FormLabel htmlFor='notes'>Notes:</FormLabel>
             <TextArea
                 id='notes'
                 name='notes'
                 defaultValue={props.notes || ''}
-                maxLength='200' />
-            {errors?.notes && <p style={{color: 'red', fontSize: '12px'}}>{errors.notes}</p>}
+                maxLength='200' 
+                placeholder='notes'/>
+            <MutedText>{errors.notes}</MutedText>
             <br />
             </form>
             <FormButtons>

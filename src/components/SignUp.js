@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { auth } from './../firebase.js';
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
-import { CenteredPageWrapper, FormContainer, FormLabel, Input, Button, FormDivider, SignUpLink, H4 } from '../styles';
+import { CenteredPageWrapper, FormContainer, FormMessage, MutedText, Input, Button, FormDivider, SignUpLink, H4 } from '../styles';
 import { validateSignUp } from '../utils/validators';
 import { createUserProfile } from '../services/firebaseService.js';
 
@@ -50,38 +50,34 @@ import { createUserProfile } from '../services/firebaseService.js';
         <CenteredPageWrapper>
             <FormContainer>
                 <H4>Sign up</H4>
-                {signUpSuccess}
+                {signUpSuccess && <FormMessage>{signUpSuccess}</FormMessage>}
                 <form onSubmit={doSignUp}>
-                    <FormLabel htmlFor='username'>Username</FormLabel>
                     <Input
                     id='username'
                     type='text'
                     name='username'
-                    placeholder='Username'
+                    placeholder='username'
                     required />
-                    {errors.username && <p style={{color: 'red', fontSize: '12px'}}>{errors.username}</p>}
-                    <FormLabel htmlFor='email'>Email</FormLabel>
+                    <MutedText>{errors.username}</MutedText>
                     <Input
                     id='email'
                     type='text'
                     name='email'
                     placeholder='email'
                     required />
-                    {errors.email && <p style={{color: 'red', fontSize: '12px'}}>{errors.email}</p>}
-                    <FormLabel htmlFor='password'>Password</FormLabel>
+                    <MutedText>{errors.email}</MutedText>
                     <Input
                     id='password'
                     type='password'
                     name='password'
-                    placeholder='Password' />
-                    {errors.password && <p style={{color: 'red', fontSize: '12px'}}>{errors.password}</p>}
-                    <FormLabel htmlFor='passwordConfirm'>Confirm Password</FormLabel>
+                    placeholder='password' />
+                    <MutedText>{errors.password}</MutedText>
                     <Input
                     id='passwordConfirm'
                     type='password'
                     name='passwordConfirm'
-                    placeholder='Confirm Password' />
-                    {errors.passwordConfirm && <p style={{color: 'red', fontSize: '12px'}}>{errors.passwordConfirm}</p>}
+                    placeholder='confirm password' />
+                    <MutedText>{errors.passwordConfirm}</MutedText>
                     <Button type='submit'>Sign up</Button>
                 </form>
                 <FormDivider>— OR —</FormDivider>
