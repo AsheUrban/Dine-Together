@@ -7,7 +7,6 @@ import {
     PlaceItem,
     PlaceImageContainer,
     PlaceImage,
-    GradientBar,
     PlaceInfoSection,
     PlaceNameRow,
     PlaceName,
@@ -41,7 +40,6 @@ function Place(props){
                     ) : (
                         <PlaceImage variant={variant} />
                     )}
-                    <GradientBar />
                 </PlaceImageContainer>
                 <PlaceInfoSection>
                     <PlaceName variant={variant}>{toTitleCase(props.restaurantName)}</PlaceName>

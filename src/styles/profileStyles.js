@@ -37,19 +37,6 @@ export const RestaurantSection = styled.div`
     font-family: ${fonts.primary};
 `;
 
-export const BioText = styled.p`
-    font-family: ${fonts.primary};
-    font-size: 12px;
-    color: ${colors.text};
-    margin: 0;
-    line-height: 1.5;
-    font-weight: 400;
-`;
-
-export const EditProfileLink = styled.button`
-    display: none;
-`;
-
 export const TabContainer = styled.div`
     display: flex;
     gap: 32px;
@@ -74,21 +61,6 @@ export const TabButton = styled.button`
     &:hover {
         opacity: 1;
     }
-`;
-
-export const SectionHeader = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 12px;
-    font-family: ${fonts.primary};
-`;
-
-export const ProfileUsername = styled.h2`
-    font-family: ${fonts.primary};
-    font-size: 20px;
-    font-weight: 700;
-    color: ${colors.text};
-    margin: 0;
 `;
 
 export const BioRow = styled.div`

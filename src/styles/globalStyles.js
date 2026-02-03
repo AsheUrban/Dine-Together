@@ -143,10 +143,6 @@ export const HeaderNav = styled.nav`
     font-family: ${fonts.primary};
 `;
 
-export const HeaderProfile = styled.div`
-    display: none;
-`;
-
 export const NavLink = styled(Link)`
     color: ${colors.text};
     text-decoration: none;

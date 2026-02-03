@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { AvatarContainer, AvatarInner } from '../styles/avatarStyles';
 
-function Avatar({ displayName, size = '44px', variant = 'default' }) {
+function Avatar({ displayName, size = '44px' }) {
     const getInitials = (name) => {
         if (!name) return ' ';
         return name
@@ -34,7 +34,6 @@ function Avatar({ displayName, size = '44px', variant = 'default' }) {
 Avatar.propTypes = {
     displayName: PropTypes.string.isRequired,
     size: PropTypes.string,
-    variant: PropTypes.oneOf(['default', 'header', 'profile'])
 };
 
 export default Avatar;

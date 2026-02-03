@@ -52,10 +52,6 @@ export const PlaceImage = styled.div`
     background-color: ${colors.borderLight};
 `;
 
-export const GradientBar = styled.div`
-    display: none;
-`;
-
 export const PlaceInfoSection = styled.div`
     padding: 12px;
     font-size: 13px;
@@ -131,26 +127,6 @@ export const PlaceRatingCount = styled.span`
     color: ${colors.text};
     opacity: 0.6;
     font-family: ${fonts.primary};
-`;
-
-export const PlaceActionButton = styled.button`
-    background-color: ${colors.bg};
-    border: 1px solid ${colors.border};
-    margin: 10px;
-    color: ${colors.text};
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline;
-    font-size: 12px;
-    cursor: pointer;
-    font-family: ${fonts.primary};
-    font-weight: 700;
-
-    &:hover {
-        background-color: ${colors.text};
-        color: ${colors.bg};
-    }
 `;
 
 export const PlaceGridStyles = styled.div`
