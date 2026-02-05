@@ -171,59 +171,75 @@ The inspiration for the aesthetic of this project is vintage menus. Using this a
 - **Global Notes:** Notes are stored on global `places` collection. When any user edits notes, it changes for all users. Will be fixed with NotesSection architecture (per-user notes in userPlaces subcollection) after API integration.
 
 ---
+ ## **Setup / Installation**
 
-## **Setup / Installation (Main Branch)**
-> You need a Firebase project and a local environment file to run the app.
+ ### Prerequisites
+ - Node.js 18+ ([download](https://nodejs.org/))
+ - Google account for Firebase/Google Cloud
 
-1. **Clone and install**
-   ```bash
-   git clone https://github.com/AsheUrban/Dine-Together.git
-   cd Dine-Together
-   npm install
-   ```
+ ### 1. Clone and Install
+ ```bash
+ git clone https://github.com/AsheUrban/Dine-Together.git
+ cd Dine-Together
+ npm install
+ ```
 
-2. **Create a Firebase project**
-   - Go to [Firebase Console](https://console.firebase.google.com) and create a new project.
-   - Add a **Web App** to retrieve your Firebase config (API key, project ID, etc.).
-   - Enable **Authentication** (Email/Password or Google Sign-In) under *Build → Authentication*.
-   - Create a **Cloud Firestore** database (test or production mode is fine).
+ ### 2. Firebase Project Setup
+ 1. Go to [Firebase Console](https://console.firebase.google.com/) → Create project
+ 2. Add a Web App → Copy the config values to use in .env file (see step 4)
+ 3. Build → Authentication → Get started → Enable Email/Password
+ 4. Build → Firestore Database → Create database → Start in test mode
 
-3. **Create `.env.local` (required)**
-   - In the project root, create a file named `.env.local`
-   - Add your Firebase config variables exactly as they appear in your Firebase console:
-     ```bash
-     REACT_APP_FIREBASE_API_KEY=YOUR_API_KEY
-     REACT_APP_FIREBASE_AUTH_DOMAIN=YOUR_PROJECT.firebaseapp.com
-     REACT_APP_FIREBASE_PROJECT_ID=YOUR_PROJECT_ID
-     REACT_APP_FIREBASE_STORAGE_BUCKET=YOUR_PROJECT.appspot.com
-     REACT_APP_FIREBASE_MESSAGING_SENDER_ID=YOUR_SENDER_ID
-     REACT_APP_FIREBASE_APP_ID=YOUR_APP_ID
-     REACT_APP_GOOGLE_PLACES_API_KEY=YOUR_GOOGLE_PLACES_API_KEY
-     ```
-   - Add `.env.local` to `.gitignore` and **do not commit** this file.
+ ### 3. Google Places API Setup
+ 1. Go to [Google Cloud Console](https://console.cloud.google.com/) → Select your Firebase project
+ 2. APIs & Services → Library → Enable **Places API (New)**
+ 3. APIs & Services → Credentials → Create Credentials → API Key
+ 4. Create two keys:
+    - **Frontend key**: Restrict to `http://localhost:3000/*`
+    - **Server key**: No application restrictions (for Cloud Function)
 
-4. **Run the app**
-   ```bash
-   npm run build
-   npm start
-   ```
-   - Open [http://localhost:3000](http://localhost:3000) in your browser.
+ ### 4. Environment File
+ Create `.env.local` in project root. Find these values in Firebase Console → Project Settings → Your apps → Web app (refer back to step 2):
 
-> **Note:**
-> - If Firestore reads/writes fail, check your **Firebase Rules** and confirm authentication is enabled.
-> - The app checks `auth.currentUser` to gate access. You must log in before creating or viewing posts.
+ ```bash
+ REACT_APP_FIREBASE_API_KEY=your_api_key
+ REACT_APP_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+ REACT_APP_FIREBASE_PROJECT_ID=your-project-id
+ REACT_APP_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
+ REACT_APP_FIREBASE_SENDER_ID=your_sender_id
+ REACT_APP_FIREBASE_APP_ID=your_app_id
+ REACT_APP_GOOGLE_PLACES_API_KEY=your_frontend_api_key
+ ```
 
-5. **Populate test data (optional)**
+ ### 5. Deploy Cloud Function (required for photos)
+ ```bash
+ npm install -g firebase-tools
+ firebase login
+ firebase use --add          # Select your project, alias: default
+ firebase functions:secrets:set GOOGLE_PLACES_API_KEY   # Paste server API key
+ cd functions && npm install && cd ..
+ firebase deploy --only functions
+ ```
+ Update `PHOTO_FUNCTION_URL` in `src/services/googlePlacesService.js` with your deployed URL.
 
-   Post creation UI is not yet implemented. To populate the Feed with test posts, use the `addTestData.js` script:
-   ```bash
-   node addTestData.js
-   ```
-   > **Note:** This script references place IDs and user IDs specific to the development database. To use it with your own Firebase project, you'll need to:
-   > 1. Create users via the Sign Up flow
-   > 2. Save some places via Explore
-   > 3. Update the script with your user IDs and place IDs
+ ### 6. Run
+ ```bash
+ npm start
+ ```
+ Open [http://localhost:3000](http://localhost:3000)
 
+ ### 7. Populate Test Data (optional)
+ ```bash
+ node addTestData.js
+ ```
+ > **Note:** This script references place IDs and user IDs specific to the development database. To use it with your own Firebase project:
+ > 1. Create users via the Sign Up flow
+ > 2. Save some places via Explore
+ > 3. Update the script with your user IDs and place IDs
+
+ ---
+
+ #### See [SETUP.md](./SETUP.md) for step-by-step, in depth instructions with Firestore security rules and troubleshooting.
 ---
 
 ## **Project Structure**
