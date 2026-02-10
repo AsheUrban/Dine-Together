@@ -142,11 +142,3 @@ export const PlaceContent = styled.div`
     align-items: flex-start;
     font-family: ${fonts.primary};
 `;
-
-export const PlaceDetails = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    flex: 1;
-    font-family: ${fonts.primary};
-`;

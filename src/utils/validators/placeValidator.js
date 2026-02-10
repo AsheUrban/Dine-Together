@@ -1,10 +1,6 @@
 export const validatePlace = (placeId, restaurantName, notes) => {
     const errors = {};
 
-    // if(!placeId || placeId.trim() === '') {
-    //     errors.placeId = 'Please select a restaurant from the search results.';
-    // }
-
     if(!restaurantName.trim()) {
         errors.restaurantName = 'Restaurant name is required';
     }

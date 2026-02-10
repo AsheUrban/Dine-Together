@@ -117,7 +117,7 @@ export const MutedText = styled.span`
     font-family: ${fonts.primary};
 `;
 
-// Header/Navigation
+// Header
 export const HeaderContainer = styled.header`
     max-width: 480px;
     margin: 0 auto;
@@ -132,46 +132,6 @@ export const HeaderContainer = styled.header`
 export const HeaderLogo = styled.div`
     text-align: center;
     margin-bottom: 4px;
-`;
-
-export const HeaderNav = styled.nav`
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    margin-top: 12px;
-    font-size: 12px;
-    font-family: ${fonts.primary};
-`;
-
-export const NavLink = styled(Link)`
-    color: ${colors.text};
-    text-decoration: none;
-    font-family: ${fonts.primary};
-    font-size: 12px;
-    font-weight: ${props => props.$active ? 700 : 400};
-    opacity: ${props => props.$active ? 1 : 0.5};
-    padding: 0;
-
-    &:hover {
-        opacity: 1;
-    }
-`;
-
-export const SignOutButton = styled.button`
-    background: none;
-    border: none;
-    color: ${colors.text};
-    cursor: pointer;
-    font-size: 12px;
-    font-family: ${fonts.primary};
-    font-weight: 400;
-    padding: 0;
-    opacity: 0.5;
-    text-transform: uppercase;
-
-    &:hover {
-        opacity: 1;
-    }
 `;
 
 // Buttons

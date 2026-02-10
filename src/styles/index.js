@@ -26,9 +26,6 @@ export {
     MutedText,
     HeaderContainer,
     HeaderLogo,
-    HeaderNav,
-    NavLink,
-    SignOutButton,
     Button,
     LinkStyle,
     BackgroundStyles,
@@ -86,8 +83,7 @@ export {
     PlaceRatingCount,
     PlaceGridStyles,
     PlaceMenuContainer,
-    PlaceContent,
-    PlaceDetails
+    PlaceContent
 } from './placeStyles';
 
 export {
