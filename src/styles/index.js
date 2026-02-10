@@ -2,11 +2,12 @@ export {
     FormContainer,
     Input,
     TextArea,
-    BioLabel,
-    PostLabel,
+    FormLabel,
     CharacterCounter,
     FormButtons,
-    InlineFormWrapper
+    InlineFormWrapper,
+    FormDivider,
+    FormMessage
 } from './formStyles';
 
 export {
@@ -21,12 +22,10 @@ export {
     H5,
     H6,
     H6Centered,
+    Label,
+    MutedText,
     HeaderContainer,
     HeaderLogo,
-    HeaderNav,
-    HeaderProfile,
-    NavLink,
-    SignOutButton,
     Button,
     LinkStyle,
     BackgroundStyles,
@@ -43,18 +42,25 @@ export {
     KebabMenuDropdown,
     KebabMenuItem,
     CircularButton,
-    ActionBarContainer
+    ActionBarContainer,
+    CenteredPageWrapper,
+    FooterNavContainer,
+    FooterNavLinks,
+    FooterNavLink,
+    SearchResult
 } from './globalStyles';
 
 export {
     PageContainer,
     InfoSection,
     RestaurantSection,
-    BioText,
-    EditProfileLink,
     BioSection,
+    BioValue,
     TabContainer,
-    TabButton
+    TabButton,
+    BioRow,
+    ProfileHeader,
+    ProfileHeaderInfo
 } from './profileStyles';
 
 export {
@@ -62,13 +68,22 @@ export {
     PlaceProfileContainer,
     PlaceWrapper,
     PlaceItem,
-    PlaceContent,
+    PlaceImageContainer,
     PlaceImage,
-    PlaceDetails,
-    PlacedDate,
-    PlaceActionButton,
+    PlaceInfoSection,
+    PlaceNameRow,
+    PlaceName,
+    RatingPill,
+    PlaceMeta,
+    PlaceMetaDivider,
+    PlaceAddress,
+    PlacePrice,
+    PlaceRating,
+    PlaceRatingStar,
+    PlaceRatingCount,
     PlaceGridStyles,
-    PlaceMenuContainer
+    PlaceMenuContainer,
+    PlaceContent
 } from './placeStyles';
 
 export {
@@ -76,7 +91,8 @@ export {
 } from './feedStyles';
 
 export {
-    AvatarContainer
+    AvatarContainer,
+    AvatarInner
 } from './avatarStyles';
 
 export {
@@ -84,6 +100,10 @@ export {
     PostCard,
     PostHeader,
     PostHeaderLeft,
+    PostUserInfo,
+    PostUserMeta,
     Username,
     PostCaption,
+    PostFooter,
+    PostSavedBy,
 } from './postStyles';

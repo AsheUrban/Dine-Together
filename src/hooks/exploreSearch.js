@@ -3,8 +3,7 @@ import { searchPlaces } from '../services/googlePlacesService';
 
 export const useExploreSearch = (query) => {
     const [places, setPlaces] = useState([]);
-    const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState({ places: false, users: false });
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [coordinates, setCoordinates] = useState(null);
 
@@ -28,7 +27,6 @@ export const useExploreSearch = (query) => {
     useEffect(() => {
         if (query.length < 2) {
             setPlaces([]);
-            setUsers([]);
             return;
         }
 
@@ -56,11 +54,8 @@ export const useExploreSearch = (query) => {
 
     return {
         places,
-        users,
-        loading: loading.places || loading.users,
-        placesLoading: loading.places,
-        usersLoading: loading.users,
+        loading,
         error,
-        hasResults: places.length > 0 || users.length > 0
+        hasResults: places.length > 0 
     };
 };

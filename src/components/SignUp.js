@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { auth } from './../firebase.js';
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
-import { FormContainer, Input, H2, Button, SignUpLink } from '../styles';
+import { CenteredPageWrapper, FormContainer, FormMessage, MutedText, Input, Button, FormDivider, SignUpLink, H4 } from '../styles';
 import { validateSignUp } from '../utils/validators';
 import { createUserProfile } from '../services/firebaseService.js';
 
@@ -47,50 +47,43 @@ import { createUserProfile } from '../services/firebaseService.js';
     }
 
     return (
-        <React.Fragment>
+        <CenteredPageWrapper>
             <FormContainer>
-                <H2>Sign up</H2>
-                {signUpSuccess}
+                <H4>Sign up</H4>
+                {signUpSuccess && <FormMessage>{signUpSuccess}</FormMessage>}
                 <form onSubmit={doSignUp}>
-                    <label htmlFor='username'>Username</label>
                     <Input
                     id='username'
                     type='text'
                     name='username'
-                    placeholder='Username'
+                    placeholder='username'
                     required />
-                    {errors.username && <p style={{color: 'red', fontSize: '12px'}}>{errors.username}</p>}
-                    <br />
-                    <label htmlFor='email'>Email</label>
+                    <MutedText>{errors.username}</MutedText>
                     <Input
                     id='email'
                     type='text'
                     name='email'
                     placeholder='email'
                     required />
-                    {errors.email && <p style={{color: 'red', fontSize: '12px'}}>{errors.email}</p>}
-                    <br />
-                    <label htmlFor='password'>Password</label>
+                    <MutedText>{errors.email}</MutedText>
                     <Input
                     id='password'
                     type='password'
                     name='password'
-                    placeholder='Password' />
-                    {errors.password && <p style={{color: 'red', fontSize: '12px'}}>{errors.password}</p>}
-                    <br />
-                    <label htmlFor='passwordConfirm'>Confirm Password</label>
+                    placeholder='password' />
+                    <MutedText>{errors.password}</MutedText>
                     <Input
                     id='passwordConfirm'
                     type='password'
                     name='passwordConfirm'
-                    placeholder='Confirm Password' />
-                    {errors.passwordConfirm && <p style={{color: 'red', fontSize: '12px'}}>{errors.passwordConfirm}</p>}
-                    <br />
+                    placeholder='confirm password' />
+                    <MutedText>{errors.passwordConfirm}</MutedText>
                     <Button type='submit'>Sign up</Button>
                 </form>
+                <FormDivider>— OR —</FormDivider>
                 <p>Already have an account? <SignUpLink to ="/sign-in">Sign in</SignUpLink></p>
             </FormContainer>
-        </React.Fragment>
+        </CenteredPageWrapper>
     );
 }
 

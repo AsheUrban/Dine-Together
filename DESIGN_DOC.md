@@ -1,7 +1,7 @@
 # Dine-Together Design Document
 
-**Last Updated:** 2026-01-20
-**Status:** ACTIVE - Phase 3 planning complete (photos via Cloud Function, PlaceDetail design)
+**Last Updated:** 2026-02-03
+**Status:** ACTIVE - Phase 3 in progress (Place.js displays Google data, PlaceDetail V2 next)
 
 ---
 
@@ -59,19 +59,98 @@ Feed.js / UserProfile.js (Route-level containers - manage state, hooks, navigati
 - Makes Firebase calls: updatePlace (for notes), removeFromSavedPlaces
 - Rendered by Feed.js / UserProfile.js when a place is selected
 
-**NotesSection** - User's personal notes layer (FUTURE - after API integration)
-- Will show user's notes for this place (from userPlaces subcollection)
-- Two fields:
-  - `generalNote` - public, shown when others view your saved list
-  - `privateNote` - private, only you see it
-- Will contain KebabMenu for Edit Notes / Remove actions
-- Only appears when user has saved the place
-- Design deferred until Google Places API provides real data/photos to inform layout
+**NotesSection** - DEPRECATED, replaced by Place Attributes
+- Original concept: per-user notes (generalNote/privateNote) on saved places
+- **Decision (2026-02-03):** Replaced by structured Place Attributes system (TS migration)
+- Free-form thoughts captured in post captions ("What Friends Say" section)
+- See "Place Attributes (Crowdsourced Metadata)" in Future section
 
 **ActionBar** - Fixed bottom action container
 - Purely presentational (receives children)
 - Fixed positioning at bottom of screen
 - Contains: Back button, "Saved by" info, Add button (conditional)
+
+### PlaceProfile V2 Design (2026-02-03)
+
+**Wireframe:** `src/img/place-profile-v2.png`
+
+**Layout Structure (top to bottom):**
+```
+┌─────────────────────────────────────┐
+│ Restaurant Header                   │
+│   Name                    ★ Rating  │
+│   Type | Price                      │
+├─────────────────────────────────────┤
+│ Hero Photo                          │
+│                                     │
+├─────────────────────────────────────┤
+│ Photo Thumbnails (gallery)          │
+│ [1] [2] [3] [4] [5]                 │
+├─────────────────────────────────────┤
+│ SAVED BY X FRIENDS                  │
+│ (avatar circles)                    │
+├─────────────────────────────────────┤
+│ Map Card                            │
+│ ┌─────────────────────────────────┐ │
+│ │         (static map)            │ │
+│ │                                 │ │
+│ ├─────────────────────────────────┤ │
+│ │ Street Address                  │ │
+│ │ City, State ZIP                 │ │
+│ └─────────────────────────────────┘ │
+├─────────────────────────────────────┤
+│ Details Card                        │
+│ ┌─────────────────────────────────┐ │
+│ │ HOURS      Tue-Sat 5pm-10pm     │ │
+│ │ PHONE      (503) 544-2100       │ │
+│ │ WEBSITE    canardpdx.com        │ │
+│ │ REVIEWS    847 on Google        │ │
+│ └─────────────────────────────────┘ │
+├─────────────────────────────────────┤
+│ WHAT FRIENDS SAY (X)                │
+│ ┌─────────────────────────────────┐ │
+│ │ (B) Username        2 hours ago │ │
+│ │ "Caption text here"             │ │
+│ ├─────────────────────────────────┤ │
+│ │ (F) Username          1 week ago│ │
+│ │ "Caption text here"             │ │
+│ └─────────────────────────────────┘ │
+├─────────────────────────────────────┤
+│ - END -                             │
+└─────────────────────────────────────┘
+
+ActionBar (fixed bottom-left):
+[←] [+] [share] [navigate]
+```
+
+**ActionBar Buttons:**
+1. **Back (←)** - Navigate back
+2. **Save (+)** - Add to wishlist (hidden if already saved)
+3. **Share** - Create post about this place (triggers NewPostForm flow)
+4. **Navigate** - Open directions in Google Maps
+
+**Responsive ActionBar Behavior:**
+- **Web (>480px):** All 4 buttons displayed inline horizontally
+- **Mobile (≤480px):** Collapsed to single expandable FAB
+  - Tap to expand vertically (speed dial pattern)
+  - Buttons stack: Navigate → Share → Save → Back
+- **TS/React Native migration:** Build dedicated expandable FAB component
+
+**New Data Requirements:**
+- `location` (lat/lng) - Required for map display and navigate button
+- `currentOpeningHours` - For HOURS display
+- `primaryType` - For "French, Wine Bar" subtitle
+
+**New Query Required:**
+- Posts by placeId: "What Friends Say" section needs `subscribeToPostsByPlace(placeId)`
+
+**Map Strategy (2026-02-03):**
+- **Decision:** Interactive maps on both Explore and PlaceProfile
+- **Rationale:** Explore requires interactive map for browse/search, so Maps JS SDK is already committed. PlaceProfile should match for consistency.
+- **Implementation:** Single reusable `<Map>` component
+  - Explore: Multiple pins, pan/zoom to browse nearby
+  - PlaceProfile: Single pin, centered on restaurant location
+- **Dependency:** Google Maps JavaScript SDK (`@react-google-maps/api`)
 
 ### Key Architectural Principles
 
@@ -1094,46 +1173,50 @@ UserProfile re-renders → PlaceGrid shows updated list without removed place
 
 ### Current Sprint
 
-5. **Google Places API Integration** - IN PROGRESS
-   - COMPLETE | Chunk 1: Autocomplete search (Places API New via REST) 
-   - WIP | Chunk 2: Place details fetch, save to Firestore
+5. **Google Places API Integration** - COMPLETE
+   - COMPLETE | Chunk 1: Autocomplete search (Places API New via REST)
+   - COMPLETE | Chunk 2: Place details fetch, save to Firestore (2026-01-18)
    - See API_DESIGN.md for full implementation details
 
-### Next (After API Integration)
+6. **Phase 3: Display Google Places Data** - IN PROGRESS
+   - COMPLETE | Place.js (card) shows photos, rating, price
+   - WIP | PlaceDetail.js V2 design (full Google data display)
 
-6. **Combined Search: Restaurants + People**
+### Next (After PlaceDetail V2)
+
+7. **Combined Search: Restaurants + People**
    - Single search bar queries both sources
    - Firestore users query for people search
    - Results in two sections: Restaurants first, People second
    - Restaurant click → PlacePreview with save/post options
    - People click → Navigate to /profile/{userId}
 
-7. **Manual Entry as Fallback**
+8. **Manual Entry as Fallback**
    - Show "Can't find it? Add manually" when Google API returns no results
    - Wire NewPlaceForm
    - No photo upload in MVP (deferred to TS refactor)
 
-### After API Integration (Design with Real Data)
+### After Core V2 Implementation
 
-8. **NotesSection Component**
-   - Design with actual photos/data to inform layout
-   - Create NotesSection wrapper for user's notes
-   - Move KebabMenu into NotesSection (Edit Notes, Remove)
-   - generalNote (public) + privateNote (private) fields
-
-9. **Notes Schema Update**
-   - Add generalNote and privateNote to userPlaces subcollection
-   - Create updateUserPlaceNotes service function
-   - Migrate from global notes bug
-
-10. **PlaceProfile "Create Post" Button**
-    - Add to ActionBar or NotesSection (decide with real layout)
+9. **PlaceProfile "Create Post" Button**
+    - Add Share button to ActionBar
     - Opens NewPostForm with place pre-filled
     - Completes decoupled save/post workflow
 
-11. **Form Validation & Error Handling**
-    - Add validation to all forms (posts, places, profile, notes)
+10. **Form Validation & Error Handling**
+    - Add validation to all forms (posts, places, profile)
     - Improve user feedback on failures
+
+### Deferred from MVP
+
+11. **Manual Entry Fallback** → TS Migration
+    - "Can't find it? Add manually" when Google returns no results
+    - Requires photo upload, validation strategy
+
+12. **NotesSection** → Replaced by Place Attributes (TS)
+    - Original generalNote/privateNote concept replaced
+    - Structured attributes more valuable than free-form notes
+    - Free-form thoughts captured in post captions instead
 
 ### Future (TypeScript Refactor/Rebuild - Enhanced Version)
 
@@ -1151,6 +1234,50 @@ UserProfile re-renders → PlaceGrid shows updated list without removed place
 7. **Type safety throughout** - Full TypeScript coverage with strict mode
 8. **Schema validation** - Zod or Yup for runtime validation
 9. **URL slugs** - Human-readable URLs for places (e.g., `/place/salish-lodge` instead of `/place/1ErUK60UxbIpi7BauDvF`). Generate from restaurant name, handle collisions, store on place document.
+
+#### Place Attributes (Crowdsourced Metadata)
+
+**Vision:** Capture structured, user-generated information about places that Google doesn't provide reliably. Leverage trusted social connections - info from friends is more valuable than anonymous reviews.
+
+**Attribute Categories:**
+- **Accessibility** - Wheelchair accessible, hearing loop, braille menu, service animals welcome
+- **Dietary** - Nut-free kitchen, vegan options, gluten-free, halal, kosher
+- **Ambiance** - Quiet, loud, good for kids, date night, good for groups, outdoor seating
+- **Practical** - Easy parking, reservations needed, cash only, long waits typical
+
+**How it works:**
+1. User saves a place or visits PlaceProfile
+2. Option to add attributes: "Tag this place" or "Add info"
+3. Select from predefined attribute list (not free text)
+4. Attributes aggregated: "3 friends marked this as wheelchair accessible"
+5. Filter/search by attributes in Explore: "Show me quiet, nut-free restaurants"
+
+**Why structured (not free-form notes):**
+- Searchable and filterable
+- Aggregatable across users
+- Consistent data quality
+- Enables discovery by attribute
+
+**Trust layer:**
+- Show who contributed each attribute
+- Weight by social connection (friends' input ranked higher)
+- Optional: confirmation from multiple users increases confidence
+
+**Schema concept:**
+```javascript
+// placeAttributes/{placeId}/attributes/{attributeId}
+{
+    attributeType: 'dietary',
+    attributeValue: 'nut-free-kitchen',
+    addedBy: userId,
+    addedAt: timestamp,
+    confirmedBy: [userId, userId],  // Others who agree
+}
+```
+
+**Replaces:** Original "NotesSection" concept (generalNote/privateNote). Free-form thoughts captured in post captions ("What Friends Say") instead.
+
+---
 
 #### Social Features (Core Long-term Vision)
 9. **Friends/Connections System**

@@ -34,21 +34,21 @@ Following MVP polish, the project is planned to be refactored to TypeScript with
 
 ---
 
-**Current Status:** Phase 3 in progress. Firebase Cloud Function `getPlacePhoto` deployed for secure photo proxy. Next: Client-side integration (`getPhotoUrl()` helper, display photos in Place.js and PlaceDetail.js).
+**Current Status:** V2 "receipt-style" redesign in progress. Footer navigation added, ActionBar repositioned, SignIn/SignUp updated. Style audit completed. Phase 3 (Google Places photos) complete. Next: PlaceProfile V2 design.
 
 ---
 
 **Remodel branch** is the active development branch where all new work happens. All features are implemented here first.
 
-**Main branch** (this branch) is a functional snapshot synced with remodel on 2026-02-01. It represents the current state of work and runs without errors, though some features are pending implementation.
+**Main branch** is a functional snapshot synced with remodel on 2026-02-01. It represents the current state of work and runs without errors, though some features are pending implementation.
 
 | Branch | Status | Focus |
 |--------|--------|-------|
-| **remodel** | Active Development | All new work developed here. |
-| **wip-design** | Exploratory | V1 design exploration. |
-| **wip-design-2** | Exploratory (Active) | V2 receipt-style redesign. This is the design direction moving forward. |
-| **main** | Development Snapshot (2026-02-01) | Synced with remodel. Functional snapshot representing current state of active development. |
-| **Legacy** | Early prototype, capstone project | For memories. |
+| **main** | Snapshot (2026-02-01) | Stable snapshot synced with remodel. |
+| **remodel** | Active Development | Primary development branch. |
+| **wip-design-2** | V2 Design Exploration | Receipt-style redesign (current focus). |
+| **wip-design** | V1 Design Exploration | Earlier design iteration. |
+| **Legacy** | Archive | Early prototype, capstone project. |
 
 ---
 
@@ -57,7 +57,7 @@ Following MVP polish, the project is planned to be refactored to TypeScript with
 | Core | Frontend | APIs / BaaS | Architecture |
 |------|----------|-------------|---------|
 | JavaScript, JSX | React 18 | Firebase (Auth, Firestore) | Service Layer Pattern |
-| CSS | Styled Components | Google Places API *(In Progress)* | Centralized Styling |
+| CSS | Styled Components | Google Places API | Centralized Styling |
 
 ---
 
@@ -83,7 +83,7 @@ The **service layer** (`firebaseService.js`) sits between components and externa
 - **Flexibility** — Swapping Firebase for a different backend requires changes only in the service layer
 - **API Integration** — Adding Google Places API calls happens in the service layer without touching components
 
-**Example:** When Explore.js needs to search restaurants, it will call `firebaseService.searchRestaurants()` instead of directly calling Google Places API. The service layer handles the API call, error handling, and data transformation. Components receive clean data ready to display.
+**Example:** When Explore.js needs to search restaurants, it calls `googlePlacesService.searchPlaces()`. The service layer handles the API call, error handling, and data transformation. Components receive clean data ready to display.
 
 ### **Firestore Schema**
 
@@ -99,12 +99,17 @@ firestore/
 │
 ├── places/
 │   └── {placeId}
+│       ├── googlePlaceId (string) - Google's place ID (null for manual entries)
 │       ├── restaurantName (string)
 │       ├── restaurantAddress (string)
-│       ├── notes (string) - User observations/details // will move to separate wrapper
-│       ├── priceLevel (number) - 1-4 price indicator
+│       ├── notes (string) - User observations (manual entries only)
+│       ├── priceLevel (string) - e.g. "PRICE_LEVEL_MODERATE"
 │       ├── rating (number) - Google Places rating
 │       ├── userRatingsTotal (number) - Number of ratings
+│       ├── phone (string) - Restaurant phone number
+│       ├── website (string) - Restaurant website URL
+│       ├── photoReferences (array) - Google photo references
+│       ├── source (string) - 'google' or 'manual'
 │       └── createdAt (timestamp) - When place was added to system
 │
 ├── placeSavedBy/{placeId}/
@@ -142,11 +147,23 @@ firestore/
 ---
 
 ## **Diagrams & Design**
-The inspiration for the aesthetic of this project is vintage menus. Colors were selected that provide a sense of nostalgia and warmth. Using this app should feel a bit like browsing an old menu for a favorite dish.
-![plot](src/img/colorPalette.png)
-![plot](src/img/vintageMenu3.png)
+The inspiration for the aesthetic of this project is vintage menus. Using this app should feel a bit like browsing an old menu for a favorite dish.
+
+## Inspiration
 ![plot](src/img/vintageMenu2.png)
 ![plot](src/img/vintageMenu1.png)
+
+## Wireframes
+### Feed
+![plot](src/img/feed.png)
+### User Profile
+![plot](src/img/user-profile.png)
+### Place Profile
+![plot](src/img/place-profile.png)
+### Sign Up
+![plot](src/img/sign-up.png)
+### Sign In
+![plot](src/img/sign-in.png)
 
 ---
 
@@ -154,55 +171,83 @@ The inspiration for the aesthetic of this project is vintage menus. Colors were 
 - **Global Notes:** Notes are stored on global `places` collection. When any user edits notes, it changes for all users. Will be fixed with NotesSection architecture (per-user notes in userPlaces subcollection) after API integration.
 
 ---
+ ## **Setup / Installation**
 
-## **Setup / Installation (Main Branch)**
-> You need a Firebase project and a local environment file to run the app.
+ ### Prerequisites
+ - Node.js 18+ ([download](https://nodejs.org/))
+ - Google account for Firebase/Google Cloud
 
-1. **Clone and install**
-   ```bash
-   git clone https://github.com/AsheUrban/Dine-Together.git
-   cd Dine-Together
-   npm install
-   ```
+ ### 1. Clone and Install
+ ```bash
+ git clone https://github.com/AsheUrban/Dine-Together.git
+ cd Dine-Together
+ npm install
+ ```
 
-2. **Create a Firebase project**
-   - Go to [Firebase Console](https://console.firebase.google.com) and create a new project.
-   - Add a **Web App** to retrieve your Firebase config (API key, project ID, etc.).
-   - Enable **Authentication** (Email/Password or Google Sign-In) under *Build → Authentication*.
-   - Create a **Cloud Firestore** database (test or production mode is fine).
+ ### 2. Firebase Project Setup
+ 1. Go to [Firebase Console](https://console.firebase.google.com/) → Create project
+ 2. Add a Web App → Copy the config values to use in .env file (see step 4)
+ 3. Build → Authentication → Get started → Enable Email/Password
+ 4. Build → Firestore Database → Create database → Start in test mode
 
-3. **Create `.env.local` (required)**
-   - In the project root, create a file named `.env.local`
-   - Add your Firebase config variables exactly as they appear in your Firebase console:  
-     ```bash
-     REACT_APP_FIREBASE_API_KEY=YOUR_API_KEY
-     REACT_APP_FIREBASE_AUTH_DOMAIN=YOUR_PROJECT.firebaseapp.com
-     REACT_APP_FIREBASE_PROJECT_ID=YOUR_PROJECT_ID
-     REACT_APP_FIREBASE_STORAGE_BUCKET=YOUR_PROJECT.appspot.com
-     REACT_APP_FIREBASE_MESSAGING_SENDER_ID=YOUR_SENDER_ID
-     REACT_APP_FIREBASE_APP_ID=YOUR_APP_ID
-     ```
-   - Add `.env.local` to `.gitignore` and **do not commit** this file.
+ ### 3. Google Places API Setup
+ 1. Go to [Google Cloud Console](https://console.cloud.google.com/) → Select your Firebase project
+ 2. APIs & Services → Library → Enable **Places API (New)**
+ 3. APIs & Services → Credentials → Create Credentials → API Key
+ 4. Create two keys:
+    - **Frontend key**: Restrict to `http://localhost:3000/*`
+    - **Server key**: No application restrictions (for Cloud Function)
 
-4. **Run the app**
-   ```bash
-   npm run build
-   npm start
-   ```
-   - Open [http://localhost:3000](http://localhost:3000) in your browser.
+ ### 4. Environment File
+ Create `.env.local` in project root. Find these values in Firebase Console → Project Settings → Your apps → Web app (refer back to step 2):
 
-> **Note:**  
-> - If Firestore reads/writes fail, check your **Firebase Rules** and confirm authentication is enabled.  
-> - The app checks `auth.currentUser` to gate access. You must log in before creating or viewing posts.
+ ```bash
+ REACT_APP_FIREBASE_API_KEY=your_api_key
+ REACT_APP_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+ REACT_APP_FIREBASE_PROJECT_ID=your-project-id
+ REACT_APP_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
+ REACT_APP_FIREBASE_SENDER_ID=your_sender_id
+ REACT_APP_FIREBASE_APP_ID=your_app_id
+ REACT_APP_GOOGLE_PLACES_API_KEY=your_frontend_api_key
+ ```
 
+ ### 5. Deploy Cloud Function (required for photos)
+ ```bash
+ npm install -g firebase-tools
+ firebase login
+ firebase use --add          # Select your project, alias: default
+ firebase functions:secrets:set GOOGLE_PLACES_API_KEY   # Paste server API key
+ cd functions && npm install && cd ..
+ firebase deploy --only functions
+ ```
+ Update `PHOTO_FUNCTION_URL` in `src/services/googlePlacesService.js` with your deployed URL.
+
+ ### 6. Run
+ ```bash
+ npm start
+ ```
+ Open [http://localhost:3000](http://localhost:3000)
+
+ ### 7. Populate Test Data (optional)
+ ```bash
+ node addTestData.js
+ ```
+ > **Note:** This script references place IDs and user IDs specific to the development database. To use it with your own Firebase project:
+ > 1. Create users via the Sign Up flow
+ > 2. Save some places via Explore
+ > 3. Update the script with your user IDs and place IDs
+
+ ---
+
+ #### See [SETUP.md](./SETUP.md) for step-by-step, in depth instructions with Firestore security rules and troubleshooting.
 ---
 
 ## **Project Structure**
 
 ```
 src/
-├── components/ (30 files)
-│   ├── ActionBar.js           (Fixed-bottom action container)
+├── components/ (31 files)
+│   ├── ActionBar.js           (Floating action buttons above footer nav)
 │   ├── App.js                 (Main app with routing & auth state)
 │   ├── Avatar.js              (User avatar component)
 │   ├── Background.js          (Background styling component)
@@ -210,9 +255,10 @@ src/
 │   ├── EditPlaceForm.js       (Edit place information)
 │   ├── EditPostForm.js        (Edit post caption)
 │   ├── EditUserProfileForm.js (Edit user profile bio)
-│   ├── Explore.js             (Search restaurants & manual add - WIP)
+│   ├── Explore.js             (Search restaurants & manual add)
 │   ├── Feed.js                (Display all posts from all users)
-│   ├── Header.js              (Navigation header with user info)
+│   ├── Footer.js              (Bottom navigation - FEED, EXPLORE, PROFILE)
+│   ├── Header.js              (Branding only)
 │   ├── KebabMenu.js           (Reusable dropdown menu for actions)
 │   ├── NewPlaceForm.js        (Create new place)
 │   ├── NewPostForm.js         (Create new post)
@@ -254,8 +300,14 @@ src/
 │   ├── placeStyles.js         (Place card styled components)
 │   ├── profileStyles.js       (Profile page styled components)
 │   ├── avatarStyles.js        (Avatar styled components)
-│   ├── FeedStyles.js          (Feed page styled components)
+│   ├── feedStyles.js          (Feed page styled components)
 │   └── index.js               (Centralized style exports)
+├── utils/
+│   ├── textFormatters.js      (Format display text - addresses, price levels)
+│   └── validators/
+│       ├── authValidator.js   (Email/password validation)
+│       ├── index.js           (Validator exports)
+│       └── placeValidator.js  (Place form validation)
 ├── firebase.js                (Firebase configuration)
 └── mood/                      (UI/UX design reference images)
 ```
@@ -270,27 +322,23 @@ src/
 - Posts/Places architectural separation (two Firestore collections)
 - Profile page with tabbed interface (Posts | Restaurants)
 - Place edit/update and delete functionality
-- 10 custom hooks for scalable state management
+- 11 custom hooks for scalable state management
 - Vintage menu aesthetic with centralized styling
 - KebabMenu integration across Feed, Profile, and PlaceProfile
 - ConfirmDialog for delete confirmations
 - Post edit/delete functionality
 - View other users' profiles
 - PlaceProfile architecture (PlaceDetail purely presentational, PlaceProfile as feature container)
-- ActionBar component for fixed-bottom actions
-- "Saved by" display in ActionBar and Post cards
-
-**Current Sprint:**
-- Phase 3: Display Google Places Data
+- ActionBar component for floating action buttons
 
 ### **Phase 2: Google Places API Integration** | COMPLETE
 
-1. ~~Google Places Autocomplete in Explore~~ | Complete (using Places API New via REST)
-2. ~~Google Places Details API for full restaurant data~~ | Complete
-3. ~~Save flow with deduplication~~ | Complete (findPlaceByGoogleId checks before creating)
-4. ~~Route-based PlaceProfile~~ | Complete (`/place/:placeId` with usePlace hook)
+- Google Places Autocomplete in Explore (using Places API New via REST)
+- Google Places Details API for full restaurant data
+- Save flow with deduplication (findPlaceByGoogleId checks before creating)
+- Route-based PlaceProfile (`/place/:placeId` with usePlace hook)
 
-### **Phase 3: Display Google Places Data** (Current)
+### **Phase 3: Display Google Places Data** | COMPLETE
 
 - Implement Firebase Cloud Function for secure photo fetching
 - Add `getPhotoUrl()` helper to googlePlacesService.js
@@ -298,18 +346,19 @@ src/
 - PlaceDetail.js: Display rating, priceLevel, phone, website, photos, embedded map
 - Place.js: Replace PlaceImage placeholder with actual Google photo
 
-### **Phase 4: Save Flow & Post Creation**
-
-- PlaceProfile ActionBar shows "Add" button (if not saved)
-- Add "Create Post" button in PlaceProfile
-- Wire post creation flow
-
-### **Phase 5: Map Integration**
-
+### **Phase 4: UI Redesign & Map Integration**
+- App redesign: Footer navigation, SignIn/SignUp pages, ActionBar repositioning | COMPLETE
+- PlaceProfile design (pending)
 - Enable Maps JavaScript API in Google Cloud Console
 - Add `@react-google-maps/api` dependency
 - Add map view toggle to Explore (list view vs map view)
 - Implement Nearby Search API for map browse mode
+
+### **Phase 5: Save Flow & Post Creation**
+
+- PlaceProfile ActionBar shows "Add" button (if not saved)
+- Add "Create Post" button in PlaceProfile
+- Wire post creation flow
 
 ### **Phase 6: Polish**
 

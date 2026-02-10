@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { auth } from './../firebase.js';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
-import { FormContainer, Input, H2, Button, SignUpLink } from '../styles';
+import { CenteredPageWrapper, FormContainer, Input, Button, FormDivider, SignUpLink, H4, MutedText, FormMessage } from '../styles';
 import { validateSignIn } from '../utils/validators';
 
 function SignIn(){
@@ -35,32 +35,29 @@ function SignIn(){
         }
 
         return (
-            <React.Fragment>
+            <CenteredPageWrapper>
                 <FormContainer>
-                    <H2>Sign In</H2>
-                    {signInSuccess}
+                    <H4>Sign In</H4>
+                    {signInSuccess && <FormMessage>{signInSuccess}</FormMessage>}
                     <form onSubmit={doSignIn}>
-                        <label htmlFor='email'>Email</label>
                         <Input
                         id='email'
                         type='text'
                         name='email'
                         placeholder='email' />
-                        {errors.email && <p style={{color: 'red', fontSize: '12px'}}>{errors.email}</p>}
-                        <br />
-                        <label htmlFor='password'>Password</label>
+                        <MutedText>{errors.email}</MutedText>
                         <Input
                         id='password'
                         type='password'
                         name='password'
                         placeholder='Password' />
-                        {errors.password && <p style={{color: 'red', fontSize: '12px'}}>{errors.password}</p>}
-                        <br />
+                        <MutedText>{errors.password}</MutedText>
                         <Button type='submit'>Sign in</Button>
                     </form>
+                    <FormDivider>— OR —</FormDivider>
                     <p>Don't have an account? <SignUpLink to ="/sign-up">Sign up</SignUpLink></p>
                 </FormContainer>
-            </React.Fragment>
+            </CenteredPageWrapper>
         );
   }
 

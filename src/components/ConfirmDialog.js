@@ -8,7 +8,7 @@ import {
     ConfirmDialogButtons
 } from '../styles';
 
-function ConfirmDialog({ isOpen, message, onConfirm, onCancel, isLoading }) {
+function ConfirmDialog({ isOpen, message, onConfirm, onCancel, isLoading = false }) {
     const overlayRef = useRef(null);
 
     useEffect(() => {
@@ -56,10 +56,6 @@ ConfirmDialog.propTypes = {
     onConfirm: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     isLoading: PropTypes.bool
-};
-
-ConfirmDialog.defaultProps = {
-    isLoading: false
 };
 
 export default ConfirmDialog;
