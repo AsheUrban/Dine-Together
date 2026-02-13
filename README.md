@@ -19,6 +19,7 @@
 - [Setup / Installation](#setup--installation)
 - [Project Structure](#project-structure)
 - [Development Roadmap](#development-roadmap)
+- [Privacy Policy](#privacy-policy)
 - [License](#license)
 
 ---
@@ -58,6 +59,7 @@ The project will be migrated to TypeScript with Expo/React Native and Supabase t
 | [VALUES.md](./DOCUMENTATION_/VALUES.md) | Project values and migration principles |
 | [DEV_ROADMAP.md](./DOCUMENTATION_/DEV_ROADMAP.md) | Development roadmap and process disclaimer |
 | [SETUP.md](./DOCUMENTATION_/SETUP.md) | Detailed setup instructions with Firestore rules and troubleshooting |
+| [PRIVACY_POLICY.md](./PRIVACY_POLICY.md) | Privacy policy — what data is collected, stored, and how it's used |
 
 ---
 
@@ -323,13 +325,18 @@ See [API_DESIGN.md](./DOCUMENTATION_/API_DESIGN.md) for migration considerations
 
 ---
 
+## **Privacy Policy**
+
+See [PRIVACY_POLICY.md](./PRIVACY_POLICY.md) for full details on what data Dine Together collects, where it's stored, and how it's used.
+
+---
+
 ## **License**
 
-**All Rights Reserved** — This project is proprietary software.
+**Source-Available — Not Open Source**
 
-Unauthorized use, reproduction, modification, or distribution is prohibited without explicit written permission from the author.
+This code is publicly available for transparency, learning, and review. It is **not** licensed for use, modification, or redistribution. See [LICENSE.md](./LICENSE.md) for full terms.
 
-For inquiries regarding licensing or commercial use, contact: [theasheurban@gmail.com](mailto:theasheurban@gmail.com)
+Copyright © 2026 *Ashe Urban*
 
-Copyright © 2026
-*Ashe Urban*
+For licensing inquiries or permissions: [theasheurban@gmail.com](mailto:theasheurban@gmail.com)
