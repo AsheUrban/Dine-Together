@@ -49,7 +49,7 @@ Feed.js / UserProfile.js (Route-level containers - manage state, hooks, navigati
 - Shows: name, address
 - NOT editable by users (data comes from Google API)
 - Receives `place` prop, renders UI
-- Rating, price, phone, website, photos deferred to PlaceProfile V2 (TS migration)
+- Rating, price, phone, website, photos deferred to PlaceProfile (TS migration)
 
 **PlaceProfile** — Feature-level container
 - Route: `/place/:placeId`
@@ -188,7 +188,7 @@ If user has saved this place:
 
 ## Design & Visual Standards
 
-### V2 Receipt Style
+### Menu Style
 
 Menu-inspired design — clean interface that evokes ordering off of a menu.
 
@@ -205,7 +205,7 @@ Menu-inspired design — clean interface that evokes ordering off of a menu.
 **Borders & Dividers:**
 - 2px solid: Header bottom, footer top
 - 1px solid: Cards, containers, inputs
-- 1px dotted: Receipt-style row dividers
+- 1px dotted: Menu-style row dividers
 
 **Navigation:**
 - Header: Branding only ("DINE TOGETHER")
@@ -231,7 +231,7 @@ Menu-inspired design — clean interface that evokes ordering off of a menu.
 - **Header:** Restaurant name (H4Centered)
 - **Address:** Restaurant address (H6Centered)
 - **Buttons (conditional):** If saved: KebabMenu (Remove). If not saved: Add button in ActionBar.
-- Photos, rating, price, phone, website, map deferred to PlaceProfile V2 (TS migration)
+- Photos, rating, price, phone, website, map deferred to PlaceProfile (TS migration)
 
 ### Profile Page
 - **Restaurants Tab (default):** 2-column PlaceGrid, click navigates to PlaceProfile
@@ -241,5 +241,5 @@ Menu-inspired design — clean interface that evokes ordering off of a menu.
 ### Image Specifications
 - Feed post cards: 100% width, 160px height (post variant)
 - Profile place cards: 100% width, 100px height (grid variant)
-- PlaceDetail: No photo display (deferred to PlaceProfile V2)
+- PlaceDetail: No photo display (deferred to PlaceProfile)
 - All photos via Cloud Function proxy (`getPlacePhoto`)

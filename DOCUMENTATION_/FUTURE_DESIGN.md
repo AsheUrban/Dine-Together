@@ -8,12 +8,12 @@ Design targets for the TS/Supabase/React Native migration. Wireframes exist but 
 
 ## Table of Contents
 
-- [Explore V2](#explore-v2)
-- [PlaceProfile V2](#placeprofile-v2)
+- [Explore](#explore)
+- [PlaceProfile](#placeprofile)
 
 ---
 
-## Explore V2
+## Explore
 
 **Wireframe:** `src/img/explore.png`
 
@@ -68,7 +68,7 @@ Shared reusable `<Map>` component used by both Explore and PlaceProfile.
 
 ---
 
-## PlaceProfile V2
+## PlaceProfile
 
 **Wireframe:** `src/img/place-profile-v2.png`
 

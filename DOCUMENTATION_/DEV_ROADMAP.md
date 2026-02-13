@@ -6,7 +6,7 @@
 - Profile page with tabbed interface (Posts | Restaurants)
 - Place save/remove functionality
 - 10 custom hooks for scalable state management
-- Receipt-style aesthetic with centralized styling
+- Menu-style aesthetic with centralized styling
 - KebabMenu integration across Feed, Profile, and PlaceProfile
 - ConfirmDialog for delete confirmations
 - Post edit/delete functionality
@@ -20,7 +20,7 @@
 - Firebase Cloud Function proxy for secure photo fetching
 - Place.js displays Google Places photos with error fallback
 - Footer navigation, ActionBar, SignIn/SignUp redesign
-- PlaceProfile V2 and Explore V2 wireframes complete
+- PlaceProfile and Explore wireframes complete
 - Save flow with "Saved by" display and confirmation dialogs
 
 ## **TypeScript Migration (Post-MVP)**
@@ -33,7 +33,7 @@ Mobile-first rebuild with decided tech stack:
 - **Navigation:** React Navigation
 - Build foundation for social features (friends, connections, reservation coordination with OpenTable/Resy)
 
-See [FUTURE_DESIGN.md](./FUTURE_DESIGN.md) for PlaceProfile V2 and Explore V2 design targets.
+See [FUTURE_DESIGN.md](./FUTURE_DESIGN.md) for PlaceProfile and Explore design targets.
 See [API_DESIGN.md](./API_DESIGN.md) for migration considerations and deferred features.
 
 ---

@@ -42,7 +42,7 @@ The project will be migrated to TypeScript with Expo/React Native and Supabase t
 | Branch | Status | Focus |
 |--------|--------|-------|
 | **main** | Complete MVP | Firebase MVP with Google Places integration. |
-| **wip-design** | Archive | V1 design exploration. |
+| **wip-design** | Archive | Early design exploration. |
 | **legacyBranch** | Archive | For memories, capstone project. |
 
 ---
@@ -318,7 +318,7 @@ src/
 ## **Development Roadmap**
 
 See [DEV_ROADMAP.md](./DOCUMENTATION_/DEV_ROADMAP.md) for development roadmap and process disclaimer.
-See [FUTURE_DESIGN.md](./DOCUMENTATION_/FUTURE_DESIGN.md) for PlaceProfile V2 and Explore V2 design targets.
+See [FUTURE_DESIGN.md](./DOCUMENTATION_/FUTURE_DESIGN.md) for PlaceProfile and Explore design targets.
 See [API_DESIGN.md](./DOCUMENTATION_/API_DESIGN.md) for migration considerations and deferred features.
 
 ---

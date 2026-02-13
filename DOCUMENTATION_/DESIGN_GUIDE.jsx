@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // Dine Together - Design Guide
-// Receipt Style: Black & White, Typewriter Font, Minimal Borders
+// Menu Style: Black & White, Typewriter Font, Minimal Borders
 
 const DesignGuide = () => {
   const [activeTab, setActiveTab] = useState('places');
@@ -84,7 +84,7 @@ const DesignGuide = () => {
             fontSize: '12px',
             margin: 0,
             opacity: 0.6,
-          }}>Design Guide — Receipt Style</p>
+          }}>Design Guide — Menu Style</p>
         </header>
 
         {/* ==================== COLOR PALETTE ==================== */}
@@ -168,7 +168,7 @@ const DesignGuide = () => {
               <div style={{ borderBottom: '1px solid #000', paddingBottom: '8px' }} />
             </div>
             <div>
-              <div style={{ fontSize: '11px', opacity: 0.6, marginBottom: '8px' }}>DOTTED BORDER (1px) — Receipt-style dividers</div>
+              <div style={{ fontSize: '11px', opacity: 0.6, marginBottom: '8px' }}>DOTTED BORDER (1px) — Menu-style dividers</div>
               <div style={{ borderBottom: '1px dotted #000', paddingBottom: '8px' }} />
             </div>
           </div>
@@ -404,7 +404,7 @@ const DesignGuide = () => {
             <strong>InfoSection:</strong> border-bottom 1px solid, padding-bottom 20px<br />
             <strong>ProfileUsername:</strong> 20px bold<br />
             <strong>KebabMenu:</strong> ⋮ icon, right-aligned<br />
-            <strong>BioSection:</strong> Receipt-style with dotted dividers<br />
+            <strong>BioSection:</strong> Menu-style with dotted dividers<br />
             <strong>ProfileBioLabel:</strong> ALL CAPS, 60% opacity
           </div>
         </Section>
