@@ -194,7 +194,7 @@ export const Center = styled.div`
     display: flex;
     justify-content: center;
     text-align: center;
-    max-width: 400px;
+    max-width: 480px;
     color: ${colors.text};
     padding: 16px;
     margin: auto;

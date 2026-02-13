@@ -44,7 +44,7 @@ Following MVP polish, the project is planned to be refactored to TypeScript with
 
 | Branch | Status | Focus |
 |--------|--------|-------|
-| **main** | Snapshot (2026-02-01) | Stable snapshot synced with remodel. |
+| **main** | Snapshot (2026-02-10) | Stable snapshot synced with remodel. |
 | **remodel** | Active Development | Primary development branch. |
 | **wip-design-2** | V2 Design Exploration | Receipt-style redesign (current focus). |
 | **wip-design** | V1 Design Exploration | Earlier design iteration. |
