@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import PlaceDetail from './PlaceDetail';
 import ActionBar from './ActionBar';
-import EditPlaceForm from './EditPlaceForm';
 import ConfirmDialog from './ConfirmDialog';
 import KebabMenu from './KebabMenu';
 import { auth } from '../firebase.js';
 import { CircularButton, PlaceMenuContainer, PlaceProfileContainer, LinkStyle } from '../styles';
-import { updatePlace, removeFromSavedPlaces } from '../services/firebaseService';
-import { useEditMode } from '../hooks/editMode';
+import { removeFromSavedPlaces } from '../services/firebaseService';
 import { usePlaceSaveState } from '../hooks/placeSaveState';
 import { usePlace } from '../hooks/place';
 
@@ -16,7 +14,6 @@ function PlaceProfile() {
     const { placeId } = useParams();
     const navigate = useNavigate();
     const { place, loading, error } = usePlace(placeId);
-    const { isEditing, enterEditMode, exitEditMode } = useEditMode();
         const {
             isSaved,
             isLoading,
@@ -33,12 +30,6 @@ function PlaceProfile() {
 
     const handleBack = () => {
         navigate(-1);
-    };
-
-    const handleEditingPlace = async (placeToEdit) => {
-        const { id, ...placeData } = placeToEdit;
-        await updatePlace(id, placeData);
-        exitEditMode();
     };
 
     const handleRemove = () => {
@@ -58,20 +49,9 @@ function PlaceProfile() {
     };
 
     const handleKebabAction = (item) => {
-        if (item.id === 'edit') {
-            enterEditMode();
-        } else if (item.id === 'remove') {
+        if (item.id === 'remove') {
             handleRemove();
         }
-    };
-
-    const buildMenuItems = () => {
-        const items = [];
-        if (isSaved) {
-            items.push({ id: 'edit', label: 'Edit' });
-        }
-        items.push({ id: 'remove', label: 'Remove' });
-        return items;
     };
 
      const handleProfileClick = ( userId) => {
@@ -126,24 +106,12 @@ function PlaceProfile() {
         return <div>Place not found</div>
     }
 
-    if (isEditing) {
-        return (
-            <EditPlaceForm
-                place={place}
-                onEditPlace={handleEditingPlace}
-                userId={place.userId}
-                onBack={handleBack}
-                onDelete={handleRemove}
-            />
-        );
-    }
-
     return (
         <PlaceProfileContainer>
             <PlaceDetail place={place} />
             {isSaved === true && ( 
                 <PlaceMenuContainer>
-                    <KebabMenu items={buildMenuItems()} onItemClick={handleKebabAction} />
+                    <KebabMenu items={[{ id: 'remove', label: 'Remove'}]} onItemClick={handleKebabAction} />
                 </PlaceMenuContainer>
             )}
             <ActionBar>

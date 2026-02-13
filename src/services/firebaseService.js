@@ -40,7 +40,6 @@ export const subscribeToUserPosts = (userId, onPostsUpdate, onError) => {
                     id: postId,
                     restaurantName: placeDoc.data().restaurantName,
                     restaurantAddress: placeDoc.data().restaurantAddress,
-                    notes: placeDoc.data().notes,
                     priceLevel: placeDoc.data().priceLevel,
                     rating: placeDoc.data().rating,
                     userRatingsTotal: placeDoc.data().userRatingsTotal,
@@ -89,7 +88,6 @@ export const subscribeToAllPosts = (onPostsUpdate, onError) => {
                     id: postId,
                     restaurantName: placeDoc.data().restaurantName,
                     restaurantAddress: placeDoc.data().restaurantAddress,
-                    notes: placeDoc.data().notes,
                     priceLevel: placeDoc.data().priceLevel,
                     rating: placeDoc.data().rating,
                     userRatingsTotal: placeDoc.data().userRatingsTotal,
@@ -155,7 +153,6 @@ export const createPost = async (postData) => {
         batch.set(placeRef, {
             restaurantName: postData.restaurantName,
             restaurantAddress: postData.restaurantAddress,
-            notes: postData.notes || '',
             priceLevel: postData.priceLevel || null,
             rating: postData.rating || null,
             userRatingsTotal: postData.userRatingsTotal || null,
@@ -293,11 +290,6 @@ export const removeFromSavedPlaces = async (userId, placeId) => {
         console.error('Error removing place from saved:', error);
         throw error;
     }
-};
-
-export const updatePlace = async (placeId, placeData) => {
-    const placeRef = doc(db, 'places', placeId);
-    return await updateDoc(placeRef, placeData);
 };
 
 // ===== PLACE LOOKUP =====
