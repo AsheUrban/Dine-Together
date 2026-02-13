@@ -27,6 +27,9 @@ yarn-error.log*
 # Session notes (local development reference)
 SESSION_/
 
+# Migration planning (local development reference)
+MIGRATION_/
+
 # Design mood board (local development reference)
 /src/mood
 
