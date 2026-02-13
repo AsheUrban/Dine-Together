@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import ReusablePostForm from './ReusablePostForm';
 import { CircularButton } from '../styles';
@@ -9,14 +8,14 @@ function EditPostForm(props) {
     const handleSubmit = (postData) => {
         props.onEditPost({
             ...postData,
-            id: post.id
+            id: post.id,
         });
     };
 
     return (
         <ReusablePostForm
             onSubmit={handleSubmit}
-            buttonText='Save'
+            buttonText="Save"
             caption={post.caption}
             backButton={<CircularButton onClick={onBack}>↩</CircularButton>}
         />

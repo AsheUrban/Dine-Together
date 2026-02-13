@@ -1,19 +1,38 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import Place from './Place';
 import Avatar from './Avatar';
 import KebabMenu from './KebabMenu';
 import { formatDistanceToNow } from 'date-fns';
-import { PostCard, PostHeader, PostHeaderLeft, Username, PostCaption, PostWrapper, MutedText } from '../styles';
+import {
+    PostCard,
+    PostHeader,
+    PostHeaderLeft,
+    Username,
+    PostCaption,
+    PostWrapper,
+    MutedText,
+} from '../styles';
 
-function Post({ postId, authorId, username, caption, place, timeOpen, onPostClick, isOwner, onEditPost, onDeletePost, onUserClick }) {
+function Post({
+    postId,
+    authorId,
+    username,
+    caption,
+    place,
+    timeOpen,
+    onPostClick,
+    isOwner,
+    onEditPost,
+    onDeletePost,
+    onUserClick,
+}) {
     const handleClick = () => {
         onPostClick(postId, place, authorId);
     };
 
     const handleProfileClick = (event, userId) => {
         event.stopPropagation();
-        if(onUserClick) {
+        if (onUserClick) {
             onUserClick(userId);
         }
     };
@@ -29,26 +48,31 @@ function Post({ postId, authorId, username, caption, place, timeOpen, onPostClic
     return (
         <PostWrapper>
             <PostCard onClick={handleClick}>
-                {/* User + Caption Section */}
                 <PostHeader>
-                    <PostHeaderLeft onClick={(e) => handleProfileClick(e, authorId)} style={{ cursor: 'pointer' }}>
-                        <Avatar displayName={username} size="32px" variant="post"/>
+                    <PostHeaderLeft
+                        onClick={(e) => handleProfileClick(e, authorId)}
+                    >
+                        <Avatar
+                            displayName={username}
+                            size="32px"
+                            variant="post"
+                        />
                         <Username>{username}</Username>
                     </PostHeaderLeft>
-                    <MutedText>{formatDistanceToNow(timeOpen, { addSuffix: true })}</MutedText>
+                    <MutedText>
+                        {formatDistanceToNow(timeOpen, { addSuffix: true })}
+                    </MutedText>
                     {isOwner && (
                         <KebabMenu
                             items={[
                                 { id: 'edit', label: 'Edit Post' },
-                                { id: 'delete', label: 'Delete Post' }
+                                { id: 'delete', label: 'Delete Post' },
                             ]}
                             onItemClick={handleKebabAction}
                         />
                     )}
                 </PostHeader>
                 <PostCaption>{caption}</PostCaption>
-
-                {/* Place Component (image + restaurant info) */}
                 <Place
                     restaurantName={place.restaurantName}
                     restaurantAddress={place.restaurantAddress}
@@ -63,7 +87,6 @@ function Post({ postId, authorId, username, caption, place, timeOpen, onPostClic
             </PostCard>
         </PostWrapper>
     );
-    
 }
 
 Post.propTypes = {
@@ -77,7 +100,7 @@ Post.propTypes = {
     isOwner: PropTypes.bool,
     onEditPost: PropTypes.func,
     onDeletePost: PropTypes.func,
-    onUserClick: PropTypes.func
+    onUserClick: PropTypes.func,
 };
 
 export default Post;

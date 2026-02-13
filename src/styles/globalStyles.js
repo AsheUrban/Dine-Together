@@ -247,20 +247,21 @@ export const ConfirmDialogButtons = styled.div`
 `;
 
 export const ConfirmDialogButton = styled.button`
-    background-color: ${props => props.danger ? colors.text : colors.bg};
+    background-color: ${(props) => (props.danger ? colors.text : colors.bg)};
     border: 1px solid ${colors.border};
-    color: ${props => props.danger ? colors.bg : colors.text};
+    color: ${(props) => (props.danger ? colors.bg : colors.text)};
     padding: 8px 16px;
     font-family: ${fonts.primary};
     font-size: 12px;
     font-weight: 700;
     cursor: pointer;
-    opacity: ${props => props.disabled ? 0.5 : 1};
-    pointer-events: ${props => props.disabled ? 'none' : 'auto'};
+    opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+    pointer-events: ${(props) => (props.disabled ? 'none' : 'auto')};
 
     &:hover {
-        background-color: ${props => props.danger ? colors.bg : colors.text};
-        color: ${props => props.danger ? colors.text : colors.bg};
+        background-color: ${(props) =>
+            props.danger ? colors.bg : colors.text};
+        color: ${(props) => (props.danger ? colors.text : colors.bg)};
     }
 `;
 
@@ -349,6 +350,7 @@ export const CircularButton = styled.button`
 // ActionBar Container
 export const ActionBarContainer = styled.div`
     position: fixed;
+    align-items: center;
     bottom: 70px;
     left: 20px;
     display: flex;
@@ -391,8 +393,8 @@ export const FooterNavLink = styled.button`
     border: none;
     font-family: ${fonts.primary};
     font-size: 12px;
-    font-weight: ${props => props.$active ? 700 : 400};
-    opacity: ${props => props.$active ? 1 : 0.5};
+    font-weight: ${(props) => (props.$active ? 700 : 400)};
+    opacity: ${(props) => (props.$active ? 1 : 0.5)};
     color: ${colors.text};
     cursor: pointer;
     padding: 0;
@@ -417,6 +419,3 @@ export const SearchResult = styled.div`
         opacity: 0.7;
     }
 `;
-
-
-

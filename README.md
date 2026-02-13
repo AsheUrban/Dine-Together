@@ -60,6 +60,7 @@ The project will be migrated to TypeScript with Expo/React Native and Supabase t
 | [DEV_ROADMAP.md](./DOCUMENTATION_/DEV_ROADMAP.md) | Development roadmap and process disclaimer |
 | [SETUP.md](./DOCUMENTATION_/SETUP.md) | Detailed setup instructions with Firestore rules and troubleshooting |
 | [PRIVACY_POLICY.md](./PRIVACY_POLICY.md) | Privacy policy — what data is collected, stored, and how it's used |
+| [LICENSE.md](./LICENSE.md) | Source-available license — viewable for learning and review, not licensed for use or redistribution |
 
 ---
 
@@ -327,7 +328,7 @@ See [API_DESIGN.md](./DOCUMENTATION_/API_DESIGN.md) for migration considerations
 
 ## **Privacy Policy**
 
-See [PRIVACY_POLICY.md](./PRIVACY_POLICY.md) for full details on what data Dine Together collects, where it's stored, and how it's used.
+See [PRIVACY_POLICY.md](./DOCUMENTATION_/PRIVACY_POLICY.md) for full details on what data Dine Together collects, where it's stored, and how it's used.
 
 ---
 
@@ -335,7 +336,7 @@ See [PRIVACY_POLICY.md](./PRIVACY_POLICY.md) for full details on what data Dine 
 
 **Source-Available — Not Open Source**
 
-This code is publicly available for transparency, learning, and review. It is **not** licensed for use, modification, or redistribution. See [LICENSE.md](./LICENSE.md) for full terms.
+This code is publicly available for transparency, learning, and review. It is **not** licensed for use, modification, or redistribution. See [LICENSE.md](./DOCUMENTATION_/LICENSE.md) for full terms.
 
 Copyright © 2026 *Ashe Urban*
 

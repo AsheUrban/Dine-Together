@@ -7,7 +7,7 @@ export const useUserPlaces = (userId) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if(!userId) {
+        if (!userId) {
             setLoading(false);
             return;
         }
@@ -22,11 +22,11 @@ export const useUserPlaces = (userId) => {
             (errorMessage) => {
                 setError(errorMessage);
                 setLoading(false);
-            }
+            },
         );
 
         return () => unSubscribe();
     }, [userId]);
 
     return { places, loading, error };
-    };
+};

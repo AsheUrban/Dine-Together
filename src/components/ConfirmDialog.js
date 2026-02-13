@@ -1,30 +1,37 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import {
     ConfirmDialogOverlay,
     ConfirmDialogContainer,
     ConfirmDialogMessage,
     ConfirmDialogButton,
-    ConfirmDialogButtons
+    ConfirmDialogButtons,
 } from '../styles';
 
-function ConfirmDialog({ isOpen, message, onConfirm, onCancel, isLoading = false }) {
+function ConfirmDialog({
+    isOpen,
+    message,
+    onConfirm,
+    onCancel,
+    isLoading = false,
+}) {
     const overlayRef = useRef(null);
 
     useEffect(() => {
-        if(!isOpen) return;
+        if (!isOpen) return;
 
         const handleClickOutside = (e) => {
-            if(overlayRef.current && e.target === overlayRef.current) {
+            if (overlayRef.current && e.target === overlayRef.current) {
                 onCancel();
             }
         };
 
         document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
+        return () =>
+            document.removeEventListener('mousedown', handleClickOutside);
     }, [isOpen, onCancel]);
 
-    if(!isOpen) return null;
+    if (!isOpen) return null;
 
     return (
         <ConfirmDialogOverlay ref={overlayRef}>
@@ -55,7 +62,7 @@ ConfirmDialog.propTypes = {
     message: PropTypes.string.isRequired,
     onConfirm: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool
+    isLoading: PropTypes.bool,
 };
 
 export default ConfirmDialog;

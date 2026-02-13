@@ -1,13 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
     KebabMenuButton,
     KebabMenuContainer,
     KebabMenuDropdown,
-    KebabMenuItem
+    KebabMenuItem,
 } from '../styles';
 
-function KebabMenu({  items, onItemClick }) {
+function KebabMenu({ items, onItemClick }) {
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef(null);
 
@@ -21,7 +21,8 @@ function KebabMenu({  items, onItemClick }) {
         if (!isOpen) return;
 
         document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
+        return () =>
+            document.removeEventListener('mousedown', handleClickOutside);
     }, [isOpen]);
 
     const handleItemClick = (item) => {
@@ -31,21 +32,23 @@ function KebabMenu({  items, onItemClick }) {
 
     return (
         <KebabMenuContainer ref={containerRef}>
-            <KebabMenuButton onClick={(e) =>  {
-                e.stopPropagation();
-                setIsOpen(!isOpen);
-            }}>
+            <KebabMenuButton
+                onClick={(e) => {
+                    e.stopPropagation();
+                    setIsOpen(!isOpen);
+                }}
+            >
                 ⋮
             </KebabMenuButton>
             {isOpen && (
                 <KebabMenuDropdown>
                     {items.map((item) => (
                         <KebabMenuItem
-                        key={item.id}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            handleItemClick(item);
-                        }}
+                            key={item.id}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleItemClick(item);
+                            }}
                         >
                             {item.label}
                         </KebabMenuItem>
@@ -60,10 +63,10 @@ KebabMenu.propTypes = {
     items: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.string.isRequired,
-            label: PropTypes.string.isRequired
-        })
+            label: PropTypes.string.isRequired,
+        }),
     ).isRequired,
-    onItemClick: PropTypes.func.isRequired
+    onItemClick: PropTypes.func.isRequired,
 };
 
 export default KebabMenu;

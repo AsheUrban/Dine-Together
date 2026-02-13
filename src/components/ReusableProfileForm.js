@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { InlineFormWrapper, TextArea, Button, FormLabel, CharacterCounter, FormButtons } from '../styles';
+import {
+    InlineFormWrapper,
+    TextArea,
+    Button,
+    FormLabel,
+    CharacterCounter,
+    FormButtons,
+} from '../styles';
 
 const BEST_MEAL_LIMIT = 75;
 const GO_TO_MEALS_LIMIT = 75;
@@ -12,19 +19,21 @@ function ReusableProfileForm(props) {
     const [goToMeals, setGoToMeals] = useState(userBio?.goToMeals || '');
     const [aboutMe, setAboutMe] = useState(userBio?.aboutMe || '');
 
-    const handleSubmit = async(event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         await onSave({
             bestMeal,
             goToMeals,
-            aboutMe
+            aboutMe,
         });
     };
 
     return (
         <InlineFormWrapper>
             <form id="profileForm" onSubmit={handleSubmit}>
-                <FormLabel htmlFor="bestMeal">best meal of your life: </FormLabel>
+                <FormLabel htmlFor="bestMeal">
+                    best meal of your life:{' '}
+                </FormLabel>
                 <TextArea
                     id="bestMeal"
                     value={bestMeal}
@@ -32,7 +41,9 @@ function ReusableProfileForm(props) {
                     placeholder="Share a tasty morsel!"
                     maxLength={BEST_MEAL_LIMIT}
                 />
-                <CharacterCounter>{bestMeal.length}/{BEST_MEAL_LIMIT}</CharacterCounter>
+                <CharacterCounter>
+                    {bestMeal.length}/{BEST_MEAL_LIMIT}
+                </CharacterCounter>
 
                 <FormLabel htmlFor="goToMeals">go-to restaurants:</FormLabel>
                 <TextArea
@@ -41,8 +52,10 @@ function ReusableProfileForm(props) {
                     onChange={(e) => setGoToMeals(e.target.value)}
                     placeholder="Who's kitchen never disappoints?"
                     maxLength={GO_TO_MEALS_LIMIT}
-                 />
-                 <CharacterCounter>{goToMeals.length}/{GO_TO_MEALS_LIMIT}</CharacterCounter>
+                />
+                <CharacterCounter>
+                    {goToMeals.length}/{GO_TO_MEALS_LIMIT}
+                </CharacterCounter>
 
                 <FormLabel htmlFor="aboutMe">about you:</FormLabel>
                 <TextArea
@@ -52,11 +65,15 @@ function ReusableProfileForm(props) {
                     placeholder="Give us the juicy details!"
                     maxLength={ABOUT_ME_LIMIT}
                 />
-                <CharacterCounter>{aboutMe.length}/{ABOUT_ME_LIMIT}</CharacterCounter>
-                </form>
-                <FormButtons>
-                    {backButton}
-                    <Button type="submit" form="profileForm" disabled={isLoading}>{isLoading ? 'Saving...' : buttonText}</Button>
+                <CharacterCounter>
+                    {aboutMe.length}/{ABOUT_ME_LIMIT}
+                </CharacterCounter>
+            </form>
+            <FormButtons>
+                {backButton}
+                <Button type="submit" form="profileForm" disabled={isLoading}>
+                    {isLoading ? 'Saving...' : buttonText}
+                </Button>
             </FormButtons>
         </InlineFormWrapper>
     );
@@ -65,9 +82,9 @@ function ReusableProfileForm(props) {
 ReusableProfileForm.propTypes = {
     userBio: PropTypes.object,
     onSave: PropTypes.func.isRequired,
-    backButton:PropTypes.node,
+    backButton: PropTypes.node,
     isLoading: PropTypes.bool,
-    buttonText: PropTypes.string.isRequired
+    buttonText: PropTypes.string.isRequired,
 };
 
 export default ReusableProfileForm;

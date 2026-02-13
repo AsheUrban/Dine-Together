@@ -1,4 +1,3 @@
-import React from 'react';
 import ReusablePostForm from './ReusablePostForm';
 import PropTypes from 'prop-types';
 
@@ -7,22 +6,19 @@ function NewPostForm(props) {
         props.onNewPostCreation({
             ...postData,
             placeId: props.placeId,
-            userId: props.userId
+            userId: props.userId,
         });
     };
 
     return (
-        <ReusablePostForm
-            onSubmit={handleSubmit}
-            buttonText='Create Post'
-        />
+        <ReusablePostForm onSubmit={handleSubmit} buttonText="Create Post" />
     );
 }
 
 NewPostForm.propTypes = {
     onNewPostCreation: PropTypes.func.isRequired,
     placeId: PropTypes.string.isRequired,
-    userId: PropTypes.string
+    userId: PropTypes.string,
 };
 
 export default NewPostForm;

@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
@@ -14,11 +13,20 @@ import {
     BioValue,
     BioRow,
     ProfileHeader,
-    ProfileHeaderInfo
+    ProfileHeaderInfo,
 } from '../styles';
 
 function UserDetails(props) {
-    const { username, userBio, isEditing, enterEditMode, exitEditMode, onSave, isLoading, isOwnProfile } = props;
+    const {
+        username,
+        userBio,
+        isEditing,
+        enterEditMode,
+        exitEditMode,
+        onSave,
+        isLoading,
+        isOwnProfile,
+    } = props;
     const navigate = useNavigate();
 
     const handleSignOut = async () => {
@@ -38,16 +46,16 @@ function UserDetails(props) {
         }
     };
 
-    if(isEditing) {
+    if (isEditing) {
         return (
-                <InfoSection>
-                    <EditProfileForm
-                        userBio={userBio}
-                        onSave={onSave}
-                        onBack={exitEditMode}
-                        isLoading={isLoading}
-                    />
-                </InfoSection>
+            <InfoSection>
+                <EditProfileForm
+                    userBio={userBio}
+                    onSave={onSave}
+                    onBack={exitEditMode}
+                    isLoading={isLoading}
+                />
+            </InfoSection>
         );
     }
 
@@ -62,7 +70,7 @@ function UserDetails(props) {
                     <KebabMenu
                         items={[
                             { id: 'edit', label: 'Edit Profile' },
-                            { id: 'signout', label: 'Sign Out' }
+                            { id: 'signout', label: 'Sign Out' },
                         ]}
                         onItemClick={handleKebabAction}
                     />
@@ -100,7 +108,7 @@ UserDetails.propTypes = {
     exitEditMode: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    isOwnProfile: PropTypes.bool.isRequired
+    isOwnProfile: PropTypes.bool.isRequired,
 };
 
 export default UserDetails;

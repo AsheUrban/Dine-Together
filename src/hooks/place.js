@@ -8,7 +8,7 @@ export const usePlace = (placeId) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if(!placeId) {
+        if (!placeId) {
             setLoading(false);
             return;
         }
@@ -28,7 +28,7 @@ export const usePlace = (placeId) => {
             (err) => {
                 setError('Error loading place');
                 setLoading(false);
-            }
+            },
         );
 
         return () => unsubscribe();

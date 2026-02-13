@@ -25,16 +25,7 @@ export const PostHeaderLeft = styled.div`
     align-items: center;
     gap: 10px;
     flex: 1;
-`;
-
-export const PostUserInfo = styled.div`
-    flex: 1;
-`;
-
-export const PostUserMeta = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    cursor: pointer;
 `;
 
 export const Username = styled.span`
@@ -58,13 +49,6 @@ export const PostFooter = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 11px;
-    color: ${colors.text};
-    opacity: 0.6;
-    font-family: ${fonts.primary};
-`;
-
-export const PostSavedBy = styled.span`
     font-size: 11px;
     color: ${colors.text};
     opacity: 0.6;

@@ -53,8 +53,8 @@ export const TabButton = styled.button`
     font-size: 12px;
     color: ${colors.text};
     font-family: ${fonts.primary};
-    font-weight: ${props => props.active ? 700 : 400};
-    opacity: ${props => props.active ? 1 : 0.5};
+    font-weight: ${(props) => (props.active ? 700 : 400)};
+    opacity: ${(props) => (props.active ? 1 : 0.5)};
     padding: 0;
     text-transform: uppercase;
 

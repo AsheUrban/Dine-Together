@@ -7,7 +7,7 @@ export const useUserPosts = (userId) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if(!userId) {
+        if (!userId) {
             setLoading(false);
             return;
         }
@@ -22,7 +22,7 @@ export const useUserPosts = (userId) => {
             (errorMessage) => {
                 setError(errorMessage);
                 setLoading(false);
-            }
+            },
         );
 
         return () => unSubscribe();

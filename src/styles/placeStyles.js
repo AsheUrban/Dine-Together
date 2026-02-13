@@ -48,7 +48,7 @@ export const PlaceImageContainer = styled.div`
 
 export const PlaceImage = styled.div`
     width: 100%;
-    height: ${props => props.variant === 'post' ? '200px' : '100px'};
+    height: ${(props) => (props.variant === 'post' ? '200px' : '100px')};
     background-color: ${colors.borderLight};
 `;
 
@@ -69,7 +69,7 @@ export const PlaceNameRow = styled.div`
 
 export const PlaceName = styled.h3`
     font-family: ${fonts.primary};
-    font-size: ${props => props.variant === 'post' ? '18px' : '14px'};
+    font-size: ${(props) => (props.variant === 'post' ? '18px' : '14px')};
     font-weight: 700;
     color: ${colors.text};
     margin: 0 0 6px 0;
@@ -78,13 +78,13 @@ export const PlaceName = styled.h3`
 
 export const RatingPill = styled.span`
     font-family: ${fonts.primary};
-    font-size: ${props => props.variant === 'post' ? '13px' : '12px'};
+    font-size: ${(props) => (props.variant === 'post' ? '13px' : '12px')};
     font-weight: 400;
     color: ${colors.text};
 `;
 
 export const PlaceAddress = styled.p`
-    font-size: ${props => props.variant === 'post' ? '13px' : '12px'};
+    font-size: ${(props) => (props.variant === 'post' ? '13px' : '12px')};
     color: ${colors.text};
     opacity: 0.7;
     font-family: ${fonts.primary};
@@ -92,7 +92,7 @@ export const PlaceAddress = styled.p`
 `;
 
 export const PlacePrice = styled.span`
-    font-size: ${props => props.variant === 'post' ? '13px' : '12px'};
+    font-size: ${(props) => (props.variant === 'post' ? '13px' : '12px')};
     font-weight: 400;
     color: ${colors.text};
     font-family: ${fonts.primary};
@@ -136,9 +136,9 @@ export const PlaceGridStyles = styled.div`
     width: 100%;
 `;
 
-export const PlaceContent = styled.div`
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
+export const PlaceSavedBy = styled.span`
+    font-size: 11px;
+    color: ${colors.text};
+    opacity: 0.6;
     font-family: ${fonts.primary};
 `;

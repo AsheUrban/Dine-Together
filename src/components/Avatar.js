@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { AvatarContainer, AvatarInner } from '../styles/avatarStyles';
 
@@ -7,7 +6,7 @@ function Avatar({ displayName, size = '44px' }) {
         if (!name) return ' ';
         return name
             .split(' ')
-            .map(word => word[0].toUpperCase())
+            .map((word) => word[0].toUpperCase())
             .join('')
             .slice(0, 2);
     };

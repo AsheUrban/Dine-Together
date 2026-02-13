@@ -7,7 +7,7 @@ export {
     FormButtons,
     InlineFormWrapper,
     FormDivider,
-    FormMessage
+    FormMessage,
 } from './formStyles';
 
 export {
@@ -47,7 +47,7 @@ export {
     FooterNavContainer,
     FooterNavLinks,
     FooterNavLink,
-    SearchResult
+    SearchResult,
 } from './globalStyles';
 
 export {
@@ -60,7 +60,7 @@ export {
     TabButton,
     BioRow,
     ProfileHeader,
-    ProfileHeaderInfo
+    ProfileHeaderInfo,
 } from './profileStyles';
 
 export {
@@ -83,27 +83,19 @@ export {
     PlaceRatingCount,
     PlaceGridStyles,
     PlaceMenuContainer,
-    PlaceContent
+    PlaceSavedBy,
 } from './placeStyles';
 
-export {
-    FeedContainer
-} from './feedStyles';
+export { FeedContainer } from './feedStyles';
 
-export {
-    AvatarContainer,
-    AvatarInner
-} from './avatarStyles';
+export { AvatarContainer, AvatarInner } from './avatarStyles';
 
 export {
     PostWrapper,
     PostCard,
     PostHeader,
     PostHeaderLeft,
-    PostUserInfo,
-    PostUserMeta,
     Username,
     PostCaption,
     PostFooter,
-    PostSavedBy,
 } from './postStyles';

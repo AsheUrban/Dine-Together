@@ -13,13 +13,15 @@ export const useExploreSearch = (query) => {
                 (position) => {
                     setCoordinates({
                         latitude: position.coords.latitude,
-                        longitude: position.coords.longitude
+                        longitude: position.coords.longitude,
                     });
                 },
                 (err) => {
-                    console.log('Geolocation denied or unavailable, using broad search');
+                    console.log(
+                        'Geolocation denied or unavailable, using broad search',
+                    );
                     //place holder for fallback, profile defined user location.
-                }
+                },
             );
         }
     }, []);
@@ -31,22 +33,14 @@ export const useExploreSearch = (query) => {
         }
 
         const timeoutId = setTimeout(async () => {
-            setLoading(prev => ({ ...prev, places: true }));
+            setLoading(true);
             try {
                 const results = await searchPlaces(query, coordinates);
                 setPlaces(results);
             } catch (err) {
                 setError(err.message);
             }
-            setLoading(prev => ({ ...prev, places: false }));
-
-            // user search placeholder
-            //if (query.length >= 3) {
-            //setLoading(prev => ({ ...prev, users: true }));
-            //const userResults = await searchUsers(query);
-            //setUsers(userResults);
-            //setLoading(prev => ({ ...prev, users: false }));
-            // }
+            setLoading(false);
         }, 300);
 
         return () => clearTimeout(timeoutId);
@@ -56,6 +50,6 @@ export const useExploreSearch = (query) => {
         places,
         loading,
         error,
-        hasResults: places.length > 0 
+        hasResults: places.length > 0,
     };
 };

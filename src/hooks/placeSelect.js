@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { findPlaceByGoogleId, createPlace } from '../services/firebaseService';
-import { fetchPlaceDetails, transformPlaceDetails } from '../services/googlePlacesService';
+import {
+    fetchPlaceDetails,
+    transformPlaceDetails,
+} from '../services/googlePlacesService';
 
 export const usePlaceSelect = () => {
     const [loading, setLoading] = useState(false);

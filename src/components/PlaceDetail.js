@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { toTitleCase } from '../utils/textFormatters';
 import { PlaceContainer, H4Centered, H6Centered } from '../styles';
@@ -13,7 +12,7 @@ function PlaceDetail({ place }) {
 }
 
 PlaceDetail.propTypes = {
-    place: PropTypes.object.isRequired
+    place: PropTypes.object.isRequired,
 };
 
 export default PlaceDetail;

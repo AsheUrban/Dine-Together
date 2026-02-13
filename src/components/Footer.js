@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FooterNavContainer, FooterNavLink, FooterNavLinks } from '../styles';
 
@@ -17,11 +16,17 @@ function Footer({ user }) {
                 <FooterNavLink $active={isFeed} onClick={() => navigate('/')}>
                     {isFeed ? '[FEED]' : 'FEED'}
                 </FooterNavLink>
-                <FooterNavLink $active={isExplore} onClick={() => navigate('/search')}>
+                <FooterNavLink
+                    $active={isExplore}
+                    onClick={() => navigate('/search')}
+                >
                     {isExplore ? '[EXPLORE]' : 'EXPLORE'}
                 </FooterNavLink>
-                { user ? (
-                    <FooterNavLink $active={isProfile} onClick={() => navigate(`/profile/${user.uid}`)}>
+                {user ? (
+                    <FooterNavLink
+                        $active={isProfile}
+                        onClick={() => navigate(`/profile/${user.uid}`)}
+                    >
                         {isProfile ? '[PROFILE]' : 'PROFILE'}
                     </FooterNavLink>
                 ) : (

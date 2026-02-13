@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import ReusableProfileForm from './ReusableProfileForm';
 import { CircularButton } from '../styles';
@@ -21,7 +20,7 @@ EditProfileForm.propTypes = {
     userBio: PropTypes.object,
     onSave: PropTypes.func.isRequired,
     onBack: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool
+    isLoading: PropTypes.bool,
 };
 
 export default EditProfileForm;

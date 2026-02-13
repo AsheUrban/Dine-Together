@@ -9,28 +9,28 @@ export const useUser = (userId) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if(!userId) {
+        if (!userId) {
             setLoading(false);
             return;
         }
 
         setLoading(true);
-            const unsubscribe = onSnapshot(
-                doc(db, 'users', userId),
-                (snapshot) => {
-                    if (snapshot.exists()) {
-                        setUsername(snapshot.data().username);
-                        setUserBio(snapshot.data());
-                        setError(null);
-                    } else {
-                        setError('User not found');
-                    }
-                    setLoading(false);   
-                },
-                (err) => {
-                    setError('Error loading profile');
-                    setLoading(false);  
+        const unsubscribe = onSnapshot(
+            doc(db, 'users', userId),
+            (snapshot) => {
+                if (snapshot.exists()) {
+                    setUsername(snapshot.data().username);
+                    setUserBio(snapshot.data());
+                    setError(null);
+                } else {
+                    setError('User not found');
                 }
+                setLoading(false);
+            },
+            (err) => {
+                setError('Error loading profile');
+                setLoading(false);
+            },
         );
 
         return () => unsubscribe();
@@ -41,5 +41,5 @@ export const useUser = (userId) => {
         userBio,
         loading,
         error,
-    }
-}
+    };
+};

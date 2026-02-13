@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import ReusableProfileForm from './ReusableProfileForm';
 
@@ -18,7 +17,7 @@ function NewProfileForm(props) {
 
 NewProfileForm.propTypes = {
     onSave: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool
+    isLoading: PropTypes.bool,
 };
 
 export default NewProfileForm;
