@@ -82,11 +82,11 @@ Create `src/services/googlePlacesService.js` alongside `firebaseService.js`. Ser
 - Aligns with codebase patterns (custom hooks)
 - Easier to test (mock fetch vs mock Google SDK)
 
-### Decision 3: Manual Entry (Deferred)
+### Decision 3: Manual Entry (Deprecated)
 
-Manual restaurant entry is **deferred**. Will revisit post-migration.
+Manual restaurant entry is **deprecated**. May revisit as a future feature if there's a clear need (e.g., food trucks, pop-ups not in Google's database), but not actively planned.
 
-**Original Rationale (preserved for future discussion):**
+**Original Rationale (preserved for context):**
 - Essential for restaurants not in Google's database (new, food trucks, pop-ups)
 - "Can't find it? Add manually" provides graceful fallback
 - Schema supports both sources with `source: 'google' | 'manual'` field
@@ -202,7 +202,7 @@ export const usePlaceSelect = () => {
 {
     restaurantName: string,
     restaurantAddress: string,
-    notes: string,
+    notes: string,              // DEPRECATED — legacy field, not used in new schema
     priceLevel: number,
     rating: number,
     userRatingsTotal: number,
@@ -527,9 +527,8 @@ type Place = GooglePlace | ManualPlace;
 
 **Benefit:** TypeScript enforces correct handling:
 ```typescript
-function canEditField(place: Place, field: string): boolean {
-    if (place.source === 'manual') return true;
-    return field === 'notes';  // Google places: only notes editable
+function canEditField(place: Place): boolean {
+    return place.source === 'manual';  // Only manual places are user-editable
 }
 ```
 
@@ -567,41 +566,14 @@ const { mutate: selectPlace, isLoading: selectLoading } = useMutation(
 );
 ```
 
-### Manual Entry Fallback
+### Manual Entry Fallback (Deprecated)
 
-Deferred from MVP — revisit post-migration (see Decision 3).
+Deprecated — not actively planned. May revisit as a possible future feature if there's demand for adding restaurants not in Google's database (see Decision 3).
 
-**When shown:** Autocomplete returns no results or user prefers manual entry.
-
-**UI:** "Can't find your restaurant? Add it manually" link below search results.
-
-**Form fields:**
-- Restaurant name (required)
-- Address (required)
-- Notes (optional)
-
-**Data saved:**
-```javascript
-{
-    restaurantName: userInput,
-    restaurantAddress: userInput,
-    notes: userInput || '',
-    source: 'manual',
-    googlePlaceId: null,
-    rating: null,
-    userRatingsTotal: null,
-    priceLevel: null,
-    phone: null,
-    website: null,
-    photoReferences: null,
-    primaryType: null,
-    createdAt: serverTimestamp()
-}
-```
-
-**Editing rules:**
-- Manual places: All fields editable
-- Google places: Only notes editable (core data comes from Google)
+**Original concept (preserved for context):**
+- "Can't find your restaurant? Add it manually" link below search results
+- Minimal form: restaurant name (required), address (required)
+- Saved with `source: 'manual'`, all Google-specific fields null
 
 ### Combined Search: Restaurants + Users
 
@@ -935,7 +907,7 @@ Items deferred from MVP to post-migration:
 2. Wire post creation flow
 
 **Manual Entry:**
-1. Deferred — revisit post-migration (see Decision 3)
+1. Deprecated — possible future feature (see Decision 3)
 
 **Map Integration:**
 1. Enable Maps JavaScript API in Google Cloud Console
