@@ -29,7 +29,7 @@ Feed.js / UserProfile.js (Route-level containers - manage state, hooks, navigati
     │
     PlaceProfile (Feature-level container - /place/:placeId)
     ├── PlaceDetail (restaurant info - purely presentational)
-    ├── KebabMenu (Edit, Remove - owner actions)
+    ├── KebabMenu (Remove - owner actions)
     └── ActionBar (fixed bottom)
         ├── Back button
         ├── "Saved by" info
@@ -55,7 +55,7 @@ Feed.js / UserProfile.js (Route-level containers - manage state, hooks, navigati
 - Route: `/place/:placeId`
 - Uses: `usePlace(placeId)`, `usePlaceSaveState(placeId)`
 - Composes: PlaceDetail + KebabMenu + ActionBar
-- Manages: save state, edit mode, remove confirmation
+- Manages: save state, remove confirmation
 - Navigates to user profiles via "Saved by" links
 
 **ActionBar** — Fixed bottom action container
@@ -173,12 +173,11 @@ User arrives at /place/:placeId
     → Click "Saved by" username → navigate(`/profile/${userId}`)
 ```
 
-### PlaceProfile — Edit/Remove (Owner Actions)
+### PlaceProfile — Remove (Owner Actions)
 
 ```
 If user has saved this place:
-    → KebabMenu shows "Edit" and "Remove"
-    → "Edit" → EditPlaceForm renders
+    → KebabMenu shows "Remove"
     → "Remove" → ConfirmDialog
         → Confirm → removeFromSavedPlaces(userId, placeId)
         → navigate(-1)
@@ -231,7 +230,7 @@ Menu-inspired design — clean interface that evokes ordering off of a menu.
 ### PlaceDetail Layout
 - **Header:** Restaurant name (H4Centered)
 - **Address:** Restaurant address (H6Centered)
-- **Buttons (conditional):** If saved: KebabMenu (Edit/Remove). If not saved: Add button in ActionBar.
+- **Buttons (conditional):** If saved: KebabMenu (Remove). If not saved: Add button in ActionBar.
 - Photos, rating, price, phone, website, map deferred to PlaceProfile V2 (TS migration)
 
 ### Profile Page

@@ -33,5 +33,6 @@ MIGRATION_/
 # Design mood board (local development reference)
 /src/mood
 
-# Claude Code temp files
+# Claude Code
 tmpclaude-*
+CLAUDE.md

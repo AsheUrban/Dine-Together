@@ -4,7 +4,7 @@
 
 - Posts/Places architectural separation (two Firestore collections)
 - Profile page with tabbed interface (Posts | Restaurants)
-- Place edit/update and delete functionality
+- Place save/remove functionality
 - 10 custom hooks for scalable state management
 - Receipt-style aesthetic with centralized styling
 - KebabMenu integration across Feed, Profile, and PlaceProfile

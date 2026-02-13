@@ -20,12 +20,11 @@ Snapshot of the Firebase MVP codebase. Reference material for understanding the 
 
 ```
 src/
-├── components/ (28 files)
+├── components/ (25 files)
 │   ├── ActionBar.js              # Floating action buttons (above footer nav)
 │   ├── App.js                    # Main app with routing & auth state
 │   ├── Avatar.js                 # User avatar (context-dependent sizing/colors)
 │   ├── ConfirmDialog.js          # Confirmation dialog for delete actions
-│   ├── EditPlaceForm.js          # Edit place details
 │   ├── EditPostForm.js           # Edit post caption
 │   ├── EditUserProfileForm.js    # Edit user profile
 │   ├── Explore.js                # Search/explore restaurants
@@ -42,7 +41,6 @@ src/
 │   ├── Post.js                   # Individual post (social wrapper + place)
 │   ├── PostList.js               # List of posts
 │   ├── ProtectedRoute.js         # Auth-gated route wrapper
-│   ├── ReusablePlaceForm.js      # Form for place creation/editing
 │   ├── ReusablePostForm.js       # Form for post creation/editing
 │   ├── ReusableProfileForm.js    # Form for profile creation/editing
 │   ├── SignIn.js                 # Sign in page
@@ -77,8 +75,7 @@ src/
 │   ├── textFormatters.js         # Format display text (addresses, price levels)
 │   └── validators/
 │       ├── authValidator.js      # Email/password validation
-│       ├── index.js              # Validator exports
-│       └── placeValidator.js     # Place form validation
+│       └── index.js              # Validator exports
 ├── firebase.js                   # Firebase config & initialization
 ├── index.js                      # React entry point
 └── index.css                     # Global CSS
@@ -152,7 +149,6 @@ src/
 - `deletePost(postId, removeFromSavedPlaces)` — Delete post
 
 **Places:**
-- `updatePlace(placeId, placeData)` — Update place data
 - `findPlaceByGoogleId(googlePlaceId)` — Dedup check
 - `getPlaceById(placeId)` — Single place fetch
 - `createPlace(placeData)` — Create new place doc

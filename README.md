@@ -177,7 +177,7 @@ Wireframes were designed with the support of Claude AI.
 ---
 
 ## **Known Bugs**
-- **Global Notes:** Notes are stored on the global `places` collection, not per-user. When any user edits notes, it changes for all users. Deprecated — replaced by Place Attributes concept for TS migration. Free-form thoughts captured in post captions.
+- No known bugs at this time.
 
 ---
  ## **Setup / Installation**
@@ -255,12 +255,11 @@ Wireframes were designed with the support of Claude AI.
 
 ```
 src/
-├── components/ (28 files)
+├── components/ (25 files)
 │   ├── ActionBar.js           (Floating action buttons above footer nav)
 │   ├── App.js                 (Main app with routing & auth state)
 │   ├── Avatar.js              (User avatar component)
 │   ├── ConfirmDialog.js       (Modal confirmation for delete operations)
-│   ├── EditPlaceForm.js       (Edit place information)
 │   ├── EditPostForm.js        (Edit post caption)
 │   ├── EditUserProfileForm.js (Edit user profile bio)
 │   ├── Explore.js             (Search restaurants via Google Places)
@@ -277,7 +276,6 @@ src/
 │   ├── Post.js                (Individual social post component with ownership)
 │   ├── PostList.js            (List display of posts)
 │   ├── ProtectedRoute.js      (Auth-gated route wrapper)
-│   ├── ReusablePlaceForm.js   (Reusable form component for places)
 │   ├── ReusablePostForm.js    (Reusable form component for posts)
 │   ├── ReusableProfileForm.js (Reusable form component for profiles)
 │   ├── SignIn.js              (Sign in page)
@@ -312,8 +310,7 @@ src/
 │   ├── textFormatters.js      (Format display text - addresses, price levels)
 │   └── validators/
 │       ├── authValidator.js   (Email/password validation)
-│       ├── index.js           (Validator exports)
-│       └── placeValidator.js  (Place form validation)
+│       └── index.js           (Validator exports)
 ├── firebase.js                (Firebase configuration)
 └── mood/                      (UI/UX design reference images)
 ``` 

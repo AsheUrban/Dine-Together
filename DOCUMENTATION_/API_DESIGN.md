@@ -11,7 +11,7 @@
 - [Architecture Decisions](#architecture-decisions)
   - [Decision 1: Separate Service Files](#decision-1-separate-service-files)
   - [Decision 2: Direct REST API](#decision-2-direct-rest-api-places-api-new)
-  - [Decision 3: Manual Entry (Deferred)](#decision-3-manual-entry-deferred)
+  - [Decision 3: Manual Entry (Deprecated)](#decision-3-manual-entry-deprecated)
   - [Decision 4: Route-Based PlaceProfile](#decision-4-route-based-placeprofile-2026-01-18)
 - [Google Places API Integration](#google-places-api-integration)
   - [Service Layer Design](#service-layer-design)
@@ -202,7 +202,6 @@ export const usePlaceSelect = () => {
 {
     restaurantName: string,
     restaurantAddress: string,
-    notes: string,              // DEPRECATED — legacy field, not used in new schema
     priceLevel: number,
     rating: number,
     userRatingsTotal: number,
