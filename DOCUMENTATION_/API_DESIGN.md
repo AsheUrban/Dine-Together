@@ -11,7 +11,7 @@
 - [Architecture Decisions](#architecture-decisions)
   - [Decision 1: Separate Service Files](#decision-1-separate-service-files)
   - [Decision 2: Direct REST API](#decision-2-direct-rest-api-places-api-new)
-  - [Decision 3: Manual Entry in MVP](#decision-3-manual-entry-in-mvp)
+  - [Decision 3: Manual Entry (Deferred)](#decision-3-manual-entry-deferred)
   - [Decision 4: Route-Based PlaceProfile](#decision-4-route-based-placeprofile-2026-01-18)
 - [Google Places API Integration](#google-places-api-integration)
   - [Service Layer Design](#service-layer-design)
@@ -20,23 +20,23 @@
   - [Deduplication Strategy](#deduplication-strategy)
   - [Photo Strategy](#photo-strategy)
   - [Cost Optimization](#cost-optimization)
-- [Manual Entry Fallback](#manual-entry-fallback)
-- [Combined Search: Restaurants + Users](#combined-search-restaurants--users)
-  - [Unified Search Architecture](#unified-search-architecture)
-  - [Result Types](#result-types)
-  - [UI Structure](#ui-structure)
-  - [Hook Design](#hook-design)
-  - [Combined Data Flow](#combined-data-flow)
 - [TypeScript Migration Considerations](#typescript-migration-considerations)
+  - [Manual Entry Fallback](#manual-entry-fallback)
+  - [Combined Search: Restaurants + Users](#combined-search-restaurants--users)
 - [Future APIs (Reservations)](#future-apis-reservations)
 - [Implementation Phases](#implementation-phases)
+  - [Phase 1: Setup & Autocomplete — COMPLETE](#phase-1-setup--autocomplete--complete-2026-01-16)
+  - [Phase 2: Place Details & Route Navigation — COMPLETE](#phase-2-place-details--route-navigation--complete-2026-01-18)
+  - [Phase 3: Display Google Places Data — COMPLETE](#phase-3-display-google-places-data--complete)
+  - [Phase 4: Save Flow — COMPLETE](#phase-4-save-flow--complete)
+  - [TypeScript Migration: Future Implementation](#typescript-migration-future-implementation)
 - [Future: Map Integration Strategy](#future-map-integration-strategy)
 
 ---
 
 ## Overview
 
-Dine-Together is evolving from manual restaurant entry to Google Places API-powered search. This document captures the design decisions that support both the current JavaScript MVP and the planned TypeScript refactor.
+Dine-Together's JavaScript MVP is complete with Google Places API-powered search. This document captures the design decisions that support the current MVP and the planned TypeScript/Supabase migration.
 
 **Core Principle:** The service layer pattern isolates external API complexity from components. Components call service functions; services handle API calls, data transformation, and Firestore persistence.
 
@@ -82,13 +82,12 @@ Create `src/services/googlePlacesService.js` alongside `firebaseService.js`. Ser
 - Aligns with codebase patterns (custom hooks)
 - Easier to test (mock fetch vs mock Google SDK)
 
-### Decision 3: Manual Entry in MVP
+### Decision 3: Manual Entry (Deferred)
 
-Manual restaurant entry is **included in MVP**, not deferred to TypeScript.
+Manual restaurant entry is **deferred**. Will revisit post-migration.
 
-**Rationale:**
+**Original Rationale (preserved for future discussion):**
 - Essential for restaurants not in Google's database (new, food trucks, pop-ups)
-- Existing NewPlaceForm already works
 - "Can't find it? Add manually" provides graceful fallback
 - Schema supports both sources with `source: 'google' | 'manual'` field
 
@@ -122,8 +121,8 @@ Manual restaurant entry is **included in MVP**, not deferred to TypeScript.
 
 **Implementation:**
 1. Add `/place/:placeId` route to App.js
-2. Create `usePlaceData(placeId)` hook (subscription pattern, matches `useUser`)
-3. PlaceProfile uses `useParams()` to get placeId, calls hook
+2. Create `usePlace(placeId)` hook (subscription pattern, matches `useUser`)
+3. PlaceProfile uses `useParams()` to get placeId, calls `usePlace(placeId)`
 4. Feed/UserProfile navigate to route instead of setting inline state
 5. Remove `usePlaceSelection` hook (no longer needed)
 
@@ -230,11 +229,11 @@ export const usePlaceSelect = () => {
     phone: string | null,          // Google: nationalPhoneNumber
     website: string | null,        // Google: websiteUri
     photoReferences: array | null, // Google: photos[].name
-    primaryType: string | null,    // Google: primaryType
+    primaryType: string | null,    // Google: primaryType (not yet fetched/stored — future: filtering, display tags)
 
     // Metadata
     createdAt: timestamp,
-    lastUpdated: timestamp
+    lastUpdated: timestamp        // Not yet implemented — future: track data freshness
 }
 ```
 
@@ -314,58 +313,30 @@ User selects from dropdown
 └─────────────────────────────┘
 ```
 
-#### Flow 2: Manual Entry Fallback
-
-```
-User types in Explore search
-        │
-        ▼
-Google Autocomplete returns empty/no match
-        │
-        ▼
-Show "Can't find it? Add manually" link
-        │
-        ▼
-User clicks link
-        │
-        ▼
-┌─────────────────────────────┐
-│  NewPlaceForm               │
-│  (existing component)       │
-└─────────────────────────────┘
-        │
-        ▼
-┌─────────────────────────────┐
-│  firebaseService            │
-│  .createPlace()             │
-│  source: 'manual'           │
-│  googlePlaceId: null        │
-└─────────────────────────────┘
-        │
-        ▼
-Navigate to PlaceProfile
-```
-
-#### Flow 3: View Place Details
+#### Flow 2: View Place Details
 
 ```
 User clicks place (from Feed, Profile, or search)
         │
         ▼
 ┌─────────────────────────────┐
-│  PlaceProfile               │
-│  receives place object      │
+│  navigate(`/place/${id}`)   │
+│  (route-based navigation)   │
 └─────────────────────────────┘
         │
         ▼
-Check place.source
+┌─────────────────────────────┐
+│  PlaceProfile               │
+│  usePlace(placeId)          │
+│  usePlaceSaveState(placeId) │
+└─────────────────────────────┘
         │
-        ├── 'google' → Show all Google data (rating, photos, etc.)
-        │              Name/address NOT editable
-        │              Only notes editable
-        │
-        └── 'manual' → Show available fields
-                       All fields editable
+        ▼
+┌─────────────────────────────┐
+│  PlaceDetail renders data   │
+│  ActionBar renders actions  │
+│  KebabMenu (if saved)       │
+└─────────────────────────────┘
 ```
 
 ### Deduplication Strategy
@@ -374,24 +345,22 @@ Check place.source
 
 **Solution:** Use `googlePlaceId` as canonical identifier.
 
-```javascript
-// In googlePlacesService.js
-export const getOrCreatePlace = async (googlePlaceData) => {
-    // Check if place already exists
-    const existing = await findPlaceByGoogleId(googlePlaceData.id);
-    if (existing) {
-        return existing;
-    }
+Orchestration lives in `usePlaceSelect` hook (services do individual operations, hooks orchestrate):
 
-    // Transform and create new place
-    const placeData = transformGooglePlace(googlePlaceData);
+```javascript
+// hooks/placeSelect.js — checks for existing, fetches from Google if new, saves to Firestore
+const selectPlace = async (googlePlaceId) => {
+    const existing = await findPlaceByGoogleId(googlePlaceId);
+    if (existing) return existing;
+
+    const googleData = await fetchPlaceDetails(googlePlaceId);
+    const placeData = transformPlaceDetails(googleData);
     return await createPlace(placeData);
 };
 ```
 
-**Firestore query for deduplication:**
 ```javascript
-// In firebaseService.js
+// firebaseService.js — dedup query
 export const findPlaceByGoogleId = async (googlePlaceId) => {
     const q = query(
         collection(db, 'places'),
@@ -409,7 +378,7 @@ export const findPlaceByGoogleId = async (googlePlaceId) => {
 
 **Decision (2026-01-20): Firebase Cloud Function Proxy**
 
-API key must not be exposed client-side (Google flagged previous exposure). Security is a baseline requirement.
+API key must not be exposed client-side. Security is a baseline requirement.
 
 **Implementation (2026-01-21):**
 
@@ -508,318 +477,6 @@ const FULL_FIELDS = [...CARD_FIELDS, 'nationalPhoneNumber', 'websiteUri', 'userR
 
 ---
 
-## Manual Entry Fallback
-
-**When shown:** Autocomplete returns no results or user prefers manual entry.
-
-**UI:** "Can't find your restaurant? Add it manually" link below search results.
-
-**Form fields:**
-- Restaurant name (required)
-- Address (required)
-- Notes (optional)
-
-**Data saved:**
-```javascript
-{
-    restaurantName: userInput,
-    restaurantAddress: userInput,
-    notes: userInput || '',
-    source: 'manual',
-    googlePlaceId: null,
-    rating: null,
-    userRatingsTotal: null,
-    priceLevel: null,
-    phone: null,
-    website: null,
-    photoReferences: null,
-    primaryType: null,
-    createdAt: serverTimestamp()
-}
-```
-
-**Editing rules:**
-- Manual places: All fields editable
-- Google places: Only notes editable (core data comes from Google)
-
----
-
-## Combined Search: Restaurants + Users
-
-The Explore page provides unified search across both restaurants (via Google Places API) and users (via Firestore). This section defines the architecture to support both from day one, avoiding technical debt.
-
-### Unified Search Architecture
-
-**Principle:** Design for combined results from the start, even if implementing restaurant search first.
-
-**Why unified:**
-- Single search bar, familiar UX
-- No mode switching or tabs needed
-- Results naturally grouped by type
-- Adding user search later is "plug in," not "refactor"
-
-### Result Types
-
-```javascript
-// Unified search result type
-const SearchResult = {
-    type: 'place' | 'user',
-    id: string,           // placeId or oderId
-    data: PlaceResult | UserResult
-};
-
-// Place result (from Google Autocomplete)
-const PlaceResult = {
-    googlePlaceId: string,
-    name: string,         // displayName
-    address: string,      // formattedAddress
-    // Full details fetched on selection
-};
-
-// User result (from Firestore)
-const UserResult = {
-    userId: string,
-    username: string,
-    // Avatar could be added later
-};
-```
-
-### UI Structure
-
-```
-┌─────────────────────────────────────────────┐
-│  🔍 Search restaurants or people...         │
-└─────────────────────────────────────────────┘
-                    │
-                    ▼
-┌─────────────────────────────────────────────┐
-│  RESTAURANTS                                │
-│  ┌─────────────────────────────────────┐   │
-│  │ 🍽️ Sushi Paradise                    │   │
-│  │    123 Market St, San Francisco      │   │
-│  └─────────────────────────────────────┘   │
-│  ┌─────────────────────────────────────┐   │
-│  │ 🍽️ Sushi House                       │   │
-│  │    456 Oak Ave, San Francisco        │   │
-│  └─────────────────────────────────────┘   │
-│                                             │
-│  Can't find it? Add manually                │
-├─────────────────────────────────────────────┤
-│  PEOPLE                                     │
-│  ┌─────────────────────────────────────┐   │
-│  │ 👤 @sushilover42                     │   │
-│  └─────────────────────────────────────┘   │
-│  ┌─────────────────────────────────────┐   │
-│  │ 👤 @susan_eats                       │   │
-│  └─────────────────────────────────────┘   │
-└─────────────────────────────────────────────┘
-```
-
-**Display rules:**
-- Show sections only if results exist (don't show empty "PEOPLE" section)
-- Restaurants section appears first (primary use case)
-- "Add manually" link appears below restaurants, above people
-- Minimum 2 characters before searching (prevents noise)
-- Minimum 3 characters for user search (privacy consideration)
-
-### Hook Design
-
-```javascript
-// useExploreSearch.js - unified search hook
-import { useState, useEffect } from 'react';
-import { searchPlaces } from '../services/googlePlacesService';
-import { searchUsers } from '../services/firebaseService';
-
-export const useExploreSearch = (query) => {
-    const [places, setPlaces] = useState([]);
-    const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState({ places: false, users: false });
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        if (query.length < 2) {
-            setPlaces([]);
-            setUsers([]);
-            return;
-        }
-
-        // Search restaurants (debounced internally)
-        setLoading(prev => ({ ...prev, places: true }));
-        searchPlaces(query)
-            .then(results => {
-                setPlaces(results);
-                setLoading(prev => ({ ...prev, places: false }));
-            })
-            .catch(err => {
-                setError(err.message);
-                setLoading(prev => ({ ...prev, places: false }));
-            });
-
-        // Search users (only if 3+ characters)
-        if (query.length >= 3) {
-            setLoading(prev => ({ ...prev, users: true }));
-            searchUsers(query)
-                .then(results => {
-                    setUsers(results);
-                    setLoading(prev => ({ ...prev, users: false }));
-                })
-                .catch(err => {
-                    setError(err.message);
-                    setLoading(prev => ({ ...prev, users: false }));
-                });
-        } else {
-            setUsers([]);
-        }
-    }, [query]);
-
-    return {
-        places,
-        users,
-        loading: loading.places || loading.users,
-        placesLoading: loading.places,
-        usersLoading: loading.users,
-        error,
-        hasResults: places.length > 0 || users.length > 0
-    };
-};
-```
-
-**Key design decisions:**
-- Parallel queries (don't wait for places to finish before searching users)
-- Separate loading states (can show partial results)
-- Different character thresholds (2 for places, 3 for users)
-- Debouncing handled inside `searchPlaces` (with session token)
-
-### User Search Implementation
-
-```javascript
-// In firebaseService.js
-export const searchUsers = async (query) => {
-    const normalizedQuery = query.toLowerCase();
-
-    // Firestore doesn't support contains/like queries
-    // Use prefix matching: username >= query AND username < query + high char
-    const q = firestoreQuery(
-        collection(db, 'users'),
-        where('usernameLower', '>=', normalizedQuery),
-        where('usernameLower', '<', normalizedQuery + '\uf8ff'),
-        limit(5)
-    );
-
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map(doc => ({
-        userId: doc.id,
-        username: doc.data().username
-    }));
-};
-```
-
-**Schema requirement:** Add `usernameLower` field to users collection for case-insensitive search.
-
-```javascript
-// When creating/updating user
-{
-    username: 'SushiLover42',
-    usernameLower: 'sushilover42',  // Lowercase for querying
-    // ... other fields
-}
-```
-
-**Index required:** Create Firestore index on `usernameLower` field.
-
-### Combined Data Flow
-
-```
-User types "sushi" in search bar
-        │
-        ▼
-┌─────────────────────────────────────────────┐
-│  useExploreSearch('sushi')                  │
-└─────────────────────────────────────────────┘
-        │
-        ├──────────────────────┬──────────────────────┐
-        │                      │                      │
-        ▼                      ▼                      │
-┌───────────────┐    ┌───────────────┐               │
-│ Google Places │    │  Firestore    │               │
-│ Autocomplete  │    │  Users Query  │               │
-│ (debounced)   │    │               │               │
-└───────────────┘    └───────────────┘               │
-        │                      │                      │
-        ▼                      ▼                      │
-   predictions[]          users[]                    │
-        │                      │                      │
-        └──────────┬───────────┘                      │
-                   │                                  │
-                   ▼                                  │
-        ┌─────────────────────┐                      │
-        │  Explore.js renders │                      │
-        │  - Restaurants      │                      │
-        │  - "Add manually"   │                      │
-        │  - People           │                      │
-        └─────────────────────┘                      │
-                   │                                  │
-        ┌──────────┴──────────┐                      │
-        │                     │                      │
-        ▼                     ▼                      │
-User clicks             User clicks                  │
-restaurant              user                         │
-        │                     │                      │
-        ▼                     ▼                      │
-┌───────────────┐    ┌───────────────┐              │
-│ Fetch details │    │ Navigate to   │              │
-│ Save to FB    │    │ /profile/:id  │              │
-│ → PlaceProfile│    │               │              │
-└───────────────┘    └───────────────┘              │
-```
-
-### Selection Handlers
-
-```javascript
-// In Explore.js
-import { useNavigate } from 'react-router-dom';
-import { useExploreSearch } from '../hooks/exploreSearch';
-import { usePlaceSelect } from '../hooks/placeSelect';
-
-function Explore() {
-    const navigate = useNavigate();
-    const [searchQuery, setSearchQuery] = useState('');
-    const { places, loading: searchLoading } = useExploreSearch(searchQuery);
-    const { selectPlace, loading: selectLoading, error } = usePlaceSelect();
-
-    const handlePlaceSelect = async (prediction) => {
-        const place = await selectPlace(prediction.googlePlaceId);
-        navigate(`/place/${place.id}`);
-    };
-
-    const handleUserSelect = (user) => {
-        navigate(`/profile/${user.userId}`);
-    };
-    // ... render
-}
-```
-
-### Implementation Order (Revised)
-
-1. **Create `useExploreSearch` hook structure** with both result types
-2. **Implement Google Places search** (complex part)
-   - Wire into useExploreSearch
-   - Users array stays empty for now
-3. **Build combined results UI** in Explore.js
-   - Render both sections
-   - "People" section hidden when empty
-4. **Add `searchUsers` to firebaseService.js**
-5. **Add `usernameLower` field** to user schema (migration for existing users)
-6. **Wire user search into useExploreSearch**
-7. **Test combined flow**
-
-This order ensures:
-- Architecture supports both from start
-- Google Places (hard part) gets focus first
-- User search slots in without restructuring
-
----
-
 ## TypeScript Migration Considerations
 
 **Decided Tech Stack (2026-01-20):**
@@ -880,7 +537,7 @@ function canEditField(place: Place, field: string): boolean {
 
 ```
 src/services/
-├── firebase/
+├── supabase/
 │   ├── posts.ts
 │   ├── places.ts
 │   └── users.ts
@@ -908,6 +565,236 @@ const { data: places, isLoading } = useQuery(
 const { mutate: selectPlace, isLoading: selectLoading } = useMutation(
     (googlePlaceId) => placeSelectionService.select(googlePlaceId)
 );
+```
+
+### Manual Entry Fallback
+
+Deferred from MVP — revisit post-migration (see Decision 3).
+
+**When shown:** Autocomplete returns no results or user prefers manual entry.
+
+**UI:** "Can't find your restaurant? Add it manually" link below search results.
+
+**Form fields:**
+- Restaurant name (required)
+- Address (required)
+- Notes (optional)
+
+**Data saved:**
+```javascript
+{
+    restaurantName: userInput,
+    restaurantAddress: userInput,
+    notes: userInput || '',
+    source: 'manual',
+    googlePlaceId: null,
+    rating: null,
+    userRatingsTotal: null,
+    priceLevel: null,
+    phone: null,
+    website: null,
+    photoReferences: null,
+    primaryType: null,
+    createdAt: serverTimestamp()
+}
+```
+
+**Editing rules:**
+- Manual places: All fields editable
+- Google places: Only notes editable (core data comes from Google)
+
+### Combined Search: Restaurants + Users
+
+The Explore page will provide unified search across both restaurants (via Google Places API) and users (via Firestore/Supabase).
+
+#### Unified Search Architecture
+
+**Principle:** Design for combined results from the start.
+
+**Why unified:**
+- Single search bar, familiar UX
+- No mode switching or tabs needed
+- Results naturally grouped by type
+- Adding user search is "plug in," not "refactor"
+
+#### Result Types
+
+```javascript
+// Unified search result type
+const SearchResult = {
+    type: 'place' | 'user',
+    id: string,           // placeId or userId
+    data: PlaceResult | UserResult
+};
+
+// Place result (from Google Autocomplete)
+const PlaceResult = {
+    googlePlaceId: string,
+    name: string,         // displayName
+    address: string,      // formattedAddress
+};
+
+// User result (from Firestore)
+const UserResult = {
+    userId: string,
+    username: string,
+};
+```
+
+#### UI Structure
+
+```
+┌─────────────────────────────────────────────┐
+│  Search restaurants or people...            │
+└─────────────────────────────────────────────┘
+                    │
+                    ▼
+┌─────────────────────────────────────────────┐
+│  RESTAURANTS                                │
+│  ┌─────────────────────────────────────┐   │
+│  │ Sushi Paradise                       │   │
+│  │    123 Market St, San Francisco      │   │
+│  └─────────────────────────────────────┘   │
+│  ┌─────────────────────────────────────┐   │
+│  │ Sushi House                          │   │
+│  │    456 Oak Ave, San Francisco        │   │
+│  └─────────────────────────────────────┘   │
+├─────────────────────────────────────────────┤
+│  PEOPLE                                     │
+│  ┌─────────────────────────────────────┐   │
+│  │ @sushilover42                        │   │
+│  └─────────────────────────────────────┘   │
+│  ┌─────────────────────────────────────┐   │
+│  │ @susan_eats                          │   │
+│  └─────────────────────────────────────┘   │
+└─────────────────────────────────────────────┘
+```
+
+**Display rules:**
+- Show sections only if results exist (don't show empty "PEOPLE" section)
+- Restaurants section appears first (primary use case)
+- Minimum 2 characters before searching (prevents noise)
+- Minimum 3 characters for user search (privacy consideration)
+
+#### Hook Design
+
+```javascript
+// useExploreSearch.js - unified search hook
+export const useExploreSearch = (query) => {
+    const [places, setPlaces] = useState([]);
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState({ places: false, users: false });
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        if (query.length < 2) {
+            setPlaces([]);
+            setUsers([]);
+            return;
+        }
+
+        setLoading(prev => ({ ...prev, places: true }));
+        searchPlaces(query)
+            .then(results => {
+                setPlaces(results);
+                setLoading(prev => ({ ...prev, places: false }));
+            });
+
+        if (query.length >= 3) {
+            setLoading(prev => ({ ...prev, users: true }));
+            searchUsers(query)
+                .then(results => {
+                    setUsers(results);
+                    setLoading(prev => ({ ...prev, users: false }));
+                });
+        } else {
+            setUsers([]);
+        }
+    }, [query]);
+
+    return {
+        places,
+        users,
+        loading: loading.places || loading.users,
+        placesLoading: loading.places,
+        usersLoading: loading.users,
+        error,
+        hasResults: places.length > 0 || users.length > 0
+    };
+};
+```
+
+**Key design decisions:**
+- Parallel queries (don't wait for places to finish before searching users)
+- Separate loading states (can show partial results)
+- Different character thresholds (2 for places, 3 for users)
+
+#### User Search Implementation
+
+```javascript
+export const searchUsers = async (query) => {
+    const normalizedQuery = query.toLowerCase();
+    // Prefix matching for case-insensitive search
+    const q = firestoreQuery(
+        collection(db, 'users'),
+        where('usernameLower', '>=', normalizedQuery),
+        where('usernameLower', '<', normalizedQuery + '\uf8ff'),
+        limit(5)
+    );
+
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => ({
+        userId: doc.id,
+        username: doc.data().username
+    }));
+};
+```
+
+**Schema requirement:** Add `usernameLower` field to users collection for case-insensitive search.
+
+#### Combined Data Flow
+
+```
+User types "sushi" in search bar
+        │
+        ▼
+┌─────────────────────────────────────────────┐
+│  useExploreSearch('sushi')                  │
+└─────────────────────────────────────────────┘
+        │
+        ├──────────────────────┬──────────────────────┐
+        │                      │                      │
+        ▼                      ▼                      │
+┌───────────────┐    ┌───────────────┐               │
+│ Google Places │    │  Firestore    │               │
+│ Autocomplete  │    │  Users Query  │               │
+│ (debounced)   │    │               │               │
+└───────────────┘    └───────────────┘               │
+        │                      │                      │
+        ▼                      ▼                      │
+   predictions[]          users[]                    │
+        │                      │                      │
+        └──────────┬───────────┘                      │
+                   │                                  │
+                   ▼                                  │
+        ┌─────────────────────┐                      │
+        │  Explore.js renders │                      │
+        │  - Restaurants      │                      │
+        │  - People           │                      │
+        └─────────────────────┘                      │
+                   │                                  │
+        ┌──────────┴──────────┐                      │
+        │                     │                      │
+        ▼                     ▼                      │
+User clicks             User clicks                  │
+restaurant              user                         │
+        │                     │                      │
+        ▼                     ▼                      │
+┌───────────────┐    ┌───────────────┐              │
+│ Fetch details │    │ Navigate to   │              │
+│ Save to DB    │    │ /profile/:id  │              │
+│ → PlaceProfile│    │               │              │
+└───────────────┘    └───────────────┘              │
 ```
 
 ---
@@ -1012,58 +899,50 @@ function PlaceProfile({ place }) {
 6. Create `usePlaceSelect` hook (orchestrates dedup + fetch + create)
 7. Wire selection flow in Explore.js → `usePlaceSelect` → navigate to `/place/:id`
 
-### Phase 3: Display Google Places Data (Next)
+### Phase 3: Display Google Places Data | COMPLETE
+1. Place cards (Place.js) display photos, rating, price from Google data
+2. `getPhotoUrl(photoReference, maxWidth)` helper in googlePlacesService.js
+3. Cloud Function photo proxy (`getPlacePhoto`)
 
-Update UI components to display all Google Places data.
-
-**Schema Update:**
-1. Add `location` (lat/lng) to PLACE_FIELDS in googlePlacesService.js
-2. Update `transformPlaceDetails` to include location
-3. Store coordinates in Firestore (sets up for future map features)
-
-**PlaceDetail.js** (used in PlaceProfile):
-1. Add rating display with star icon
-2. Add userRatingsTotal (review count)
-3. Add priceLevel display ($ symbols)
-4. Add phone (clickable tel: link)
-5. Add website (clickable external link)
-6. Add photo display using photoReferences
-7. Add static map image showing location
-
-**Place.js** (card used in PlaceGrid):
-1. Replace PlaceImage placeholder with actual photo
-2. Use first photoReference if available
-
-**googlePlacesService.js**:
-1. Add `getPhotoUrl(photoReference, maxWidth)` helper function
-
-### Phase 4: Save Flow & Post Creation
+### Phase 4: Save Flow | COMPLETE
 1. PlaceProfile ActionBar shows "Add" button (if not saved)
-2. Add "Create Post" button in PlaceProfile
-3. Wire post creation flow
+2. `usePlaceSaveState` hook manages save state, "Saved by" display
+3. Save/remove flow with confirmation dialog
 
-### Phase 5: Manual Fallback
-1. Add "Can't find it?" link to Explore.js
-2. Wire to existing NewPlaceForm
-3. Ensure `source: 'manual'` is set
+### TypeScript Migration: Future Implementation
+Items deferred from MVP to post-migration:
 
-### Phase 6: Map Integration
+**PlaceDetail Enhancements:**
+1. Rating display with star icon + userRatingsTotal (review count)
+2. PriceLevel display ($ symbols)
+3. Phone (clickable tel: link)
+4. Website (clickable external link)
+5. Photo display in detail view using photoReferences
+6. Static map image showing location
+
+**Location Data:**
+1. Add `location` (lat/lng) to PLACE_FIELDS
+2. Update `transformPlaceDetails` to include location
+3. Store coordinates for future map features
+
+**Combined Search (Restaurants + Users):**
+1. Add `searchUsers` to firebaseService
+2. Wire user search into `useExploreSearch`
+3. Combined results UI in Explore.js
+
+**Post Creation from PlaceProfile:**
+1. Add "Create Post" button in PlaceProfile
+2. Wire post creation flow
+
+**Manual Entry:**
+1. Deferred — revisit post-migration (see Decision 3)
+
+**Map Integration:**
 1. Enable Maps JavaScript API in Google Cloud Console
-2. Add `@react-google-maps/api` dependency
-3. Add map view toggle to Explore (list view vs map view)
-4. Implement Nearby Search API for map browse mode
-5. Display nearby restaurants as pins on map
-6. Tap pin → show preview card → navigate to PlaceProfile
-
-### Phase 7: Polish
-1. Error handling (API failures, rate limits)
-2. Loading states and UX refinements
-3. Combined search (restaurants + people)
-
-### TypeScript Refactor: Text Search
-1. Add Text Search API for "search on map" functionality
-2. Hybrid approach: Autocomplete for typeahead, Text Search for map+text
-3. Full map integration (search results + map sync, saved places on map)
+2. Map view toggle in Explore (list view vs map view)
+3. Nearby Search API for map browse mode
+4. Text Search API for "search on map" functionality
+5. Full map integration (search results + map sync, saved places on map)
 
 ---
 
@@ -1095,10 +974,10 @@ Using both gives best UX for each mode without compromise.
 
 ### Implementation Path
 
-1. **Phase 3:** Store `location` (lat/lng) in schema - sets foundation
-2. **Phase 3:** Static map on PlaceProfile - quick win
-3. **Phase 6:** Map view in Explore with Nearby Search - visual browsing
-4. **TS Refactor:** Text Search for "search on map" - full integration
+1. Store `location` (lat/lng) in schema - sets foundation
+2. Static map on PlaceProfile via server-side proxy - quick win
+3. Map view in Explore with Nearby Search - visual browsing
+4. Text Search for "search on map" - full integration
 
 ### Technical Notes
 
@@ -1120,8 +999,12 @@ POST https://places.googleapis.com/v1/places:searchNearby
 
 **Static Map for PlaceProfile:**
 ```javascript
+// Server-side proxy (same pattern as getPlacePhoto Cloud Function)
+// API key stays server-side, client constructs proxy URL
+const STATIC_MAP_FUNCTION_URL = '...'; // Cloud Function / Supabase Edge Function
+
 const getStaticMapUrl = (lat, lng) => {
-    return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=15&size=400x200&markers=color:red%7C${lat},${lng}&key=${API_KEY}`;
+    return `${STATIC_MAP_FUNCTION_URL}?lat=${lat}&lng=${lng}&zoom=15&size=400x200`;
 };
 ```
 
