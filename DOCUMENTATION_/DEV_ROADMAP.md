@@ -23,7 +23,7 @@
 - PlaceProfile V2 and Explore V2 wireframes complete
 - Save flow with "Saved by" display and confirmation dialogs
 
-## **TypeScript Refactor (Post-MVP)**
+## **TypeScript Migration (Post-MVP)**
 
 Mobile-first rebuild with decided tech stack:
 - **Framework:** Expo + React Native (single codebase for iOS/Android/web)
