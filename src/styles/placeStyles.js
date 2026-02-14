@@ -46,9 +46,16 @@ export const PlaceImageContainer = styled.div`
     border-bottom: 1px solid ${colors.border};
 `;
 
+export const PlacePhoto = styled.img`
+    width: 100%;
+    height: ${(props) => (props.variant === 'post' ? '160px' : '100px')};
+    object-fit: cover;
+    display: block;
+`;
+
 export const PlaceImage = styled.div`
     width: 100%;
-    height: ${(props) => (props.variant === 'post' ? '200px' : '100px')};
+    height: ${(props) => (props.variant === 'post' ? '160px' : '100px')};
     background-color: ${colors.borderLight};
 `;
 

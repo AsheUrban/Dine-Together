@@ -69,6 +69,7 @@ export {
     PlaceWrapper,
     PlaceItem,
     PlaceImageContainer,
+    PlacePhoto,
     PlaceImage,
     PlaceInfoSection,
     PlaceNameRow,

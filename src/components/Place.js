@@ -11,6 +11,7 @@ import {
     PlaceWrapper,
     PlaceItem,
     PlaceImageContainer,
+    PlacePhoto,
     PlaceImage,
     PlaceInfoSection,
     PlaceNameRow,
@@ -38,15 +39,10 @@ function Place(props) {
             >
                 <PlaceImageContainer>
                     {photoUrl && !imageError ? (
-                        <img
+                        <PlacePhoto
                             src={photoUrl}
                             alt={props.restaurantName}
-                            style={{
-                                width: '100%',
-                                height: variant === 'post' ? '160px' : '100px',
-                                objectFit: 'cover',
-                                display: 'block',
-                            }}
+                            variant={variant}
                             onError={() => setImageError(true)}
                         />
                     ) : (
